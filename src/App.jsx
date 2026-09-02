@@ -5,6 +5,7 @@ import CodeWeavePlanetLanding from './components/CodeWeavePlanetLanding'
 import AboutUs from './pages/AboutUs'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import AuthCallback from './pages/AuthCallback'
 import AdminDashboard from './pages/AdminDashboard'
 import TutorDashboard from './pages/TutorDashboard'
 import StudentDashboard from './pages/StudentDashboard'
@@ -19,6 +20,7 @@ function App() {
           <Route path="/about" element={<AboutUs />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
 
           {/* Protected Routes */}
           <Route

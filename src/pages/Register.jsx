@@ -1,19 +1,22 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserPlus, Mail, Lock, User, AlertCircle, CheckCircle } from 'lucide-react';
+import { UserPlus, Mail, Lock, User, AlertCircle, CheckCircle, Chrome } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 import cwLogo from '../../public/images/Cwlogo.png';
 
 export default function Register() {
   const navigate = useNavigate();
+  const { signUp, signInWithGoogle, loading: authLoading } = useAuth();
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
-    role: 'student',
     phone: ''
   });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -40,38 +43,38 @@ export default function Register() {
     return true;
   };
 
-  const handleSubmit = async (e) => {
+  const handleEmailSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
 
     if (!validateForm()) return;
 
     setLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      // Store user info
-      const newUser = {
-        email: formData.email,
-        name: formData.name,
-        role: formData.role,
-        phone: formData.phone
-      };
+    const { data, error: signUpError } = await signUp(formData.email, formData.password);
+    
+    if (signUpError) {
+      setError(signUpError);
+      setLoading(false);
+    } else if (data?.user) {
+      setSuccess('Account created! Check your email to confirm your account.');
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
+    }
+  };
 
-      localStorage.setItem('user', JSON.stringify(newUser));
-
-      // Navigate based on role
-      switch (formData.role) {
-        case 'admin':
-          navigate('/admin');
-          break;
-        case 'tutor':
-          navigate('/tutor');
-          break;
-        default:
-          navigate('/student');
-      }
-    }, 1000);
+  const handleGoogleSignUp = async () => {
+    setError('');
+    setSuccess('');
+    setLoading(true);
+    const { error: googleError } = await signInWithGoogle();
+    
+    if (googleError) {
+      setError(googleError);
+      setLoading(false);
+    }
   };
 
   return (
@@ -90,7 +93,65 @@ export default function Register() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        {success && (
+          <div style={{
+            background: 'rgba(76, 175, 80, 0.1)',
+            color: '#4CAF50',
+            padding: '12px 16px',
+            borderRadius: '6px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            marginBottom: '20px',
+            fontSize: '14px',
+            fontWeight: 500
+          }}>
+            <CheckCircle size={18} />
+            <span>{success}</span>
+          </div>
+        )}
+
+        {/* Google OAuth Button */}
+        <button 
+          onClick={handleGoogleSignUp}
+          disabled={loading || authLoading}
+          type="button"
+          className="btn-google"
+          style={{
+            width: '100%',
+            padding: '12px 16px',
+            marginBottom: '20px',
+            background: '#FFFFFF',
+            border: '1px solid rgba(212, 175, 55, 0.3)',
+            color: '#2C1810',
+            borderRadius: '6px',
+            fontWeight: 600,
+            fontSize: '14px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            transition: 'all 0.3s ease',
+          }}
+        >
+          <Chrome size={18} />
+          {loading ? 'Creating account...' : 'Sign up with Google'}
+        </button>
+
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '12px', 
+          margin: '20px 0',
+          color: '#5C4B3A'
+        }}>
+          <div style={{ flex: 1, height: '1px', background: 'rgba(212, 175, 55, 0.2)' }}></div>
+          <span style={{ fontSize: '14px' }}>or email</span>
+          <div style={{ flex: 1, height: '1px', background: 'rgba(212, 175, 55, 0.2)' }}></div>
+        </div>
+
+        <form onSubmit={handleEmailSubmit} className="auth-form">
           <div className="form-group">
             <label htmlFor="name">
               <User size={18} />
@@ -169,26 +230,7 @@ export default function Register() {
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="role">I want to register as</label>
-            <select
-              id="role"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="form-select"
-            >
-              <option value="student">Student - Learn new skills</option>
-              <option value="tutor">Tutor - Teach courses</option>
-            </select>
-            <p className="form-hint">
-              {formData.role === 'tutor' 
-                ? 'Tutor accounts require admin approval'
-                : 'Start learning immediately after registration'}
-            </p>
-          </div>
-
-          <button type="submit" className="btn-primary" disabled={loading}>
+          <button type="submit" className="btn-primary" disabled={loading || authLoading}>
             <UserPlus size={18} />
             {loading ? 'Creating account...' : 'Create Account'}
           </button>

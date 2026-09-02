@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { supabase } from '../lib/supabaseClient';
 
 const AuthContext = createContext(null);
 
@@ -14,52 +14,131 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  // Check for existing session on mount
   useEffect(() => {
-    // Check if user is logged in on mount
-    const userData = localStorage.getItem('user');
-    if (userData) {
+    const checkSession = async () => {
       try {
-        setUser(JSON.parse(userData));
-      } catch (error) {
-        localStorage.removeItem('user');
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        if (sessionError) throw sessionError;
+        
+        if (session?.user) {
+          setUser(session.user);
+        }
+      } catch (err) {
+        console.error('Session check error:', err);
+      } finally {
+        setLoading(false);
       }
-    }
-    setLoading(false);
+    };
+
+    checkSession();
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (session?.user) {
+          setUser(session.user);
+        } else {
+          setUser(null);
+        }
+      }
+    );
+
+    return () => subscription?.unsubscribe();
   }, []);
 
-  const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+  const signUp = async (email, password) => {
+    try {
+      setError(null);
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+      if (signUpError) throw signUpError;
+      return { data, error: null };
+    } catch (err) {
+      setError(err.message);
+      return { data: null, error: err.message };
+    }
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
+  const signInWithEmail = async (email, password) => {
+    try {
+      setError(null);
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (signInError) throw signInError;
+      return { data, error: null };
+    } catch (err) {
+      setError(err.message);
+      return { data: null, error: err.message };
+    }
   };
 
-  const updateUser = (updatedData) => {
-    const newUserData = { ...user, ...updatedData };
-    setUser(newUserData);
-    localStorage.setItem('user', JSON.stringify(newUserData));
+  const signInWithGoogle = async () => {
+    try {
+      setError(null);
+      const { data, error: signInError } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+      if (signInError) throw signInError;
+      return { data, error: null };
+    } catch (err) {
+      setError(err.message);
+      return { data: null, error: err.message };
+    }
+  };
+
+  const logout = async () => {
+    try {
+      setError(null);
+      const { error: signOutError } = await supabase.auth.signOut();
+      if (signOutError) throw signOutError;
+      setUser(null);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const updateUser = async (updates) => {
+    try {
+      setError(null);
+      const { data, error: updateError } = await supabase.auth.updateUser(updates);
+      if (updateError) throw updateError;
+      if (data?.user) {
+        setUser(data.user);
+      }
+      return { data, error: null };
+    } catch (err) {
+      setError(err.message);
+      return { data: null, error: err.message };
+    }
   };
 
   const isAuthenticated = () => {
     return !!user;
   };
 
-  const hasRole = (role) => {
-    return user?.role === role;
-  };
-
   const value = {
     user,
     loading,
-    login,
+    error,
+    signUp,
+    signInWithEmail,
+    signInWithGoogle,
     logout,
     updateUser,
     isAuthenticated,
-    hasRole
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

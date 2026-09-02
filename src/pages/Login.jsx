@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { LogIn, Mail, Lock, AlertCircle } from 'lucide-react';
+import { LogIn, Mail, Lock, AlertCircle, Chrome } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 import cwLogo from '../../public/images/Cwlogo.png';
 
 export default function Login() {
   const navigate = useNavigate();
+  const { signInWithEmail, signInWithGoogle, loading: authLoading } = useAuth();
+  
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    role: 'student' // admin, tutor, student
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -21,46 +23,31 @@ export default function Login() {
     setError('');
   };
 
-  const handleSubmit = async (e) => {
+  const handleEmailSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      // Demo credentials for testing
-      const users = {
-        'admin@codeweave.com': { password: 'admin123', role: 'admin' },
-        'tutor@codeweave.com': { password: 'tutor123', role: 'tutor' },
-        'student@codeweave.com': { password: 'student123', role: 'student' }
-      };
+    const { data, error: signInError } = await signInWithEmail(formData.email, formData.password);
+    
+    if (signInError) {
+      setError(signInError);
+      setLoading(false);
+    } else if (data?.user) {
+      // Navigate to student dashboard by default
+      navigate('/student');
+    }
+  };
 
-      const user = users[formData.email];
-      
-      if (user && user.password === formData.password) {
-        // Store user info in localStorage
-        localStorage.setItem('user', JSON.stringify({
-          email: formData.email,
-          role: user.role,
-          name: user.role.charAt(0).toUpperCase() + user.role.slice(1)
-        }));
-
-        // Navigate based on role
-        switch (user.role) {
-          case 'admin':
-            navigate('/admin');
-            break;
-          case 'tutor':
-            navigate('/tutor');
-            break;
-          default:
-            navigate('/student');
-        }
-      } else {
-        setError('Invalid email or password');
-        setLoading(false);
-      }
-    }, 1000);
+  const handleGoogleSignIn = async () => {
+    setError('');
+    setLoading(true);
+    const { error: googleError } = await signInWithGoogle();
+    
+    if (googleError) {
+      setError(googleError);
+      setLoading(false);
+    }
   };
 
   return (
@@ -79,7 +66,46 @@ export default function Login() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        {/* Google OAuth Button */}
+        <button 
+          onClick={handleGoogleSignIn}
+          disabled={loading || authLoading}
+          className="btn-google"
+          style={{
+            width: '100%',
+            padding: '12px 16px',
+            marginBottom: '20px',
+            background: '#FFFFFF',
+            border: '1px solid rgba(212, 175, 55, 0.3)',
+            color: '#2C1810',
+            borderRadius: '6px',
+            fontWeight: 600,
+            fontSize: '14px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            transition: 'all 0.3s ease',
+          }}
+        >
+          <Chrome size={18} />
+          {loading ? 'Signing in...' : 'Sign in with Google'}
+        </button>
+
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '12px', 
+          margin: '20px 0',
+          color: '#5C4B3A'
+        }}>
+          <div style={{ flex: 1, height: '1px', background: 'rgba(212, 175, 55, 0.2)' }}></div>
+          <span style={{ fontSize: '14px' }}>or email</span>
+          <div style={{ flex: 1, height: '1px', background: 'rgba(212, 175, 55, 0.2)' }}></div>
+        </div>
+
+        <form onSubmit={handleEmailSubmit} className="auth-form">
           <div className="form-group">
             <label htmlFor="email">
               <Mail size={18} />
@@ -112,22 +138,7 @@ export default function Login() {
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="role">Account Type</label>
-            <select
-              id="role"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="form-select"
-            >
-              <option value="student">Student</option>
-              <option value="tutor">Tutor</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-
-          <button type="submit" className="btn-primary" disabled={loading}>
+          <button type="submit" className="btn-primary" disabled={loading || authLoading}>
             <LogIn size={18} />
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
