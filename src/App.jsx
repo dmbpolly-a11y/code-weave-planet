@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import CodeWeavePlanetLanding from './components/CodeWeavePlanetLanding'
+import AboutUs from './pages/AboutUs'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import AdminDashboard from './pages/AdminDashboard'
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<CodeWeavePlanetLanding />} />
+          <Route path="/about" element={<AboutUs />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 

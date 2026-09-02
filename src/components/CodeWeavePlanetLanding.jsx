@@ -239,6 +239,7 @@ export default function CodeWeavePlanetLanding() {
           <nav style={styles.nav}>
             <a href="#courses" style={styles.navLink}>Courses</a>
             <a href="#how" style={styles.navLink}>How it works</a>
+            <Link to="/about" style={styles.navLink}>About</Link>
             <a href="#contact" style={styles.navLink}>Contact</a>
           </nav>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
