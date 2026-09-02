@@ -504,36 +504,12 @@ export default function CodeWeavePlanetLanding() {
               <img src={cwLogo} alt="Code Weave Planet" style={styles.footerLogo} />
               <h3 style={styles.footerBrand}>Code Weave Planet</h3>
               <p style={styles.footerTagline}>Weaving Skills into Careers</p>
-              
-              <div style={styles.aboutSection}>
-                <h4 style={styles.aboutHeading}>About Us</h4>
-                <p style={styles.aboutText}>
-                  Code Weave Planet is a tech hub revolutionising IT and computer science education. 
-                  We use cutting-edge tools to build modern, fast, and responsive systems.
-                </p>
-                <p style={styles.aboutText}>
-                  Our expertise spans modern marketing tools and skills, professional video editing 
-                  tools, AI-powered technologies, and many more innovative solutions for the digital age.
-                </p>
-                <div style={styles.techBadges}>
-                  <span style={styles.techBadge}>
-                    <Icon icon="mdi:robot" width="16" />
-                    AI Tools
-                  </span>
-                  <span style={styles.techBadge}>
-                    <Icon icon="mdi:video-vintage" width="16" />
-                    Video Editing
-                  </span>
-                  <span style={styles.techBadge}>
-                    <Icon icon="carbon:analytics" width="16" />
-                    Marketing
-                  </span>
-                  <span style={styles.techBadge}>
-                    <Icon icon="mdi:web" width="16" />
-                    Web Dev
-                  </span>
-                </div>
-              </div>
+              <p style={styles.footerAboutText}>
+                Learn more about our mission and what we do on our dedicated About Us page.
+              </p>
+              <Link to="/about" style={styles.aboutLink}>
+                Learn More →
+              </Link>
             </div>
 
             <div style={styles.footerSection}>
@@ -1108,6 +1084,22 @@ const styles = {
     color: "#2C1810",
     lineHeight: 1.5,
     marginBottom: 8,
+  },
+  footerAboutText: {
+    fontSize: 13,
+    color: "#2C1810",
+    lineHeight: 1.5,
+    marginBottom: 12,
+  },
+  aboutLink: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 4,
+    color: "#D4AF37",
+    textDecoration: "none",
+    fontWeight: 600,
+    fontSize: 13,
+    transition: "all 0.3s ease",
   },
   techBadges: {
     display: "flex",
