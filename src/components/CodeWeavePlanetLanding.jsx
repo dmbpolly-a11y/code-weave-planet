@@ -677,8 +677,8 @@ const styles = {
   },
   logo: { display: "flex", alignItems: "center", gap: 10 },
   logoImage: {
-    width: 60,
-    height: 60,
+    width: 80,
+    height: 80,
     objectFit: "contain",
     animation: "fadeInScale 1s ease-in-out",
   },
