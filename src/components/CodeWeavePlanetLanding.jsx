@@ -325,7 +325,7 @@ export default function CodeWeavePlanetLanding() {
                 <clipPath id="frame"><rect x="0" y="0" width="360" height="360" rx="18" /></clipPath>
               </defs>
               <g clipPath="url(#frame)">
-                <rect width="360" height="360" fill="#0E1526" />
+                <rect width="360" height="360" fill="#F5F5F5" />
                 {Array.from({ length: 5 }).map((_, row) => {
                   const y = 40 + row * 68;
                   const cyan = row % 2 === 0;
@@ -436,7 +436,7 @@ export default function CodeWeavePlanetLanding() {
       </section>
 
       {/* How it works */}
-      <section id="how" style={{ ...styles.section, background: "#0E1526" }}>
+      <section id="how" style={{ ...styles.section, background: "#FFFFFF" }}>
         <h2 style={styles.sectionHeadline}>How the platform runs</h2>
         <p style={styles.sectionSub}>
           Three roles keep the content current and the classes accountable.
@@ -676,8 +676,8 @@ export default function CodeWeavePlanetLanding() {
 
 const styles = {
   page: {
-    background: "#0A0F1E",
-    color: "#EDEFF7",
+    background: "linear-gradient(180deg, #FFFFFF 0%, #F9F8F6 50%, #FFF9E6 100%)",
+    color: "#2C1810",
     fontFamily: "'Inter', system-ui, sans-serif",
     minHeight: "100vh",
   },
@@ -701,8 +701,8 @@ const styles = {
   },
   logo: { display: "flex", alignItems: "center", gap: 10 },
   logoImage: {
-    width: 40,
-    height: 40,
+    width: 60,
+    height: 60,
     objectFit: "contain",
     animation: "fadeInScale 1s ease-in-out",
   },
@@ -822,13 +822,10 @@ const styles = {
     letterSpacing: "-0.015em",
     margin: "0 0 20px",
     maxWidth: 560,
-    background: "linear-gradient(135deg, #EDEFF7 0%, #D4AF37 100%)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-    backgroundClip: "text",
+    color: "#2C1810",
   },
   heroSub: {
-    color: "#8B96AC",
+    color: "#5C4B3A",
     fontSize: 16.5,
     lineHeight: 1.6,
     maxWidth: 480,
@@ -862,11 +859,11 @@ const styles = {
     gap: 8,
     transition: "all 0.3s ease",
   },
-  heroFootnote: { color: "#66708A", fontSize: 13.5 },
+  heroFootnote: { color: "#5C4B3A", fontSize: 13.5 },
   heroArt: {
     borderRadius: 18,
     overflow: "hidden",
-    border: "1px solid rgba(255,255,255,0.08)",
+    border: "1px solid rgba(212,175,55,0.2)",
   },
   section: { maxWidth: 1100, margin: "0 auto", padding: "72px 24px" },
   sectionHeadline: {
@@ -875,34 +872,110 @@ const styles = {
     fontWeight: 600,
     margin: "0 0 10px",
     letterSpacing: "-0.01em",
+    color: "#2C1810",
   },
-  sectionSub: { color: "#8B96AC", fontSize: 15.5, maxWidth: 540, marginBottom: 40 },
+  sectionSub: { color: "#5C4B3A", fontSize: 15.5, maxWidth: 540, marginBottom: 40 },
+  searchContainer: {
+    marginBottom: 32,
+  },
+  searchBar: {
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+    background: "#FFFFFF",
+    border: "1px solid rgba(212,175,55,0.3)",
+    borderRadius: 10,
+    padding: "12px 16px",
+    marginBottom: 12,
+  },
+  searchInput: {
+    flex: 1,
+    border: "none",
+    outline: "none",
+    fontSize: 15,
+    background: "transparent",
+    color: "#2C1810",
+  },
+  clearButton: {
+    background: "none",
+    border: "none",
+    color: "#D4AF37",
+    cursor: "pointer",
+    fontSize: 18,
+    padding: "0 8px",
+  },
+  searchResults: {
+    color: "#5C4B3A",
+    fontSize: 13,
+    margin: 0,
+  },
   courseGrid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
     gap: 18,
   },
   courseCard: {
-    background: "#121A2E",
-    border: "1px solid rgba(255,255,255,0.06)",
+    background: "#FFFFFF",
+    border: "1px solid rgba(212,175,55,0.2)",
     borderRadius: 12,
     padding: "22px 20px",
     transition: "all 0.3s ease",
     cursor: "pointer",
+    color: "#2C1810",
   },
   courseName: {
     fontSize: 16.5,
     fontWeight: 500,
     margin: "14px 0 8px",
     fontFamily: "'Space Grotesk', sans-serif",
+    color: "#2C1810",
   },
-  courseBlurb: { color: "#8B96AC", fontSize: 14, lineHeight: 1.55, marginBottom: 16 },
+  courseBlurb: { color: "#5C4B3A", fontSize: 14, lineHeight: 1.55, marginBottom: 16 },
+  courseMetadata: {
+    display: "flex",
+    gap: 8,
+    marginBottom: 12,
+    flexWrap: "wrap",
+  },
+  metaBadge: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 4,
+    fontSize: 12,
+    color: "#5C4B3A",
+    background: "rgba(212,175,55,0.1)",
+    padding: "4px 8px",
+    borderRadius: 4,
+  },
+  coursePrice: {
+    fontSize: 14,
+    fontWeight: 600,
+    color: "#D4AF37",
+    marginBottom: 8,
+  },
   courseLink: {
-    color: "#22D3EE",
+    color: "#D4AF37",
     fontSize: 13.5,
     display: "inline-flex",
     alignItems: "center",
     gap: 4,
+    fontWeight: 500,
+  },
+  noResults: {
+    gridColumn: "1 / -1",
+    textAlign: "center",
+    padding: "40px 20px",
+    color: "#5C4B3A",
+  },
+  resetButton: {
+    background: "linear-gradient(135deg, #D4AF37 0%, #FFD700 100%)",
+    color: "#0A0F1E",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: 6,
+    fontWeight: 600,
+    cursor: "pointer",
+    marginTop: 16,
   },
   roleGrid: {
     display: "grid",
@@ -910,20 +983,22 @@ const styles = {
     gap: 20,
   },
   roleCard: {
-    background: "#0A0F1E",
-    border: "1px solid rgba(255,255,255,0.06)",
+    background: "#FFFFFF",
+    border: "1px solid rgba(212,175,55,0.2)",
     borderRadius: 12,
     padding: "24px 22px",
     transition: "all 0.3s ease",
+    color: "#2C1810",
   },
   roleTitle: {
     fontSize: 17,
     fontWeight: 500,
     margin: "14px 0 8px",
     fontFamily: "'Space Grotesk', sans-serif",
+    color: "#2C1810",
   },
-  roleText: { color: "#8B96AC", fontSize: 14, lineHeight: 1.6 },
-  contact: { borderTop: "1px solid rgba(255,255,255,0.08)" },
+  roleText: { color: "#5C4B3A", fontSize: 14, lineHeight: 1.6 },
+  contact: { borderTop: "1px solid rgba(212,175,55,0.2)", background: "#FFFFFF" },
   contactInner: {
     maxWidth: 1100,
     margin: "0 auto",
@@ -951,12 +1026,12 @@ const styles = {
     justifyContent: "center",
   },
   digitalClock: {
-    background: "linear-gradient(135deg, #121A2E 0%, #0E1526 100%)",
+    background: "#FFFFFF",
     border: "2px solid rgba(212,175,55,0.3)",
     borderRadius: 16,
     padding: "24px 32px",
     textAlign: "center",
-    boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
+    boxShadow: "0 8px 24px rgba(212,175,55,0.15)",
   },
   clockTime: {
     fontSize: 36,
@@ -965,18 +1040,18 @@ const styles = {
     fontFamily: "'Space Grotesk', monospace",
     letterSpacing: "0.05em",
     marginBottom: 8,
-    textShadow: "0 0 20px rgba(212,175,55,0.5)",
+    textShadow: "0 0 20px rgba(212,175,55,0.3)",
   },
   clockDate: {
     fontSize: 14,
-    color: "#8B96AC",
+    color: "#5C4B3A",
     fontWeight: 400,
   },
   mapSection: {
     borderRadius: 16,
     overflow: "hidden",
-    border: "1px solid rgba(255,255,255,0.08)",
-    boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
+    border: "1px solid rgba(212,175,55,0.2)",
+    boxShadow: "0 8px 24px rgba(212,175,55,0.1)",
   },
   map: {
     width: "100%",
@@ -984,8 +1059,8 @@ const styles = {
     border: "none",
   },
   footer: {
-    borderTop: "1px solid rgba(255,255,255,0.08)",
-    background: "#0E1526",
+    borderTop: "1px solid rgba(212, 175, 55, 0.3)",
+    background: "linear-gradient(135deg, #D4AF37 0%, #FFD700 100%)",
   },
   footerContent: {
     maxWidth: 1100,
@@ -1009,19 +1084,51 @@ const styles = {
   footerBrand: {
     fontSize: 18,
     fontWeight: 600,
-    color: "#D4AF37",
+    color: "#2C1810",
     fontFamily: "'Space Grotesk', sans-serif",
     margin: 0,
   },
   footerTagline: {
     fontSize: 13,
-    color: "#8B96AC",
+    color: "#2C1810",
     margin: 0,
+    opacity: 0.9,
+  },
+  aboutSection: {
+    marginTop: 12,
+  },
+  aboutHeading: {
+    fontSize: 14,
+    fontWeight: 600,
+    color: "#2C1810",
+    marginBottom: 8,
+  },
+  aboutText: {
+    fontSize: 13,
+    color: "#2C1810",
+    lineHeight: 1.5,
+    marginBottom: 8,
+  },
+  techBadges: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: 8,
+    marginTop: 10,
+  },
+  techBadge: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 4,
+    fontSize: 12,
+    color: "#2C1810",
+    background: "rgba(44, 24, 16, 0.1)",
+    padding: "4px 8px",
+    borderRadius: 4,
   },
   footerHeading: {
     fontSize: 16,
     fontWeight: 600,
-    color: "#EDEFF7",
+    color: "#2C1810",
     marginBottom: 8,
   },
   socialLinks: {
@@ -1035,10 +1142,10 @@ const styles = {
     justifyContent: "center",
     width: 40,
     height: 40,
-    background: "rgba(212,175,55,0.1)",
-    border: "1px solid rgba(212,175,55,0.3)",
+    background: "rgba(44, 24, 16, 0.15)",
+    border: "1px solid rgba(44, 24, 16, 0.3)",
     borderRadius: 8,
-    color: "#D4AF37",
+    color: "#2C1810",
     textDecoration: "none",
     transition: "all 0.3s ease",
   },
@@ -1048,10 +1155,11 @@ const styles = {
     gap: 10,
   },
   footerLink: {
-    color: "#8B96AC",
+    color: "#2C1810",
     textDecoration: "none",
     fontSize: 14,
     transition: "color 0.3s ease",
+    fontWeight: 500,
   },
   contactInfo: {
     display: "flex",
@@ -1061,21 +1169,164 @@ const styles = {
   contactItem: {
     display: "flex",
     alignItems: "center",
-    color: "#8B96AC",
+    color: "#2C1810",
     fontSize: 14,
     margin: 0,
+    fontWeight: 500,
   },
   footerBar: {
     maxWidth: 1100,
     margin: "0 auto",
     padding: "20px 24px",
-    borderTop: "1px solid rgba(255,255,255,0.06)",
+    borderTop: "2px solid rgba(44, 24, 16, 0.2)",
     display: "flex",
     justifyContent: "space-between",
-    color: "#66708A",
+    color: "#2C1810",
     fontSize: 13,
     flexWrap: "wrap",
     gap: 16,
+    fontWeight: 500,
+  },
+  modalOverlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: "rgba(0,0,0,0.5)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1000,
+  },
+  modalContent: {
+    background: "#FFFFFF",
+    borderRadius: 16,
+    maxWidth: 600,
+    maxHeight: "85vh",
+    overflow: "auto",
+    boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+  },
+  modalHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    padding: "24px",
+    borderBottom: "1px solid rgba(212,175,55,0.2)",
+    background: "#FFFFFF",
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 600,
+    margin: "8px 0 0",
+    color: "#2C1810",
+  },
+  closeButton: {
+    background: "none",
+    border: "none",
+    fontSize: 24,
+    cursor: "pointer",
+    color: "#2C1810",
+    padding: "0",
+    width: 32,
+    height: 32,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalBody: {
+    padding: "24px",
+    color: "#2C1810",
+  },
+  courseDescription: {
+    fontSize: 15,
+    lineHeight: 1.6,
+    color: "#5C4B3A",
+    marginBottom: 24,
+  },
+  modalGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 1fr)",
+    gap: 16,
+    marginBottom: 24,
+  },
+  modalSection: {
+    padding: "16px",
+    background: "rgba(212,175,55,0.05)",
+    borderRadius: 8,
+    border: "1px solid rgba(212,175,55,0.1)",
+  },
+  modalSectionTitle: {
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    fontSize: 14,
+    fontWeight: 600,
+    margin: "0 0 8px",
+    color: "#2C1810",
+  },
+  modalText: {
+    fontSize: 14,
+    color: "#5C4B3A",
+    margin: 0,
+  },
+  modalPrice: {
+    fontSize: 16,
+    fontWeight: 600,
+    color: "#D4AF37",
+    margin: 0,
+  },
+  skillsGrid: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: 8,
+  },
+  skillBadge: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 6,
+    background: "rgba(212,175,55,0.1)",
+    color: "#2C1810",
+    padding: "6px 12px",
+    borderRadius: 6,
+    fontSize: 13,
+    fontWeight: 500,
+  },
+  modalActions: {
+    display: "flex",
+    gap: 12,
+    marginTop: 24,
+  },
+  modalEnrollButton: {
+    flex: 1,
+    background: "linear-gradient(135deg, #D4AF37 0%, #FFD700 100%)",
+    color: "#0A0F1E",
+    padding: "12px 16px",
+    borderRadius: 8,
+    fontWeight: 600,
+    fontSize: 14,
+    textDecoration: "none",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    transition: "all 0.3s ease",
+  },
+  modalWhatsAppButton: {
+    flex: 1,
+    background: "transparent",
+    border: "1px solid rgba(212,175,55,0.5)",
+    color: "#D4AF37",
+    padding: "12px 16px",
+    borderRadius: 8,
+    fontWeight: 600,
+    fontSize: 14,
+    textDecoration: "none",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    transition: "all 0.3s ease",
   },
 };
 
@@ -1102,13 +1353,13 @@ const css = `
 
   .courseCard:hover {
     transform: translateY(-4px);
-    border-color: rgba(212,175,55,0.3);
+    border-color: rgba(212,175,55,0.4);
     box-shadow: 0 8px 24px rgba(212,175,55,0.15);
   }
 
   .roleCard:hover {
     transform: translateY(-2px);
-    border-color: rgba(212,175,55,0.2);
+    border-color: rgba(212,175,55,0.3);
   }
 
   .socialLink:hover {
@@ -1118,7 +1369,7 @@ const css = `
   }
 
   .footerLink:hover {
-    color: #D4AF37;
+    color: #5C4B3A;
   }
 
   .navLink:hover {
@@ -1146,6 +1397,16 @@ const css = `
     border-color: rgba(212,175,55,0.7);
   }
 
+  .modalEnrollButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212,175,55,0.4);
+  }
+
+  .modalWhatsAppButton:hover {
+    background: rgba(212,175,55,0.1);
+    border-color: rgba(212,175,55,0.7);
+  }
+
   @media (max-width: 820px) {
     nav { display: none !important; }
   }
@@ -1163,6 +1424,9 @@ const css = `
     }
     .clockTime {
       font-size: 28px !important;
+    }
+    .modalGrid {
+      grid-template-columns: 1fr !important;
     }
   }
 `;
