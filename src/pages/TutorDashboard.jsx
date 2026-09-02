@@ -1,22 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  BookOpen,
-  Users,
-  MessageCircle,
-  LogOut,
-  Plus,
-  Edit2,
-  Trash2,
-  X,
-  Save,
-  FileText,
-  Link as LinkIcon,
-  Calendar,
-  Camera,
-  Settings,
-  User
-} from 'lucide-react';
+import { Icon } from '@iconify/react';
+import PageTransition from '../components/PageTransition';
 import cwLogo from '../../public/images/Cwlogo.png';
 
 const INITIAL_TUTOR_COURSES = [
@@ -232,7 +217,8 @@ export default function TutorDashboard() {
   };
 
   return (
-    <div className="dashboard-container">
+    <PageTransition>
+    <div className="dashboard-container page-container">
       {/* Sidebar */}
       <aside className="dashboard-sidebar">
         <div className="sidebar-header">
@@ -245,14 +231,14 @@ export default function TutorDashboard() {
             className={activeTab === 'courses' ? 'active' : ''}
             onClick={() => setActiveTab('courses')}
           >
-            <BookOpen size={20} />
+            <Icon icon="mdi:book-open" width="20" />
             My Courses
           </button>
           <button
             className={activeTab === 'lessons' ? 'active' : ''}
             onClick={() => setActiveTab('lessons')}
           >
-            <FileText size={20} />
+            <Icon icon="mdi:file-document" width="20" />
             Lessons
           </button>
         </nav>
@@ -264,19 +250,19 @@ export default function TutorDashboard() {
                 <img src={profilePic} alt="Profile" className="profile-pic" />
               ) : (
                 <div className="profile-pic-placeholder">
-                  <User size={24} />
+                  <Icon icon="mdi:account" width="24" />
                 </div>
               )}
               <button 
                 className="profile-pic-edit"
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
               >
-                <Settings size={14} />
+                <Icon icon="mdi:cog" width="14" />
               </button>
               {showProfileMenu && (
                 <div className="profile-menu">
                   <label className="profile-menu-item">
-                    <Camera size={16} />
+                    <Icon icon="mdi:camera" width="16" />
                     <span>Upload Photo</span>
                     <input
                       type="file"
@@ -287,7 +273,7 @@ export default function TutorDashboard() {
                   </label>
                   {profilePic && (
                     <button className="profile-menu-item" onClick={removeProfilePic}>
-                      <LogOut size={16} />
+                      <Icon icon="mdi:logout" width="16" />
                       <span>Remove Photo</span>
                     </button>
                   )}
@@ -300,7 +286,7 @@ export default function TutorDashboard() {
             </div>
           </div>
           <button onClick={handleLogout} className="btn-logout">
-            <LogOut size={18} />
+            <Icon icon="mdi:logout" width="18" />
             Logout
           </button>
         </div>
@@ -321,7 +307,7 @@ export default function TutorDashboard() {
             <>
               <div className="content-header">
                 <button className="btn-primary" onClick={openAddCourseModal}>
-                  <Plus size={18} />
+                  <Icon icon="mdi:plus" width="18" />
                   Add New Course
                 </button>
               </div>
@@ -337,14 +323,14 @@ export default function TutorDashboard() {
                           onClick={() => openEditCourseModal(course)}
                           title="Edit course"
                         >
-                          <Edit2 size={16} />
+                          <Icon icon="mdi:pencil" width="16" />
                         </button>
                         <button
                           className="btn-icon danger"
                           onClick={() => handleDeleteCourse(course.id)}
                           title="Delete course"
                         >
-                          <Trash2 size={16} />
+                          <Icon icon="mdi:delete" width="16" />
                         </button>
                       </div>
                     </div>
@@ -353,15 +339,15 @@ export default function TutorDashboard() {
 
                     <div className="course-stats">
                       <div className="stat-item">
-                        <Users size={18} />
+                        <Icon icon="mdi:account-group" width="18" />
                         <span>{course.students} students</span>
                       </div>
                       <div className="stat-item">
-                        <FileText size={18} />
+                        <Icon icon="mdi:file-document" width="18" />
                         <span>{course.lessons} lessons</span>
                       </div>
                       <div className="stat-item">
-                        <Calendar size={18} />
+                        <Icon icon="mdi:calendar" width="18" />
                         <span>{course.schedule}</span>
                       </div>
                     </div>
@@ -373,7 +359,7 @@ export default function TutorDashboard() {
                         rel="noopener noreferrer"
                         className="whatsapp-link"
                       >
-                        <MessageCircle size={16} />
+                        <Icon icon="mdi:message" width="16" />
                         WhatsApp Group
                       </a>
                     )}
@@ -385,7 +371,7 @@ export default function TutorDashboard() {
                         setActiveTab('lessons');
                       }}
                     >
-                      <FileText size={16} />
+                      <Icon icon="mdi:file-document" width="16" />
                       Manage Lessons
                     </button>
                   </div>
@@ -421,7 +407,7 @@ export default function TutorDashboard() {
                     className="btn-primary"
                     onClick={() => openAddLessonModal(selectedCourse)}
                   >
-                    <Plus size={18} />
+                    <Icon icon="mdi:plus" width="18" />
                     Add Lesson
                   </button>
                 )}
@@ -431,7 +417,7 @@ export default function TutorDashboard() {
                 <div className="lessons-list">
                   {getCourseLessons(selectedCourse.id).length === 0 ? (
                     <div className="empty-state">
-                      <FileText size={48} />
+                      <Icon icon="mdi:file-document" width="48" />
                       <p>No lessons yet. Add your first lesson!</p>
                     </div>
                   ) : (
@@ -445,20 +431,20 @@ export default function TutorDashboard() {
                               className="btn-icon"
                               onClick={() => openEditLessonModal(lesson)}
                             >
-                              <Edit2 size={16} />
+                              <Icon icon="mdi:pencil" width="16" />
                             </button>
                             <button
                               className="btn-icon danger"
                               onClick={() => handleDeleteLesson(lesson.id, lesson.courseId)}
                             >
-                              <Trash2 size={16} />
+                              <Icon icon="mdi:delete" width="16" />
                             </button>
                           </div>
                         </div>
                         <p className="lesson-content">{lesson.content}</p>
                         {lesson.resources && (
                           <div className="lesson-resources">
-                            <LinkIcon size={14} />
+                            <Icon icon="mdi:link" width="14" />
                             <span>Resources: {lesson.resources}</span>
                           </div>
                         )}
@@ -468,7 +454,7 @@ export default function TutorDashboard() {
                 </div>
               ) : (
                 <div className="empty-state">
-                  <BookOpen size={48} />
+                  <Icon icon="mdi:book-open" width="48" />
                   <p>Select a course to manage its lessons</p>
                 </div>
               )}
@@ -489,7 +475,7 @@ export default function TutorDashboard() {
                 {modalType === 'edit-lesson' && 'Edit Lesson'}
               </h2>
               <button className="btn-icon" onClick={() => setShowModal(false)}>
-                <X size={20} />
+                <Icon icon="mdi:close" width="20" />
               </button>
             </div>
 
@@ -603,7 +589,7 @@ export default function TutorDashboard() {
                 className="btn-primary"
                 onClick={modalType.includes('course') ? handleSaveCourse : handleSaveLesson}
               >
-                <Save size={18} />
+                <Icon icon="mdi:content-save" width="18" />
                 Save
               </button>
             </div>
@@ -611,5 +597,7 @@ export default function TutorDashboard() {
         </div>
       )}
     </div>
+    </PageTransition>
   );
 }
+

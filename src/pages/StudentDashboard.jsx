@@ -1,19 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  BookOpen,
-  GraduationCap,
-  MessageCircle,
-  LogOut,
-  Search,
-  Calendar,
-  User,
-  CheckCircle,
-  ArrowRight,
-  FileText,
-  Camera,
-  Settings
-} from 'lucide-react';
+import { Icon } from '@iconify/react';
+import PageTransition from '../components/PageTransition';
 import cwLogo from '../../public/images/Cwlogo.png';
 
 const AVAILABLE_COURSES = [
@@ -181,7 +169,8 @@ export default function StudentDashboard() {
   const availableCourses = filteredCourses.filter(c => !c.enrolled);
 
   return (
-    <div className="dashboard-container">
+    <PageTransition>
+    <div className="dashboard-container page-container">
       {/* Sidebar */}
       <aside className="dashboard-sidebar">
         <div className="sidebar-header">
@@ -194,14 +183,14 @@ export default function StudentDashboard() {
             className={activeTab === 'browse' ? 'active' : ''}
             onClick={() => setActiveTab('browse')}
           >
-            <Search size={20} />
+            <Icon icon="mdi:magnify" width="20" />
             Browse Courses
           </button>
           <button
             className={activeTab === 'enrolled' ? 'active' : ''}
             onClick={() => setActiveTab('enrolled')}
           >
-            <GraduationCap size={20} />
+            <Icon icon="mdi:school" width="20" />
             My Courses ({enrolledCourses.length})
           </button>
         </nav>
@@ -213,19 +202,19 @@ export default function StudentDashboard() {
                 <img src={profilePic} alt="Profile" className="profile-pic" />
               ) : (
                 <div className="profile-pic-placeholder">
-                  <User size={24} />
+                  <Icon icon="mdi:account" width="24" />
                 </div>
               )}
               <button 
                 className="profile-pic-edit"
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
               >
-                <Settings size={14} />
+                <Icon icon="mdi:cog" width="14" />
               </button>
               {showProfileMenu && (
                 <div className="profile-menu">
                   <label className="profile-menu-item">
-                    <Camera size={16} />
+                    <Icon icon="mdi:camera" width="16" />
                     <span>Upload Photo</span>
                     <input
                       type="file"
@@ -236,7 +225,7 @@ export default function StudentDashboard() {
                   </label>
                   {profilePic && (
                     <button className="profile-menu-item" onClick={removeProfilePic}>
-                      <LogOut size={16} />
+                      <Icon icon="mdi:logout" width="16" />
                       <span>Remove Photo</span>
                     </button>
                   )}
@@ -249,7 +238,7 @@ export default function StudentDashboard() {
             </div>
           </div>
           <button onClick={handleLogout} className="btn-logout">
-            <LogOut size={18} />
+            <Icon icon="mdi:logout" width="18" />
             Logout
           </button>
         </div>
@@ -270,7 +259,7 @@ export default function StudentDashboard() {
             <>
               <div className="content-header">
                 <div className="search-bar">
-                  <Search size={18} />
+                  <Icon icon="mdi:magnify" width="18" />
                   <input
                     type="text"
                     placeholder="Search courses by name, tutor, or description..."
@@ -283,7 +272,7 @@ export default function StudentDashboard() {
               <div className="course-grid">
                 {availableCourses.length === 0 ? (
                   <div className="empty-state">
-                    <BookOpen size={48} />
+                    <Icon icon="mdi:book-open" width="48" />
                     <p>No courses found matching your search.</p>
                   </div>
                 ) : (
@@ -292,18 +281,18 @@ export default function StudentDashboard() {
                       <div className="course-card-body">
                         <h3>{course.name}</h3>
                         <p className="course-tutor">
-                          <User size={16} />
+                          <Icon icon="mdi:account" width="16" />
                           {course.tutor}
                         </p>
                         <p className="course-description">{course.description}</p>
                         
                         <div className="course-info">
                           <div className="info-item">
-                            <Calendar size={16} />
+                            <Icon icon="mdi:calendar" width="16" />
                             <span>{course.duration}</span>
                           </div>
                           <div className="info-item">
-                            <FileText size={16} />
+                            <Icon icon="mdi:file-document" width="16" />
                             <span>{course.schedule}</span>
                           </div>
                         </div>
@@ -317,13 +306,13 @@ export default function StudentDashboard() {
                           onClick={() => openCourseDetail(course)}
                         >
                           View Details
-                          <ArrowRight size={16} />
+                          <Icon icon="mdi:arrow-right" width="16" />
                         </button>
                         <button
                           className="btn-primary"
                           onClick={() => handleEnroll(course.id)}
                         >
-                          <CheckCircle size={16} />
+                          <Icon icon="mdi:check-circle" width="16" />
                           Enroll Now
                         </button>
                       </div>
@@ -339,7 +328,7 @@ export default function StudentDashboard() {
             <>
               {enrolledCourses.length === 0 ? (
                 <div className="empty-state">
-                  <GraduationCap size={48} />
+                  <Icon icon="mdi:school" width="48" />
                   <p>You haven't enrolled in any courses yet.</p>
                   <button
                     className="btn-primary"
@@ -356,12 +345,12 @@ export default function StudentDashboard() {
                         <div>
                           <h3>{course.name}</h3>
                           <p className="course-tutor">
-                            <User size={16} />
+                            <Icon icon="mdi:account" width="16" />
                             Tutor: {course.tutor}
                           </p>
                         </div>
                         <span className="enrolled-badge">
-                          <CheckCircle size={16} />
+                          <Icon icon="mdi:check-circle" width="16" />
                           Enrolled
                         </span>
                       </div>
@@ -370,11 +359,11 @@ export default function StudentDashboard() {
 
                       <div className="enrolled-info">
                         <div className="info-item">
-                          <Calendar size={16} />
+                          <Icon icon="mdi:calendar" width="16" />
                           <span>Duration: {course.duration}</span>
                         </div>
                         <div className="info-item">
-                          <FileText size={16} />
+                          <Icon icon="mdi:file-document" width="16" />
                           <span>Schedule: {course.schedule}</span>
                         </div>
                       </div>
@@ -386,7 +375,7 @@ export default function StudentDashboard() {
                           rel="noopener noreferrer"
                           className="btn-primary"
                         >
-                          <MessageCircle size={16} />
+                          <Icon icon="mdi:message" width="16" />
                           Join WhatsApp Class
                         </a>
                         <button
@@ -418,14 +407,14 @@ export default function StudentDashboard() {
             <div className="modal-header">
               <h2>{selectedCourse.name}</h2>
               <button className="btn-icon" onClick={() => setShowCourseDetail(false)}>
-                <LogOut size={20} />
+                <Icon icon="mdi:logout" width="20" />
               </button>
             </div>
 
             <div className="modal-body">
               <div className="course-detail-section">
                 <h3>
-                  <User size={20} />
+                  <Icon icon="mdi:account" width="20" />
                   Instructor
                 </h3>
                 <p>{selectedCourse.tutor}</p>
@@ -433,7 +422,7 @@ export default function StudentDashboard() {
 
               <div className="course-detail-section">
                 <h3>
-                  <FileText size={20} />
+                  <Icon icon="mdi:file-document" width="20" />
                   Course Description
                 </h3>
                 <p>{selectedCourse.description}</p>
@@ -442,7 +431,7 @@ export default function StudentDashboard() {
               <div className="course-detail-grid">
                 <div className="course-detail-section">
                   <h3>
-                    <Calendar size={20} />
+                    <Icon icon="mdi:calendar" width="20" />
                     Duration
                   </h3>
                   <p>{selectedCourse.duration}</p>
@@ -450,7 +439,7 @@ export default function StudentDashboard() {
 
                 <div className="course-detail-section">
                   <h3>
-                    <Calendar size={20} />
+                    <Icon icon="mdi:calendar" width="20" />
                     Schedule
                   </h3>
                   <p>{selectedCourse.schedule}</p>
@@ -465,7 +454,7 @@ export default function StudentDashboard() {
               {selectedCourse.enrolled && (
                 <div className="course-detail-section whatsapp-section">
                   <h3>
-                    <MessageCircle size={20} />
+                    <Icon icon="mdi:message" width="20" />
                     WhatsApp Class Group
                   </h3>
                   <a
@@ -474,7 +463,7 @@ export default function StudentDashboard() {
                     rel="noopener noreferrer"
                     className="btn-primary"
                   >
-                    <MessageCircle size={16} />
+                    <Icon icon="mdi:message" width="16" />
                     Join WhatsApp Group
                   </a>
                 </div>
@@ -487,7 +476,7 @@ export default function StudentDashboard() {
                   className="btn-primary btn-large"
                   onClick={() => handleEnroll(selectedCourse.id)}
                 >
-                  <CheckCircle size={18} />
+                  <Icon icon="mdi:check-circle" width="18" />
                   Enroll in This Course
                 </button>
               ) : (
@@ -500,5 +489,7 @@ export default function StudentDashboard() {
         </div>
       )}
     </div>
+    </PageTransition>
   );
 }
+

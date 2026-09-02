@@ -1,21 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  LayoutDashboard,
-  BookOpen,
-  Users,
-  UserCheck,
-  LogOut,
-  Plus,
-  Edit2,
-  Trash2,
-  X,
-  Save,
-  Search,
-  Camera,
-  Settings,
-  User
-} from 'lucide-react';
+import { Icon } from '@iconify/react';
+import PageTransition from '../components/PageTransition';
 import cwLogo from '../../public/images/Cwlogo.png';
 
 // Mock initial data
@@ -179,7 +165,8 @@ export default function AdminDashboard() {
   );
 
   return (
-    <div className="dashboard-container">
+    <PageTransition>
+    <div className="dashboard-container page-container">
       {/* Sidebar */}
       <aside className="dashboard-sidebar">
         <div className="sidebar-header">
@@ -192,28 +179,28 @@ export default function AdminDashboard() {
             className={activeTab === 'overview' ? 'active' : ''}
             onClick={() => setActiveTab('overview')}
           >
-            <LayoutDashboard size={20} />
+            <Icon icon="mdi:view-dashboard" width="20" />
             Overview
           </button>
           <button
             className={activeTab === 'courses' ? 'active' : ''}
             onClick={() => setActiveTab('courses')}
           >
-            <BookOpen size={20} />
+            <Icon icon="mdi:book-open" width="20" />
             Courses
           </button>
           <button
             className={activeTab === 'tutors' ? 'active' : ''}
             onClick={() => setActiveTab('tutors')}
           >
-            <UserCheck size={20} />
+            <Icon icon="mdi:account-check" width="20" />
             Tutors
           </button>
           <button
             className={activeTab === 'students' ? 'active' : ''}
             onClick={() => setActiveTab('students')}
           >
-            <Users size={20} />
+            <Icon icon="mdi:account-group" width="20" />
             Students
           </button>
         </nav>
@@ -225,19 +212,19 @@ export default function AdminDashboard() {
                 <img src={profilePic} alt="Profile" className="profile-pic" />
               ) : (
                 <div className="profile-pic-placeholder">
-                  <User size={24} />
+                  <Icon icon="mdi:account" width="24" />
                 </div>
               )}
               <button 
                 className="profile-pic-edit"
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
               >
-                <Settings size={14} />
+                <Icon icon="mdi:cog" width="14" />
               </button>
               {showProfileMenu && (
                 <div className="profile-menu">
                   <label className="profile-menu-item">
-                    <Camera size={16} />
+                    <Icon icon="mdi:camera" width="16" />
                     <span>Upload Photo</span>
                     <input
                       type="file"
@@ -248,7 +235,7 @@ export default function AdminDashboard() {
                   </label>
                   {profilePic && (
                     <button className="profile-menu-item" onClick={removeProfilePic}>
-                      <LogOut size={16} />
+                      <Icon icon="mdi:logout" width="16" />
                       <span>Remove Photo</span>
                     </button>
                   )}
@@ -261,7 +248,7 @@ export default function AdminDashboard() {
             </div>
           </div>
           <button onClick={handleLogout} className="btn-logout">
-            <LogOut size={18} />
+            <Icon icon="mdi:logout" width="18" />
             Logout
           </button>
         </div>
@@ -310,7 +297,7 @@ export default function AdminDashboard() {
             <>
               <div className="content-header">
                 <div className="search-bar">
-                  <Search size={18} />
+                  <Icon icon="mdi:magnify" width="18" />
                   <input
                     type="text"
                     placeholder="Search courses..."
@@ -319,7 +306,7 @@ export default function AdminDashboard() {
                   />
                 </div>
                 <button className="btn-primary" onClick={openAddCourseModal}>
-                  <Plus size={18} />
+                  <Icon icon="mdi:plus" width="18" />
                   Add Course
                 </button>
               </div>
@@ -352,13 +339,13 @@ export default function AdminDashboard() {
                               className="btn-icon"
                               onClick={() => openEditCourseModal(course)}
                             >
-                              <Edit2 size={16} />
+                              <Icon icon="mdi:pencil" width="16" />
                             </button>
                             <button
                               className="btn-icon danger"
                               onClick={() => handleDeleteCourse(course.id)}
                             >
-                              <Trash2 size={16} />
+                              <Icon icon="mdi:delete" width="16" />
                             </button>
                           </div>
                         </td>
@@ -375,7 +362,7 @@ export default function AdminDashboard() {
             <>
               <div className="content-header">
                 <div className="search-bar">
-                  <Search size={18} />
+                  <Icon icon="mdi:magnify" width="18" />
                   <input
                     type="text"
                     placeholder="Search tutors..."
@@ -421,7 +408,7 @@ export default function AdminDashboard() {
                               className="btn-icon danger"
                               onClick={() => handleDeleteTutor(tutor.id)}
                             >
-                              <Trash2 size={16} />
+                              <Icon icon="mdi:delete" width="16" />
                             </button>
                           </div>
                         </td>
@@ -438,7 +425,7 @@ export default function AdminDashboard() {
             <>
               <div className="content-header">
                 <div className="search-bar">
-                  <Search size={18} />
+                  <Icon icon="mdi:magnify" width="18" />
                   <input
                     type="text"
                     placeholder="Search students..."
@@ -472,7 +459,7 @@ export default function AdminDashboard() {
                               className="btn-icon danger"
                               onClick={() => handleDeleteStudent(student.id)}
                             >
-                              <Trash2 size={16} />
+                              <Icon icon="mdi:delete" width="16" />
                             </button>
                           </div>
                         </td>
@@ -493,7 +480,7 @@ export default function AdminDashboard() {
             <div className="modal-header">
               <h2>{modalType === 'add-course' ? 'Add New Course' : 'Edit Course'}</h2>
               <button className="btn-icon" onClick={() => setShowModal(false)}>
-                <X size={20} />
+                <Icon icon="mdi:close" width="20" />
               </button>
             </div>
 
@@ -568,7 +555,7 @@ export default function AdminDashboard() {
                 Cancel
               </button>
               <button className="btn-primary" onClick={handleSaveCourse}>
-                <Save size={18} />
+                <Icon icon="mdi:content-save" width="18" />
                 Save Course
               </button>
             </div>
@@ -576,5 +563,7 @@ export default function AdminDashboard() {
         </div>
       )}
     </div>
+    </PageTransition>
   );
 }
+
