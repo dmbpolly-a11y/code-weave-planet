@@ -10,9 +10,11 @@ import {
   User,
   CheckCircle,
   ArrowRight,
-  FileText
+  FileText,
+  Camera,
+  Settings
 } from 'lucide-react';
-import logo from '../images/logo.svg';
+import cwLogo from '../../public/images/Cwlogo.png';
 
 const AVAILABLE_COURSES = [
   {
@@ -80,6 +82,8 @@ export default function StudentDashboard() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [showCourseDetail, setShowCourseDetail] = useState(false);
+  const [profilePic, setProfilePic] = useState(null);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   useEffect(() => {
     const userData = localStorage.getItem('user');
@@ -94,6 +98,12 @@ export default function StudentDashboard() {
     }
     setUser(parsedUser);
 
+    // Load profile picture
+    const savedProfilePic = localStorage.getItem('profilePic');
+    if (savedProfilePic) {
+      setProfilePic(savedProfilePic);
+    }
+
     // Load enrolled courses from localStorage
     const enrolledCourses = JSON.parse(localStorage.getItem('enrolledCourses') || '[]');
     const updatedCourses = AVAILABLE_COURSES.map(course => ({
@@ -102,6 +112,24 @@ export default function StudentDashboard() {
     }));
     setCourses(updatedCourses);
   }, [navigate]);
+
+  const handleProfilePicChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfilePic(reader.result);
+        localStorage.setItem('profilePic', reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeProfilePic = () => {
+    setProfilePic(null);
+    localStorage.removeItem('profilePic');
+    setShowProfileMenu(false);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('user');
@@ -157,7 +185,7 @@ export default function StudentDashboard() {
       {/* Sidebar */}
       <aside className="dashboard-sidebar">
         <div className="sidebar-header">
-          <img src={logo} alt="Logo" className="sidebar-logo" />
+          <img src={cwLogo} alt="Logo" className="sidebar-logo" />
           <h2>Student Portal</h2>
         </div>
 
@@ -179,9 +207,46 @@ export default function StudentDashboard() {
         </nav>
 
         <div className="sidebar-footer">
-          <div className="user-info">
-            <p className="user-name">{user?.name}</p>
-            <p className="user-role">{user?.role}</p>
+          <div className="user-profile">
+            <div className="profile-pic-container">
+              {profilePic ? (
+                <img src={profilePic} alt="Profile" className="profile-pic" />
+              ) : (
+                <div className="profile-pic-placeholder">
+                  <User size={24} />
+                </div>
+              )}
+              <button 
+                className="profile-pic-edit"
+                onClick={() => setShowProfileMenu(!showProfileMenu)}
+              >
+                <Settings size={14} />
+              </button>
+              {showProfileMenu && (
+                <div className="profile-menu">
+                  <label className="profile-menu-item">
+                    <Camera size={16} />
+                    <span>Upload Photo</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleProfilePicChange}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+                  {profilePic && (
+                    <button className="profile-menu-item" onClick={removeProfilePic}>
+                      <LogOut size={16} />
+                      <span>Remove Photo</span>
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+            <div className="user-info">
+              <p className="user-name">{user?.name}</p>
+              <p className="user-role">{user?.role}</p>
+            </div>
           </div>
           <button onClick={handleLogout} className="btn-logout">
             <LogOut size={18} />

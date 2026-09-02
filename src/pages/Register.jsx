@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserPlus, Mail, Lock, User, AlertCircle, CheckCircle } from 'lucide-react';
-import logo from '../images/logo.svg';
+import cwLogo from '../../public/images/Cwlogo.png';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -76,9 +76,9 @@ export default function Register() {
 
   return (
     <div className="auth-container">
-      <div className="auth-card">
+      <div className="auth-card auth-card-animated">
         <div className="auth-header">
-          <img src={logo} alt="Code Weave Planet" className="auth-logo" />
+          <img src={cwLogo} alt="Code Weave Planet" className="auth-logo" />
           <h1>Join Code Weave Planet</h1>
           <p>Create your account to get started</p>
         </div>

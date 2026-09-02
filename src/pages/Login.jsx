@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { LogIn, Mail, Lock, AlertCircle } from 'lucide-react';
-import logo from '../images/logo.svg';
+import cwLogo from '../../public/images/Cwlogo.png';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -65,9 +65,9 @@ export default function Login() {
 
   return (
     <div className="auth-container">
-      <div className="auth-card">
+      <div className="auth-card auth-card-animated">
         <div className="auth-header">
-          <img src={logo} alt="Code Weave Planet" className="auth-logo" />
+          <img src={cwLogo} alt="Code Weave Planet" className="auth-logo" />
           <h1>Code Weave Planet</h1>
           <p>Sign in to your account</p>
         </div>
@@ -136,13 +136,6 @@ export default function Login() {
         <div className="auth-footer">
           <p>Don't have an account? <Link to="/register">Sign up</Link></p>
           <Link to="/" className="back-home">← Back to home</Link>
-        </div>
-
-        <div className="demo-credentials">
-          <p><strong>Demo Credentials:</strong></p>
-          <p>Admin: admin@codeweave.com / admin123</p>
-          <p>Tutor: tutor@codeweave.com / tutor123</p>
-          <p>Student: student@codeweave.com / student123</p>
         </div>
       </div>
     </div>

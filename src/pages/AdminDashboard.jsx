@@ -11,9 +11,12 @@ import {
   Trash2,
   X,
   Save,
-  Search
+  Search,
+  Camera,
+  Settings,
+  User
 } from 'lucide-react';
-import logo from '../images/logo.svg';
+import cwLogo from '../../public/images/Cwlogo.png';
 
 // Mock initial data
 const INITIAL_COURSES = [
@@ -47,6 +50,8 @@ export default function AdminDashboard() {
   const [modalType, setModalType] = useState(''); // 'add-course', 'edit-course'
   const [selectedItem, setSelectedItem] = useState(null);
   const [formData, setFormData] = useState({});
+  const [profilePic, setProfilePic] = useState(null);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   useEffect(() => {
     const userData = localStorage.getItem('user');
@@ -61,10 +66,34 @@ export default function AdminDashboard() {
     }
     setUser(parsedUser);
 
+    // Load profile picture
+    const savedProfilePic = localStorage.getItem('profilePic');
+    if (savedProfilePic) {
+      setProfilePic(savedProfilePic);
+    }
+
     // Load saved data from localStorage
     const savedCourses = localStorage.getItem('courses');
     if (savedCourses) setCourses(JSON.parse(savedCourses));
   }, [navigate]);
+
+  const handleProfilePicChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfilePic(reader.result);
+        localStorage.setItem('profilePic', reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeProfilePic = () => {
+    setProfilePic(null);
+    localStorage.removeItem('profilePic');
+    setShowProfileMenu(false);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('user');
@@ -154,7 +183,7 @@ export default function AdminDashboard() {
       {/* Sidebar */}
       <aside className="dashboard-sidebar">
         <div className="sidebar-header">
-          <img src={logo} alt="Logo" className="sidebar-logo" />
+          <img src={cwLogo} alt="Logo" className="sidebar-logo" />
           <h2>Admin Panel</h2>
         </div>
 
@@ -190,9 +219,46 @@ export default function AdminDashboard() {
         </nav>
 
         <div className="sidebar-footer">
-          <div className="user-info">
-            <p className="user-name">{user?.name}</p>
-            <p className="user-role">{user?.role}</p>
+          <div className="user-profile">
+            <div className="profile-pic-container">
+              {profilePic ? (
+                <img src={profilePic} alt="Profile" className="profile-pic" />
+              ) : (
+                <div className="profile-pic-placeholder">
+                  <User size={24} />
+                </div>
+              )}
+              <button 
+                className="profile-pic-edit"
+                onClick={() => setShowProfileMenu(!showProfileMenu)}
+              >
+                <Settings size={14} />
+              </button>
+              {showProfileMenu && (
+                <div className="profile-menu">
+                  <label className="profile-menu-item">
+                    <Camera size={16} />
+                    <span>Upload Photo</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleProfilePicChange}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+                  {profilePic && (
+                    <button className="profile-menu-item" onClick={removeProfilePic}>
+                      <LogOut size={16} />
+                      <span>Remove Photo</span>
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+            <div className="user-info">
+              <p className="user-name">{user?.name}</p>
+              <p className="user-role">{user?.role}</p>
+            </div>
           </div>
           <button onClick={handleLogout} className="btn-logout">
             <LogOut size={18} />
