@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { LogIn, Mail, Lock, AlertCircle, Chrome } from 'lucide-react';
+import { Icon } from '@iconify/react';
 import { useAuth } from '../context/AuthContext';
+import PageTransition from '../components/PageTransition';
 import cwLogo from '../../public/images/Cwlogo.png';
 
 export default function Login() {
@@ -51,7 +52,8 @@ export default function Login() {
   };
 
   return (
-    <div className="auth-container">
+    <PageTransition>
+    <div className="auth-container page-container">
       <div className="auth-card auth-card-animated">
         <div className="auth-header">
           <img src={cwLogo} alt="Code Weave Planet" className="auth-logo" />
@@ -61,7 +63,7 @@ export default function Login() {
 
         {error && (
           <div className="error-message">
-            <AlertCircle size={18} />
+            <Icon icon="mdi:alert-circle" width="18" />
             <span>{error}</span>
           </div>
         )}
@@ -89,7 +91,7 @@ export default function Login() {
             transition: 'all 0.3s ease',
           }}
         >
-          <Chrome size={18} />
+          <Icon icon="mdi:google" width="18" />
           {loading ? 'Signing in...' : 'Sign in with Google'}
         </button>
 
@@ -108,7 +110,7 @@ export default function Login() {
         <form onSubmit={handleEmailSubmit} className="auth-form">
           <div className="form-group">
             <label htmlFor="email">
-              <Mail size={18} />
+              <Icon icon="mdi:email" width="18" />
               Email Address
             </label>
             <input
@@ -124,7 +126,7 @@ export default function Login() {
 
           <div className="form-group">
             <label htmlFor="password">
-              <Lock size={18} />
+              <Icon icon="mdi:lock" width="18" />
               Password
             </label>
             <input
@@ -139,7 +141,7 @@ export default function Login() {
           </div>
 
           <button type="submit" className="btn-primary" disabled={loading || authLoading}>
-            <LogIn size={18} />
+            <Icon icon="mdi:login" width="18" />
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
@@ -150,5 +152,6 @@ export default function Login() {
         </div>
       </div>
     </div>
+    </PageTransition>
   );
 }

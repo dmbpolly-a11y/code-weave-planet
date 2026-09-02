@@ -1,34 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  Cpu,
-  LayoutTemplate,
-  Server,
-  Megaphone,
-  CloudCog,
-  Smartphone,
-  MonitorSmartphone,
-  MessageCircle,
-  Phone,
-  ArrowUpRight,
-  ShieldCheck,
-  UserCog,
-  Users,
-  LogIn,
-  Video,
-  Film,
-  Search,
-  Clock,
-  DollarSign,
-  BookOpen,
-  Award,
-  TrendingUp,
-  Sparkles,
-} from "lucide-react";
-import cwLogo from "../../public/images/Cwlogo.png";
-
-// Import Iconify
 import { Icon } from '@iconify/react';
+import PageTransition from './PageTransition';
+import cwLogo from "../../public/images/Cwlogo.png";
 
 const COURSES = [
   {
@@ -226,7 +200,8 @@ export default function CodeWeavePlanetLanding() {
   };
 
   return (
-    <div style={styles.page}>
+    <PageTransition>
+    <div style={styles.page} className="page-container">
       <style>{css}</style>
 
       {/* Header */}
@@ -244,14 +219,14 @@ export default function CodeWeavePlanetLanding() {
           </nav>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
             <Link to="/login" style={styles.headerLogin}>
-              <LogIn size={15} />
+              <Icon icon="mdi:login" width="15" />
               Login
             </Link>
             <a
               href={`https://wa.me/256${WHATSAPP_NUMBER.slice(1)}`}
               style={styles.headerCta}
             >
-              <MessageCircle size={15} />
+              <Icon icon="mdi:message" width="15" />
               WhatsApp us
             </a>
           </div>
@@ -310,7 +285,7 @@ export default function CodeWeavePlanetLanding() {
                 href={`https://wa.me/256${WHATSAPP_NUMBER.slice(1)}`}
                 style={styles.secondaryBtn}
               >
-                <Phone size={15} />
+                <Icon icon="mdi:phone" width="15" />
                 Call or WhatsApp {WHATSAPP_NUMBER}
               </a>
             </div>
@@ -376,7 +351,7 @@ export default function CodeWeavePlanetLanding() {
         {/* Search Bar */}
         <div style={styles.searchContainer}>
           <div style={styles.searchBar}>
-            <Search size={20} color="#D4AF37" />
+            <Icon icon="mdi:magnify" width="20" color="#D4AF37" />
             <input
               type="text"
               placeholder="Search for courses, skills, or topics..."
@@ -409,11 +384,11 @@ export default function CodeWeavePlanetLanding() {
                 <p style={styles.courseBlurb}>{c.blurb}</p>
                 <div style={styles.courseMetadata}>
                   <span style={styles.metaBadge}>
-                    <Clock size={14} />
+                    <Icon icon="mdi:clock-outline" width="14" />
                     {c.duration}
                   </span>
                   <span style={styles.metaBadge}>
-                    <Award size={14} />
+                    <Icon icon="mdi:trophy" width="14" />
                     {c.level}
                   </span>
                 </div>
@@ -425,7 +400,7 @@ export default function CodeWeavePlanetLanding() {
             ))
           ) : (
             <div style={styles.noResults}>
-              <Search size={48} color="#8B7355" />
+              <Icon icon="mdi:magnify" width="48" color="#8B7355" />
               <p>No courses found matching "{searchQuery}"</p>
               <button onClick={() => setSearchQuery('')} style={styles.resetButton}>
                 Clear search
@@ -464,14 +439,14 @@ export default function CodeWeavePlanetLanding() {
           </div>
           <div style={styles.contactActions}>
             <a href={`tel:+256${WHATSAPP_NUMBER.slice(1)}`} style={styles.primaryBtn}>
-              <Phone size={15} />
+              <Icon icon="mdi:phone" width="15" />
               {WHATSAPP_NUMBER}
             </a>
             <a
               href={`https://wa.me/256${WHATSAPP_NUMBER.slice(1)}`}
               style={styles.secondaryBtn}
             >
-              <MessageCircle size={15} />
+              <Icon icon="mdi:message" width="15" />
               Message on WhatsApp
             </a>
           </div>
@@ -557,11 +532,11 @@ export default function CodeWeavePlanetLanding() {
               <h4 style={styles.footerHeading}>Contact Info</h4>
               <div style={styles.contactInfo}>
                 <p style={styles.contactItem}>
-                  <Phone size={16} style={{ marginRight: 8 }} />
+                  <Icon icon="mdi:phone" width="16" style={{ marginRight: 8 }} />
                   {WHATSAPP_NUMBER}
                 </p>
                 <p style={styles.contactItem}>
-                  <MessageCircle size={16} style={{ marginRight: 8 }} />
+                  <Icon icon="mdi:message" width="16" style={{ marginRight: 8 }} />
                   WhatsApp Available
                 </p>
                 <p style={styles.contactItem}>Mbarara, Western Uganda</p>
@@ -594,7 +569,7 @@ export default function CodeWeavePlanetLanding() {
               <div style={styles.modalGrid}>
                 <div style={styles.modalSection}>
                   <h3 style={styles.modalSectionTitle}>
-                    <Clock size={18} />
+                    <Icon icon="mdi:clock-outline" width="18" />
                     Duration
                   </h3>
                   <p style={styles.modalText}>{selectedCourse.duration}</p>
@@ -602,7 +577,7 @@ export default function CodeWeavePlanetLanding() {
                 
                 <div style={styles.modalSection}>
                   <h3 style={styles.modalSectionTitle}>
-                    <Award size={18} />
+                    <Icon icon="mdi:trophy" width="18" />
                     Level
                   </h3>
                   <p style={styles.modalText}>{selectedCourse.level}</p>
@@ -610,7 +585,7 @@ export default function CodeWeavePlanetLanding() {
                 
                 <div style={styles.modalSection}>
                   <h3 style={styles.modalSectionTitle}>
-                    <DollarSign size={18} />
+                    <Icon icon="mdi:currency-usd" width="18" />
                     Course Fee
                   </h3>
                   <p style={styles.modalPrice}>{selectedCourse.price}</p>
@@ -619,13 +594,13 @@ export default function CodeWeavePlanetLanding() {
               
               <div style={styles.modalSection}>
                 <h3 style={styles.modalSectionTitle}>
-                  <BookOpen size={18} />
+                  <Icon icon="mdi:book-open" width="18" />
                   Skills You'll Learn
                 </h3>
                 <div style={styles.skillsGrid}>
                   {selectedCourse.skills.map((skill, idx) => (
                     <span key={idx} style={styles.skillBadge}>
-                      <Sparkles size={14} />
+                      <Icon icon="mdi:sparkles" width="14" />
                       {skill}
                     </span>
                   ))}
@@ -634,11 +609,11 @@ export default function CodeWeavePlanetLanding() {
               
               <div style={styles.modalActions}>
                 <Link to="/register" style={styles.modalEnrollButton}>
-                  <TrendingUp size={18} />
+                  <Icon icon="mdi:trending-up" width="18" />
                   Enroll Now
                 </Link>
                 <a href={`https://wa.me/256${WHATSAPP_NUMBER.slice(1)}`} style={styles.modalWhatsAppButton}>
-                  <MessageCircle size={18} />
+                  <Icon icon="mdi:message" width="18" />
                   Ask Questions
                 </a>
               </div>
@@ -647,6 +622,7 @@ export default function CodeWeavePlanetLanding() {
         </div>
       )}
     </div>
+    </PageTransition>
   );
 }
 

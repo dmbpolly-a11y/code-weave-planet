@@ -17,6 +17,7 @@ import {
   MessageCircle
 } from 'lucide-react';
 import { Icon } from '@iconify/react';
+import PageTransition from '../components/PageTransition';
 import cwLogo from '../../public/images/Cwlogo.png';
 import '../styles/aboutus.css';
 

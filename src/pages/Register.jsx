@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserPlus, Mail, Lock, User, AlertCircle, CheckCircle, Chrome } from 'lucide-react';
+import { Icon } from '@iconify/react';
 import { useAuth } from '../context/AuthContext';
+import PageTransition from '../components/PageTransition';
 import cwLogo from '../../public/images/Cwlogo.png';
 
 export default function Register() {
@@ -78,7 +79,8 @@ export default function Register() {
   };
 
   return (
-    <div className="auth-container">
+    <PageTransition>
+    <div className="auth-container page-container">
       <div className="auth-card auth-card-animated">
         <div className="auth-header">
           <img src={cwLogo} alt="Code Weave Planet" className="auth-logo" />
@@ -88,7 +90,7 @@ export default function Register() {
 
         {error && (
           <div className="error-message">
-            <AlertCircle size={18} />
+            <Icon icon="mdi:alert-circle" width="18" />
             <span>{error}</span>
           </div>
         )}
@@ -106,7 +108,7 @@ export default function Register() {
             fontSize: '14px',
             fontWeight: 500
           }}>
-            <CheckCircle size={18} />
+            <Icon icon="mdi:check-circle" width="18" />
             <span>{success}</span>
           </div>
         )}
@@ -135,7 +137,7 @@ export default function Register() {
             transition: 'all 0.3s ease',
           }}
         >
-          <Chrome size={18} />
+          <Icon icon="mdi:google" width="18" />
           {loading ? 'Creating account...' : 'Sign up with Google'}
         </button>
 
@@ -154,7 +156,7 @@ export default function Register() {
         <form onSubmit={handleEmailSubmit} className="auth-form">
           <div className="form-group">
             <label htmlFor="name">
-              <User size={18} />
+              <Icon icon="mdi:account" width="18" />
               Full Name
             </label>
             <input
@@ -170,7 +172,7 @@ export default function Register() {
 
           <div className="form-group">
             <label htmlFor="email">
-              <Mail size={18} />
+              <Icon icon="mdi:email" width="18" />
               Email Address
             </label>
             <input
@@ -200,7 +202,7 @@ export default function Register() {
 
           <div className="form-group">
             <label htmlFor="password">
-              <Lock size={18} />
+              <Icon icon="mdi:lock" width="18" />
               Password
             </label>
             <input
@@ -216,7 +218,7 @@ export default function Register() {
 
           <div className="form-group">
             <label htmlFor="confirmPassword">
-              <CheckCircle size={18} />
+              <Icon icon="mdi:check-circle" width="18" />
               Confirm Password
             </label>
             <input
@@ -231,7 +233,7 @@ export default function Register() {
           </div>
 
           <button type="submit" className="btn-primary" disabled={loading || authLoading}>
-            <UserPlus size={18} />
+            <Icon icon="mdi:account-plus" width="18" />
             {loading ? 'Creating account...' : 'Create Account'}
           </button>
         </form>
@@ -242,5 +244,6 @@ export default function Register() {
         </div>
       </div>
     </div>
+    </PageTransition>
   );
 }
