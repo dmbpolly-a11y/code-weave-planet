@@ -680,7 +680,7 @@ const styles = {
     width: 80,
     height: 80,
     objectFit: "contain",
-    animation: "fadeInScale 1s ease-in-out",
+    animation: "fadeInScale 1.2s ease-in-out",
   },
   logoText: {
     fontFamily: "'Space Grotesk', sans-serif",
