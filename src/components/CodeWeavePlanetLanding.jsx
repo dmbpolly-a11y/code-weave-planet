@@ -505,10 +505,10 @@ export default function CodeWeavePlanetLanding() {
               <h3 style={styles.footerBrand}>Code Weave Planet</h3>
               <p style={styles.footerTagline}>Weaving Skills into Careers</p>
               <p style={styles.footerAboutText}>
-                Learn more about our mission and what we do on our dedicated About Us page.
+                Discover our full story, mission, and everything about Code Weave Planet on our dedicated About Us page.
               </p>
               <Link to="/about" style={styles.aboutLink}>
-                Learn More →
+                Visit About Us Page →
               </Link>
             </div>
 
