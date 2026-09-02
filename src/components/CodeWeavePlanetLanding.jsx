@@ -95,9 +95,9 @@ export default function CodeWeavePlanetLanding() {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   const heroImages = [
-    "/images/CD1.jpg",
-    "/images/CD2.jpg",
-    "/images/CD3.jpg"
+    "/images/codew.png",
+    "/images/codew1.png",
+    "/images/CD1.png"
   ];
 
   useEffect(() => {
@@ -461,13 +461,13 @@ const styles = {
     minHeight: "100vh",
   },
   header: {
-    borderBottom: "1px solid rgba(255,255,255,0.08)",
+    borderBottom: "1px solid rgba(212, 175, 55, 0.2)",
     position: "sticky",
     top: 0,
-    background: "rgba(10,15,30,0.95)",
+    background: "linear-gradient(135deg, #F5F5DC 0%, #FFF8E7 50%, #FFFAF0 100%)",
     backdropFilter: "blur(12px)",
     zIndex: 10,
-    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
   },
   headerInner: {
     maxWidth: 1100,
@@ -490,25 +490,26 @@ const styles = {
     fontWeight: 600,
     fontSize: 16,
     letterSpacing: "-0.01em",
-    background: "linear-gradient(135deg, #D4AF37 0%, #FFD700 100%)",
+    background: "linear-gradient(135deg, #D4AF37 0%, #8B7355 100%)",
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
     backgroundClip: "text",
   },
   nav: { display: "flex", gap: 28 },
   navLink: {
-    color: "#8B96AC",
+    color: "#5C4B3A",
     textDecoration: "none",
     fontSize: 14,
     transition: "color 0.3s ease",
+    fontWeight: 500,
   },
   headerCta: {
     display: "flex",
     alignItems: "center",
     gap: 6,
     background: "transparent",
-    border: "1px solid rgba(34,211,238,0.4)",
-    color: "#22D3EE",
+    border: "1px solid rgba(139, 115, 85, 0.4)",
+    color: "#5C4B3A",
     padding: "8px 14px",
     borderRadius: 6,
     fontSize: 13.5,
@@ -521,7 +522,7 @@ const styles = {
     alignItems: "center",
     gap: 6,
     background: "linear-gradient(135deg, #D4AF37 0%, #FFD700 100%)",
-    color: "#0A0F1E",
+    color: "#2C1810",
     padding: "8px 14px",
     borderRadius: 6,
     fontSize: 13.5,
@@ -904,8 +905,9 @@ const css = `
   }
 
   .headerCta:hover {
-    background: rgba(34,211,238,0.1);
-    border-color: rgba(34,211,238,0.6);
+    background: rgba(212, 175, 55, 0.1);
+    border-color: rgba(212, 175, 55, 0.6);
+    color: #D4AF37;
   }
 
   .headerLogin:hover {
