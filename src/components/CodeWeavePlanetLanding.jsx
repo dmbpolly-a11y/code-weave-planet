@@ -200,7 +200,7 @@ export default function CodeWeavePlanetLanding() {
   };
 
   return (
-    <PageTransition>
+    <PageTransition type="doors">
     <div style={styles.page} className="page-container">
       <style>{css}</style>
 

@@ -1,0 +1,392 @@
+/* ================================================================
+   PAGE TRANSITIONS — Doors · Switch · Origami
+   ================================================================ */
+
+/* ─────────────── Shared ─────────────── */
+.transition-doors-wrapper,
+.transition-switch-wrapper,
+.transition-origami-wrapper {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* ─────────────── DOORS TRANSITION ─────────────── 
+   Two opaque panels cover the viewport and slide apart
+   like opening double-doors, revealing the page behind. */
+
+.transition-door {
+  position: fixed;
+  top: 0;
+  width: 50%;
+  height: 100vh;
+  z-index: 9999;
+  background: linear-gradient(180deg, #1a1510 0%, #2c1810 40%, #3d2a1a 100%);
+  transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1);
+  will-change: transform;
+}
+
+.transition-door::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #D4AF37 0%, #FFD700 50%, #D4AF37 100%);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.6), 0 0 40px rgba(212, 175, 55, 0.3);
+}
+
+.transition-door-left {
+  left: 0;
+  transform: translateX(0);
+}
+
+.transition-door-left::after {
+  right: 0;
+}
+
+.transition-door-right {
+  right: 0;
+  transform: translateX(0);
+}
+
+.transition-door-right::after {
+  left: 0;
+}
+
+/* Open state — slide panels out */
+.transition-door-left.transition-door-open {
+  transform: translateX(-105%);
+}
+
+.transition-door-right.transition-door-open {
+  transform: translateX(105%);
+}
+
+/* Content behind the doors */
+.transition-doors-content {
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 0.5s ease 0.45s, transform 0.5s ease 0.45s;
+}
+
+.transition-doors-content-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Gold trim on the seam */
+.transition-door-left::before,
+.transition-door-right::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #FFD700, #D4AF37);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+  z-index: 1;
+}
+
+.transition-door-left::before {
+  right: 12px;
+}
+
+.transition-door-right::before {
+  left: 12px;
+}
+
+/* ─────────────── SWITCH TRANSITION ─────────────── 
+   The entire page flips in horizontally like a light switch
+   — a 3D rotation around the Y axis. */
+
+.transition-switch-wrapper {
+  perspective: 1800px;
+}
+
+.transition-switch-card {
+  transform-origin: center center;
+  transform: rotateY(90deg) scale(0.85);
+  opacity: 0;
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.5s ease;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.transition-switch-card-active {
+  transform: rotateY(0deg) scale(1);
+  opacity: 1;
+}
+
+/* ─────────────── ORIGAMI TRANSITION ─────────────── 
+   Two folded panels (top & bottom) unfold outward in 3D
+   like paper being unfolded, then the page content fades up. */
+
+.transition-origami-wrapper {
+  perspective: 2000px;
+}
+
+.transition-origami-panel {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 50vh;
+  z-index: 9998;
+  background: linear-gradient(135deg, #2c1810, #1a1510);
+  transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1),
+              opacity 0.4s ease 0.6s;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+}
+
+.transition-origami-panel::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    #D4AF37 20%,
+    #FFD700 50%,
+    #D4AF37 80%,
+    transparent 100%
+  );
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+}
+
+.transition-origami-top {
+  top: 0;
+  transform-origin: top center;
+  transform: perspective(2000px) rotateX(0deg);
+}
+
+.transition-origami-top::after {
+  bottom: 0;
+}
+
+.transition-origami-bottom {
+  bottom: 0;
+  transform-origin: bottom center;
+  transform: perspective(2000px) rotateX(0deg);
+}
+
+.transition-origami-bottom::after {
+  top: 0;
+}
+
+/* Unfold — rotate panels away */
+.transition-origami-top.transition-origami-unfold {
+  transform: perspective(2000px) rotateX(-95deg);
+  opacity: 0;
+}
+
+.transition-origami-bottom.transition-origami-unfold {
+  transform: perspective(2000px) rotateX(95deg);
+  opacity: 0;
+}
+
+.transition-origami-content {
+  opacity: 0;
+  transform: perspective(1500px) rotateX(15deg) scale(0.92);
+  transition: opacity 0.6s ease 0.5s,
+              transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s;
+}
+
+.transition-origami-content-visible {
+  opacity: 1;
+  transform: perspective(1500px) rotateX(0deg) scale(1);
+}
+
+/* ─────────────── 3D Origami Loading Screen ─────────────── */
+.origami-loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: radial-gradient(circle at center, #1e130c 0%, #0d0805 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  overflow: hidden;
+}
+
+.origami-stage {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  perspective: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Origami 3D Rotating & Folding Cube */
+.origami-cube {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  transform-style: preserve-3d;
+  animation: origamiSpinFold 4s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+}
+
+.origami-face {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.25), rgba(255, 215, 0, 0.1));
+  border: 1.5px solid rgba(212, 175, 55, 0.7);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+  backdrop-filter: blur(4px);
+}
+
+.origami-front  { transform: translateZ(30px); }
+.origami-back   { transform: rotateY(180deg) translateZ(30px); }
+.origami-left   { transform: rotateY(-90deg) translateZ(30px); }
+.origami-right  { transform: rotateY(90deg) translateZ(30px); }
+.origami-top    { transform: rotateX(90deg) translateZ(30px); }
+.origami-bottom { transform: rotateX(-90deg) translateZ(30px); }
+
+@keyframes origamiSpinFold {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg) scale(0.85);
+  }
+  25% {
+    transform: rotateX(90deg) rotateY(45deg) scale(1.05);
+  }
+  50% {
+    transform: rotateX(180deg) rotateY(180deg) scale(0.9);
+  }
+  75% {
+    transform: rotateX(270deg) rotateY(135deg) scale(1.1);
+  }
+  100% {
+    transform: rotateX(360deg) rotateY(360deg) scale(0.85);
+  }
+}
+
+/* Origami Geometric Wings */
+.origami-bird {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  pointer-events: none;
+}
+
+.origami-wing {
+  position: absolute;
+  top: 15px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.origami-wing-left {
+  left: 0;
+  border-width: 0 35px 50px 0;
+  border-color: transparent #D4AF37 transparent transparent;
+  opacity: 0.6;
+  transform-origin: right center;
+  animation: origamiWingLeft 2s ease-in-out infinite alternate;
+}
+
+.origami-wing-right {
+  right: 0;
+  border-width: 50px 35px 0 0;
+  border-color: #FFD700 transparent transparent transparent;
+  opacity: 0.6;
+  transform-origin: left center;
+  animation: origamiWingRight 2s ease-in-out infinite alternate;
+}
+
+@keyframes origamiWingLeft {
+  0% { transform: perspective(400px) rotateY(0deg) rotateZ(-10deg); }
+  100% { transform: perspective(400px) rotateY(65deg) rotateZ(15deg); }
+}
+
+@keyframes origamiWingRight {
+  0% { transform: perspective(400px) rotateY(0deg) rotateZ(10deg); }
+  100% { transform: perspective(400px) rotateY(-65deg) rotateZ(-15deg); }
+}
+
+.origami-loading-text {
+  color: #EDEFF7;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #D4AF37, #FFF8DC, #D4AF37);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: origamiTextShimmer 2s linear infinite;
+}
+
+@keyframes origamiTextShimmer {
+  0% { filter: brightness(0.9); }
+  50% { filter: brightness(1.3); text-shadow: 0 0 10px rgba(212, 175, 55, 0.4); }
+  100% { filter: brightness(0.9); }
+}
+
+.origami-loading-bar {
+  width: 160px;
+  height: 3px;
+  background: rgba(212, 175, 55, 0.15);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.origami-loading-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, #D4AF37, #FFD700);
+  border-radius: 999px;
+  animation: origamiProgress 1.6s ease-in-out infinite;
+}
+
+@keyframes origamiProgress {
+  0% {
+    left: -40%;
+    width: 30%;
+  }
+  50% {
+    left: 30%;
+    width: 60%;
+  }
+  100% {
+    left: 100%;
+    width: 20%;
+  }
+}
+
+/* ─────────────── Responsive tweaks ─────────────── */
+@media (max-width: 768px) {
+  .transition-door::before {
+    width: 16px;
+    height: 16px;
+  }
+
+  .transition-door::after {
+    width: 3px;
+  }
+}
+
+/* ─────────────── Respect reduced-motion ─────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .transition-door,
+  .transition-switch-card,
+  .transition-origami-panel,
+  .transition-origami-content,
+  .transition-doors-content {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}

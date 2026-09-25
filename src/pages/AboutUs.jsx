@@ -43,6 +43,7 @@ export default function AboutUs() {
   const WHATSAPP_NUMBER = "0750937506";
 
   return (
+    <PageTransition type="doors">
     <div className="about-page">
       {/* Curtain Animation */}
       <div className={`curtain-container ${curtainOpen ? 'open' : ''}`}>
@@ -320,5 +321,6 @@ export default function AboutUs() {
         </div>
       </footer>
     </div>
+    </PageTransition>
   );
 }

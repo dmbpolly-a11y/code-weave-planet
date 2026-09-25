@@ -1,6 +1,7 @@
 /* Import additional styles */
 @import './styles/auth.css';
 @import './styles/dashboard.css';
+@import './styles/transitions.css';
 
 * {
   margin: 0;

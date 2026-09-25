@@ -169,7 +169,7 @@ export default function StudentDashboard() {
   const availableCourses = filteredCourses.filter(c => !c.enrolled);
 
   return (
-    <PageTransition>
+    <PageTransition type="doors">
     <div className="dashboard-container page-container">
       {/* Sidebar */}
       <aside className="dashboard-sidebar">

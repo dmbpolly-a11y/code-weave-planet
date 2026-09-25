@@ -52,7 +52,7 @@ export default function Login() {
   };
 
   return (
-    <PageTransition>
+    <PageTransition type="switch">
     <div className="auth-container page-container">
       <div className="auth-card auth-card-animated">
         <div className="auth-header">

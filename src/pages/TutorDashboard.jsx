@@ -217,7 +217,7 @@ export default function TutorDashboard() {
   };
 
   return (
-    <PageTransition>
+    <PageTransition type="doors">
     <div className="dashboard-container page-container">
       {/* Sidebar */}
       <aside className="dashboard-sidebar">
