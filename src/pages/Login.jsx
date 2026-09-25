@@ -35,8 +35,24 @@ export default function Login() {
       setError(signInError);
       setLoading(false);
     } else if (data?.user) {
-      // Navigate to student dashboard by default
-      navigate('/student');
+      // Determine role from metadata or default to student
+      const role =
+        data.user?.user_metadata?.role ||
+        data.user?.app_metadata?.role ||
+        'student';
+
+      // Store user in localStorage so dashboards can access it
+      localStorage.setItem('user', JSON.stringify({
+        id: data.user.id,
+        email: data.user.email,
+        name: data.user.user_metadata?.full_name || data.user.email,
+        role,
+      }));
+
+      // Navigate to appropriate dashboard
+      if (role === 'admin') navigate('/admin');
+      else if (role === 'tutor') navigate('/tutor');
+      else navigate('/student');
     }
   };
 
@@ -52,7 +68,7 @@ export default function Login() {
   };
 
   return (
-    <PageTransition type="switch">
+    <PageTransition type="origami">
     <div className="auth-container page-container">
       <div className="auth-card auth-card-animated">
         <div className="auth-header">

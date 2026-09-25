@@ -79,7 +79,7 @@ export default function Register() {
   };
 
   return (
-    <PageTransition type="switch">
+    <PageTransition type="origami">
     <div className="auth-container page-container">
       <div className="auth-card auth-card-animated">
         <div className="auth-header">

@@ -165,7 +165,7 @@ export default function AdminDashboard() {
   );
 
   return (
-    <PageTransition type="doors">
+    <PageTransition type="origami">
     <div className="dashboard-container page-container">
       {/* Sidebar */}
       <aside className="dashboard-sidebar">

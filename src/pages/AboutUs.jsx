@@ -22,35 +22,11 @@ import cwLogo from '../../public/images/Cwlogo.png';
 import '../styles/aboutus.css';
 
 export default function AboutUs() {
-  const [curtainOpen, setCurtainOpen] = useState(false);
-  const [contentVisible, setContentVisible] = useState(false);
-
-  useEffect(() => {
-    const curtainTimer = setTimeout(() => {
-      setCurtainOpen(true);
-    }, 300);
-
-    const contentTimer = setTimeout(() => {
-      setContentVisible(true);
-    }, 1800);
-
-    return () => {
-      clearTimeout(curtainTimer);
-      clearTimeout(contentTimer);
-    };
-  }, []);
-
   const WHATSAPP_NUMBER = "0750937506";
 
   return (
-    <PageTransition type="doors">
+    <PageTransition type="origami">
     <div className="about-page">
-      {/* Curtain Animation */}
-      <div className={`curtain-container ${curtainOpen ? 'open' : ''}`}>
-        <div className="curtain curtain-left"></div>
-        <div className="curtain curtain-right"></div>
-      </div>
-
       {/* Header */}
       <header className="about-header">
         <div className="about-header-inner">
@@ -58,15 +34,39 @@ export default function AboutUs() {
             <img src={cwLogo} alt="Code Weave Planet" className="about-logo-image" />
             <span className="about-logo-text">Code Weave Planet</span>
           </Link>
-          <Link to="/" className="back-home-btn">
-            <ArrowLeft size={18} />
-            Back to Home
-          </Link>
+          <nav className="about-nav" style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+            <Link to="/" style={{ color: '#2C1810', textDecoration: 'none', fontWeight: 500, fontSize: '14px' }}>Home</Link>
+            <Link to="/#courses" style={{ color: '#2C1810', textDecoration: 'none', fontWeight: 500, fontSize: '14px' }}>Courses</Link>
+            <Link to="/#how" style={{ color: '#2C1810', textDecoration: 'none', fontWeight: 500, fontSize: '14px' }}>How it works</Link>
+            <Link to="/about" style={{ color: '#D4AF37', textDecoration: 'none', fontWeight: 600, fontSize: '14px' }}>About</Link>
+            <Link to="/#contact" style={{ color: '#2C1810', textDecoration: 'none', fontWeight: 500, fontSize: '14px' }}>Contact</Link>
+          </nav>
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <Link to="/login" style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '8px 16px',
+              borderRadius: '6px',
+              background: '#2C1810',
+              color: '#FFFFFF',
+              textDecoration: 'none',
+              fontSize: '13px',
+              fontWeight: 600,
+            }}>
+              <Icon icon="mdi:login" width="15" />
+              Login
+            </Link>
+            <Link to="/" className="back-home-btn">
+              <ArrowLeft size={16} />
+              Back Home
+            </Link>
+          </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className={`about-content ${contentVisible ? 'visible' : ''}`}>
+      <main className="about-content visible">
         {/* Hero Section */}
         <section className="about-hero">
           <div className="about-hero-content">
@@ -288,38 +288,153 @@ export default function AboutUs() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="about-footer">
-        <div className="about-footer-content">
-          <div className="footer-brand">
-            <img src={cwLogo} alt="Code Weave Planet" className="footer-logo-img" />
-            <h3>Code Weave Planet</h3>
-            <p>Weaving Skills into Careers</p>
-          </div>
-          <div className="footer-info">
-            <div className="footer-links">
-              <a href="#home">Home</a>
-              <a href="#courses">Courses</a>
-              <Link to="/login">Login</Link>
-              <Link to="/register">Register</Link>
+      {/* Footer with Social Media — Animated Square Blocks */}
+      <div className="footer-animated">
+        {/* Decorative Top Edge */}
+        <div className="footer-edge">
+          <div className="footer-edge-line"></div>
+          <div className="footer-edge-diamond"></div>
+          <div className="footer-edge-line"></div>
+        </div>
+
+        {/* 4 Square Blocks with Borders */}
+        <div className="footer-blocks-grid">
+          {/* Block 1: Brand & Identity */}
+          <div className="footer-block footer-block-brand">
+            <div className="footer-block-inner">
+              <img src={cwLogo} alt="Code Weave Planet" className="footer-block-logo" />
+              <h3 className="footer-block-title">Code Weave Planet</h3>
+              <p className="footer-block-tagline">Weaving Skills into Careers</p>
+              <div className="footer-block-divider"></div>
+              <p className="footer-block-text">
+                East Africa's premier modern tech hub. Hands-on coding, live tutor-led WhatsApp classes, and career-ready portfolios.
+              </p>
+              <Link to="/about" className="footer-block-link">
+                Learn more about us
+                <Icon icon="mdi:arrow-right" width="14" />
+              </Link>
             </div>
-            <div className="footer-contact">
-              <a href={`tel:+256${WHATSAPP_NUMBER.slice(1)}`}>
-                <Phone size={16} />
-                {WHATSAPP_NUMBER}
-              </a>
-              <a href={`https://wa.me/256${WHATSAPP_NUMBER.slice(1)}`}>
-                <MessageCircle size={16} />
-                WhatsApp
-              </a>
+          </div>
+
+          {/* Block 2: Social Media Grid */}
+          <div className="footer-block footer-block-social">
+            <div className="footer-block-inner">
+              <h4 className="footer-block-heading">
+                <Icon icon="mdi:share-variant-outline" width="18" className="footer-heading-icon" />
+                Connect With Us
+              </h4>
+              <p className="footer-block-text">Follow our tutorials, student showcases, and announcements:</p>
+              <div className="footer-social-grid">
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="footer-social-square" title="Facebook">
+                  <Icon icon="mdi:facebook" width="22" />
+                </a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="footer-social-square" title="Twitter/X">
+                  <Icon icon="mdi:twitter" width="22" />
+                </a>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="footer-social-square" title="Instagram">
+                  <Icon icon="mdi:instagram" width="22" />
+                </a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="footer-social-square" title="LinkedIn">
+                  <Icon icon="mdi:linkedin" width="22" />
+                </a>
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="footer-social-square" title="YouTube">
+                  <Icon icon="mdi:youtube" width="22" />
+                </a>
+                <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="footer-social-square" title="TikTok">
+                  <Icon icon="ic:baseline-tiktok" width="22" />
+                </a>
+                <a href={`https://wa.me/256${WHATSAPP_NUMBER.slice(1)}`} target="_blank" rel="noopener noreferrer" className="footer-social-square footer-social-whatsapp" title="WhatsApp">
+                  <Icon icon="mdi:whatsapp" width="22" />
+                </a>
+                <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" className="footer-social-square" title="Telegram">
+                  <Icon icon="mdi:telegram" width="22" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Block 3: Quick Navigation */}
+          <div className="footer-block footer-block-links">
+            <div className="footer-block-inner">
+              <h4 className="footer-block-heading">
+                <Icon icon="mdi:compass-outline" width="18" className="footer-heading-icon" />
+                Explore
+              </h4>
+              <div className="footer-links-list">
+                <Link to="/#courses" className="footer-nav-item">
+                  <Icon icon="mdi:chevron-right" width="14" className="footer-nav-arrow" />
+                  All Courses
+                </Link>
+                <Link to="/#how" className="footer-nav-item">
+                  <Icon icon="mdi:chevron-right" width="14" className="footer-nav-arrow" />
+                  How It Works
+                </Link>
+                <Link to="/#contact" className="footer-nav-item">
+                  <Icon icon="mdi:chevron-right" width="14" className="footer-nav-arrow" />
+                  Contact Tutors
+                </Link>
+                <Link to="/login" className="footer-nav-item">
+                  <Icon icon="mdi:chevron-right" width="14" className="footer-nav-arrow" />
+                  Student / Tutor Portal
+                </Link>
+                <Link to="/register" className="footer-nav-item">
+                  <Icon icon="mdi:chevron-right" width="14" className="footer-nav-arrow" />
+                  Create an Account
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Block 4: Direct Contact & Location */}
+          <div className="footer-block footer-block-contact">
+            <div className="footer-block-inner">
+              <h4 className="footer-block-heading">
+                <Icon icon="mdi:card-account-phone-outline" width="18" className="footer-heading-icon" />
+                Get in Touch
+              </h4>
+              <div className="footer-contact-cards">
+                <div className="footer-contact-card">
+                  <Icon icon="mdi:phone" width="18" className="footer-contact-icon" />
+                  <div>
+                    <span className="footer-contact-label">Phone</span>
+                    <span className="footer-contact-value">{WHATSAPP_NUMBER}</span>
+                  </div>
+                </div>
+                <div className="footer-contact-card">
+                  <Icon icon="mdi:whatsapp" width="18" className="footer-contact-icon footer-whatsapp-accent" />
+                  <div>
+                    <span className="footer-contact-label">WhatsApp</span>
+                    <span className="footer-contact-value">Direct Chat Available</span>
+                  </div>
+                </div>
+                <div className="footer-contact-card">
+                  <Icon icon="mdi:map-marker" width="18" className="footer-contact-icon" />
+                  <div>
+                    <span className="footer-contact-label">Hub Location</span>
+                    <span className="footer-contact-value">Mbarara, Uganda</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="footer-bottom">
-          <p>© {new Date().getFullYear()} Code Weave Planet. All rights reserved.</p>
-          <p>Revolutionising Tech Education</p>
+
+        {/* Bottom Bar */}
+        <div className="footer-bottom-bar">
+          <div className="footer-bottom-inner">
+            <p className="footer-copyright">
+              © {new Date().getFullYear()} <strong style={{ color: '#D4AF37' }}>Code Weave Planet</strong>. All rights reserved.
+            </p>
+            <div className="footer-legal">
+              <a href="#privacy" className="footer-legal-link">Privacy Policy</a>
+              <span className="footer-legal-dot">•</span>
+              <a href="#terms" className="footer-legal-link">Terms of Service</a>
+              <span className="footer-legal-dot">•</span>
+              <span className="footer-tagline-small">Weaving Skills into Careers</span>
+            </div>
+          </div>
         </div>
-      </footer>
+      </div>
     </div>
     </PageTransition>
   );

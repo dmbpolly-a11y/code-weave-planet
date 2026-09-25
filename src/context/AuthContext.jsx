@@ -105,6 +105,8 @@ export const AuthProvider = ({ children }) => {
       const { error: signOutError } = await supabase.auth.signOut();
       if (signOutError) throw signOutError;
       setUser(null);
+      localStorage.removeItem('user');
+      localStorage.removeItem('profilePic');
     } catch (err) {
       setError(err.message);
     }

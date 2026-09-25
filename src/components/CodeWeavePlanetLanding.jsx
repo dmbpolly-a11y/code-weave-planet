@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Icon } from '@iconify/react';
+import { UserCog, ShieldCheck, Users, ArrowUpRight } from 'lucide-react';
 import PageTransition from './PageTransition';
 import cwLogo from "../../public/images/Cwlogo.png";
 
@@ -200,17 +201,17 @@ export default function CodeWeavePlanetLanding() {
   };
 
   return (
-    <PageTransition type="doors">
+    <PageTransition type="origami">
     <div style={styles.page} className="page-container">
       <style>{css}</style>
 
       {/* Header */}
       <header style={styles.header}>
         <div style={styles.headerInner}>
-          <div style={styles.logo}>
+          <Link to="/" style={{ ...styles.logo, textDecoration: 'none' }} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
             <img src={cwLogo} alt="Code Weave Planet" style={styles.logoImage} />
             <span style={styles.logoText}>Code Weave Planet</span>
-          </div>
+          </Link>
           <nav style={styles.nav}>
             <a href="#courses" style={styles.navLink}>Courses</a>
             <a href="#how" style={styles.navLink}>How it works</a>
@@ -221,6 +222,25 @@ export default function CodeWeavePlanetLanding() {
             <Link to="/login" style={styles.headerLogin}>
               <Icon icon="mdi:login" width="15" />
               Login
+            </Link>
+            <Link 
+              to="/register" 
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                background: 'transparent',
+                color: '#2C1810',
+                border: '1.5px solid #2C1810',
+                padding: '8px 16px',
+                borderRadius: 6,
+                textDecoration: 'none',
+                fontSize: 13,
+                fontWeight: 600,
+                transition: 'all 0.2s ease',
+              }}
+            >
+              Register
             </Link>
             <a
               href={`https://wa.me/256${WHATSAPP_NUMBER.slice(1)}`}
@@ -336,6 +356,168 @@ export default function CodeWeavePlanetLanding() {
                 ))}
               </g>
             </svg>
+          </div>
+        </div>
+      </section>
+
+      {/* Square Form Blocks with Borders — Core Spheres */}
+      <section className="square-blocks-section">
+        <div className="square-blocks-container">
+          <div className="square-blocks-header">
+            <div className="square-blocks-badge">
+              <Icon icon="mdi:shape-square-rounded-plus" width="16" />
+              <span>Core Learning Spheres</span>
+            </div>
+            <h2 className="square-blocks-title">Engineered in Square Form: Pillars of Mastery</h2>
+            <p className="square-blocks-subtitle">
+              Every sphere is structured with modular milestones, real repository builds, and intensive tutor-led code reviews.
+            </p>
+          </div>
+
+          <div className="square-blocks-grid">
+            {/* Square Block 1 */}
+            <div className="square-matrix-card">
+              <div className="square-card-corner-bl"></div>
+              <div className="square-card-corner-br"></div>
+              
+              <div className="square-card-top">
+                <span className="square-card-tag">[ SPHERE // 01 ]</span>
+                <div className="square-card-status">
+                  <span className="square-card-dot"></span>
+                  <span>Active Cohort</span>
+                </div>
+              </div>
+
+              <div className="square-card-center">
+                <div className="square-icon-housing">
+                  <Icon icon="mdi:code-tags" width="28" color="#D4AF37" />
+                </div>
+                <h3 className="square-card-title">Full-Stack Web Engineering</h3>
+                <p className="square-card-desc">
+                  Reactive Vite/React user interfaces connected to resilient PHP Laravel APIs with relational schemas.
+                </p>
+              </div>
+
+              <div className="square-card-bottom">
+                <div className="square-badges-row">
+                  <span className="square-badge-item">React & Vite</span>
+                  <span className="square-badge-item">Laravel MVC</span>
+                  <span className="square-badge-item">REST APIs</span>
+                </div>
+                <a href="#courses" className="square-card-action">
+                  <span>Explore Curriculum</span>
+                  <ArrowUpRight size={14} />
+                </a>
+              </div>
+            </div>
+
+            {/* Square Block 2 */}
+            <div className="square-matrix-card">
+              <div className="square-card-corner-bl"></div>
+              <div className="square-card-corner-br"></div>
+
+              <div className="square-card-top">
+                <span className="square-card-tag">[ SPHERE // 02 ]</span>
+                <div className="square-card-status">
+                  <span className="square-card-dot"></span>
+                  <span>Active Cohort</span>
+                </div>
+              </div>
+
+              <div className="square-card-center">
+                <div className="square-icon-housing">
+                  <Icon icon="mdi:robot" width="28" color="#D4AF37" />
+                </div>
+                <h3 className="square-card-title">AI & Machine Intelligence</h3>
+                <p className="square-card-desc">
+                  Data preprocessing, training neural networks with TensorFlow/PyTorch, and shipping working inference endpoints.
+                </p>
+              </div>
+
+              <div className="square-card-bottom">
+                <div className="square-badges-row">
+                  <span className="square-badge-item">Python ML</span>
+                  <span className="square-badge-item">TensorFlow</span>
+                  <span className="square-badge-item">Model APIs</span>
+                </div>
+                <a href="#courses" className="square-card-action">
+                  <span>Explore Curriculum</span>
+                  <ArrowUpRight size={14} />
+                </a>
+              </div>
+            </div>
+
+            {/* Square Block 3 */}
+            <div className="square-matrix-card">
+              <div className="square-card-corner-bl"></div>
+              <div className="square-card-corner-br"></div>
+
+              <div className="square-card-top">
+                <span className="square-card-tag">[ SPHERE // 03 ]</span>
+                <div className="square-card-status">
+                  <span className="square-card-dot"></span>
+                  <span>Active Cohort</span>
+                </div>
+              </div>
+
+              <div className="square-card-center">
+                <div className="square-icon-housing">
+                  <Icon icon="mdi:cloud-upload" width="28" color="#D4AF37" />
+                </div>
+                <h3 className="square-card-title">Cloud Infrastructure & Hosting</h3>
+                <p className="square-card-desc">
+                  Deploy live systems, configure DNS records, manage SSL certificates, server uptime, and multi-tenant hosting.
+                </p>
+              </div>
+
+              <div className="square-card-bottom">
+                <div className="square-badges-row">
+                  <span className="square-badge-item">AWS & DigitalOcean</span>
+                  <span className="square-badge-item">SSL/TLS</span>
+                  <span className="square-badge-item">DevOps</span>
+                </div>
+                <a href="#courses" className="square-card-action">
+                  <span>Explore Curriculum</span>
+                  <ArrowUpRight size={14} />
+                </a>
+              </div>
+            </div>
+
+            {/* Square Block 4 */}
+            <div className="square-matrix-card">
+              <div className="square-card-corner-bl"></div>
+              <div className="square-card-corner-br"></div>
+
+              <div className="square-card-top">
+                <span className="square-card-tag">[ SPHERE // 04 ]</span>
+                <div className="square-card-status">
+                  <span className="square-card-dot"></span>
+                  <span>Active Cohort</span>
+                </div>
+              </div>
+
+              <div className="square-card-center">
+                <div className="square-icon-housing">
+                  <Icon icon="carbon:analytics" width="28" color="#D4AF37" />
+                </div>
+                <h3 className="square-card-title">Digital Marketing & Growth</h3>
+                <p className="square-card-desc">
+                  Performance ads, technical search engine optimization, funnel architecture, and analytics for real businesses.
+                </p>
+              </div>
+
+              <div className="square-card-bottom">
+                <div className="square-badges-row">
+                  <span className="square-badge-item">SEO & Funnels</span>
+                  <span className="square-badge-item">Google Ads</span>
+                  <span className="square-badge-item">Content Matrix</span>
+                </div>
+                <a href="#courses" className="square-card-action">
+                  <span>Explore Curriculum</span>
+                  <ArrowUpRight size={14} />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -472,81 +654,152 @@ export default function CodeWeavePlanetLanding() {
           </div>
         </div>
 
-        {/* Footer with Social Media */}
-        <div style={styles.footer}>
-          <div style={styles.footerContent}>
-            <div style={styles.footerSection}>
-              <img src={cwLogo} alt="Code Weave Planet" style={styles.footerLogo} />
-              <h3 style={styles.footerBrand}>Code Weave Planet</h3>
-              <p style={styles.footerTagline}>Weaving Skills into Careers</p>
-              <p style={styles.footerAboutText}>
-                Discover our full story, mission, and everything about Code Weave Planet on our dedicated About Us page.
-              </p>
-              <Link to="/about" style={styles.aboutLink}>
-                Visit About Us Page →
-              </Link>
-            </div>
+        {/* Footer with Social Media — Animated Square Blocks */}
+        <div className="footer-animated">
+          {/* Decorative top edge */}
+          <div className="footer-edge">
+            <div className="footer-edge-line"></div>
+            <div className="footer-edge-diamond"></div>
+            <div className="footer-edge-line"></div>
+          </div>
 
-            <div style={styles.footerSection}>
-              <h4 style={styles.footerHeading}>Connect With Us</h4>
-              <div style={styles.socialLinks}>
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" style={styles.socialLink} title="Facebook">
-                  <Icon icon="mdi:facebook" width="20" />
-                </a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" style={styles.socialLink} title="Twitter/X">
-                  <Icon icon="mdi:twitter" width="20" />
-                </a>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" style={styles.socialLink} title="Instagram">
-                  <Icon icon="mdi:instagram" width="20" />
-                </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style={styles.socialLink} title="LinkedIn">
-                  <Icon icon="mdi:linkedin" width="20" />
-                </a>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" style={styles.socialLink} title="YouTube">
-                  <Icon icon="mdi:youtube" width="20" />
-                </a>
-                <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" style={styles.socialLink} title="TikTok">
-                  <Icon icon="ic:baseline-tiktok" width="20" />
-                </a>
-                <a href={`https://wa.me/256${WHATSAPP_NUMBER.slice(1)}`} target="_blank" rel="noopener noreferrer" style={styles.socialLink} title="WhatsApp">
-                  <Icon icon="mdi:whatsapp" width="20" />
-                </a>
-                <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" style={styles.socialLink} title="Telegram">
-                  <Icon icon="mdi:telegram" width="20" />
-                </a>
+          <div className="footer-blocks-grid">
+            {/* Block 1 — Brand */}
+            <div className="footer-block footer-block-brand">
+              <div className="footer-block-inner">
+                <img src={cwLogo} alt="Code Weave Planet" className="footer-block-logo" />
+                <h3 className="footer-block-title">Code Weave Planet</h3>
+                <p className="footer-block-tagline">Weaving Skills into Careers</p>
+                <div className="footer-block-divider"></div>
+                <p className="footer-block-text">
+                  Discover our full story, mission, and everything about Code Weave Planet on our dedicated About Us page.
+                </p>
+                <Link to="/about" className="footer-block-link">
+                  <Icon icon="mdi:arrow-right-circle" width="16" />
+                  Visit About Us Page
+                </Link>
               </div>
             </div>
 
-            <div style={styles.footerSection}>
-              <h4 style={styles.footerHeading}>Quick Links</h4>
-              <div style={styles.footerLinks}>
-                <a href="#courses" style={styles.footerLink}>Courses</a>
-                <a href="#how" style={styles.footerLink}>How it Works</a>
-                <a href="#contact" style={styles.footerLink}>Contact</a>
-                <Link to="/login" style={styles.footerLink}>Login</Link>
-                <Link to="/register" style={styles.footerLink}>Register</Link>
+            {/* Block 2 — Social Media */}
+            <div className="footer-block footer-block-social">
+              <div className="footer-block-inner">
+                <h4 className="footer-block-heading">
+                  <Icon icon="mdi:connection" width="18" />
+                  Connect With Us
+                </h4>
+                <div className="footer-social-grid">
+                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="footer-social-square" title="Facebook">
+                    <Icon icon="mdi:facebook" width="22" />
+                    <span>Facebook</span>
+                  </a>
+                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="footer-social-square" title="Twitter/X">
+                    <Icon icon="mdi:twitter" width="22" />
+                    <span>Twitter</span>
+                  </a>
+                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="footer-social-square" title="Instagram">
+                    <Icon icon="mdi:instagram" width="22" />
+                    <span>Instagram</span>
+                  </a>
+                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="footer-social-square" title="LinkedIn">
+                    <Icon icon="mdi:linkedin" width="22" />
+                    <span>LinkedIn</span>
+                  </a>
+                  <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="footer-social-square" title="YouTube">
+                    <Icon icon="mdi:youtube" width="22" />
+                    <span>YouTube</span>
+                  </a>
+                  <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="footer-social-square" title="TikTok">
+                    <Icon icon="ic:baseline-tiktok" width="22" />
+                    <span>TikTok</span>
+                  </a>
+                  <a href={`https://wa.me/256${WHATSAPP_NUMBER.slice(1)}`} target="_blank" rel="noopener noreferrer" className="footer-social-square footer-social-whatsapp" title="WhatsApp">
+                    <Icon icon="mdi:whatsapp" width="22" />
+                    <span>WhatsApp</span>
+                  </a>
+                  <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" className="footer-social-square" title="Telegram">
+                    <Icon icon="mdi:telegram" width="22" />
+                    <span>Telegram</span>
+                  </a>
+                </div>
               </div>
             </div>
 
-            <div style={styles.footerSection}>
-              <h4 style={styles.footerHeading}>Contact Info</h4>
-              <div style={styles.contactInfo}>
-                <p style={styles.contactItem}>
-                  <Icon icon="mdi:phone" width="16" style={{ marginRight: 8 }} />
-                  {WHATSAPP_NUMBER}
-                </p>
-                <p style={styles.contactItem}>
-                  <Icon icon="mdi:message" width="16" style={{ marginRight: 8 }} />
-                  WhatsApp Available
-                </p>
-                <p style={styles.contactItem}>Mbarara, Western Uganda</p>
+            {/* Block 3 — Quick Links */}
+            <div className="footer-block footer-block-links">
+              <div className="footer-block-inner">
+                <h4 className="footer-block-heading">
+                  <Icon icon="mdi:link-variant" width="18" />
+                  Quick Links
+                </h4>
+                <div className="footer-links-list">
+                  <a href="#courses" className="footer-nav-item">
+                    <Icon icon="mdi:book-open-variant" width="16" />
+                    <span>Courses</span>
+                    <Icon icon="mdi:chevron-right" width="14" className="footer-nav-arrow" />
+                  </a>
+                  <a href="#how" className="footer-nav-item">
+                    <Icon icon="mdi:cog-outline" width="16" />
+                    <span>How it Works</span>
+                    <Icon icon="mdi:chevron-right" width="14" className="footer-nav-arrow" />
+                  </a>
+                  <a href="#contact" className="footer-nav-item">
+                    <Icon icon="mdi:email-outline" width="16" />
+                    <span>Contact</span>
+                    <Icon icon="mdi:chevron-right" width="14" className="footer-nav-arrow" />
+                  </a>
+                  <Link to="/login" className="footer-nav-item">
+                    <Icon icon="mdi:login" width="16" />
+                    <span>Login</span>
+                    <Icon icon="mdi:chevron-right" width="14" className="footer-nav-arrow" />
+                  </Link>
+                  <Link to="/register" className="footer-nav-item">
+                    <Icon icon="mdi:account-plus" width="16" />
+                    <span>Register</span>
+                    <Icon icon="mdi:chevron-right" width="14" className="footer-nav-arrow" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Block 4 — Contact Info */}
+            <div className="footer-block footer-block-contact">
+              <div className="footer-block-inner">
+                <h4 className="footer-block-heading">
+                  <Icon icon="mdi:map-marker" width="18" />
+                  Contact Info
+                </h4>
+                <div className="footer-contact-cards">
+                  <div className="footer-contact-card">
+                    <Icon icon="mdi:phone" width="20" />
+                    <div>
+                      <span className="footer-contact-label">Phone</span>
+                      <span className="footer-contact-value">{WHATSAPP_NUMBER}</span>
+                    </div>
+                  </div>
+                  <div className="footer-contact-card">
+                    <Icon icon="mdi:whatsapp" width="20" />
+                    <div>
+                      <span className="footer-contact-label">WhatsApp</span>
+                      <span className="footer-contact-value">Available 24/7</span>
+                    </div>
+                  </div>
+                  <div className="footer-contact-card">
+                    <Icon icon="mdi:map-marker-radius" width="20" />
+                    <div>
+                      <span className="footer-contact-label">Location</span>
+                      <span className="footer-contact-value">Mbarara, Western Uganda</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          <div style={styles.footerBar}>
+          {/* Bottom bar */}
+          <div className="footer-bottom-bar">
             <span>© {new Date().getFullYear()} Code Weave Planet. All rights reserved.</span>
-            <span>Revolutionising Tech Education</span>
+            <span className="footer-bottom-accent">Revolutionising Tech Education</span>
           </div>
         </div>
       </section>

@@ -121,84 +121,253 @@
   opacity: 1;
 }
 
-/* ─────────────── ORIGAMI TRANSITION ─────────────── 
-   Two folded panels (top & bottom) unfold outward in 3D
-   like paper being unfolded, then the page content fades up. */
+/* ─────────────── ORIGAMI 3D TRANSITION ─────────────── 
+   Multi-facet paper folding & unfolding in 3D perspective:
+   - 4 triangular origami paper flaps with gold-foil creased edges
+   - Center golden origami crane with animated flapping wings
+   - Unfolds from folded envelope into full page with 3D paper flattening
+*/
 
 .transition-origami-wrapper {
-  perspective: 2000px;
+  position: relative;
+  min-height: 100vh;
+  perspective: 1600px;
+  overflow-x: hidden;
 }
 
-.transition-origami-panel {
+/* Fixed overlay for the origami folding screen */
+.origami-overlay {
   position: fixed;
-  left: 0;
-  width: 100%;
-  height: 50vh;
-  z-index: 9998;
-  background: linear-gradient(135deg, #2c1810, #1a1510);
-  transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1),
-              opacity 0.4s ease 0.6s;
-  will-change: transform, opacity;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  pointer-events: none;
+  perspective: 1600px;
   transform-style: preserve-3d;
+  background: transparent;
 }
 
-.transition-origami-panel::after {
+/* 4 Triangular Origami Facets that meet at center (50% 50%) */
+.origami-facet {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.85s cubic-bezier(0.77, 0, 0.175, 1),
+              opacity 0.75s cubic-bezier(0.77, 0, 0.175, 1);
+  will-change: transform, opacity;
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.6);
+}
+
+/* Top facet */
+.origami-facet-top {
+  clip-path: polygon(0 0, 100% 0, 50% 50%);
+  background: linear-gradient(180deg, #1f140e 0%, #2a1a12 60%, #352117 100%);
+  transform-origin: top center;
+  transform: perspective(1400px) rotateX(0deg);
+}
+
+/* Right facet */
+.origami-facet-right {
+  clip-path: polygon(100% 0, 100% 100%, 50% 50%);
+  background: linear-gradient(270deg, #180f0a 0%, #241710 60%, #301f16 100%);
+  transform-origin: right center;
+  transform: perspective(1400px) rotateY(0deg);
+}
+
+/* Bottom facet */
+.origami-facet-bottom {
+  clip-path: polygon(100% 100%, 0 100%, 50% 50%);
+  background: linear-gradient(0deg, #140c08 0%, #20130d 60%, #2d1c14 100%);
+  transform-origin: bottom center;
+  transform: perspective(1400px) rotateX(0deg);
+}
+
+/* Left facet */
+.origami-facet-left {
+  clip-path: polygon(0 100%, 0 0, 50% 50%);
+  background: linear-gradient(90deg, #180f0a 0%, #241710 60%, #301f16 100%);
+  transform-origin: left center;
+  transform: perspective(1400px) rotateY(0deg);
+}
+
+/* Crease border highlights on each facet */
+.origami-facet::after {
   content: '';
   position: absolute;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg,
-    transparent 0%,
-    #D4AF37 20%,
-    #FFD700 50%,
-    #D4AF37 80%,
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.25) 0%, transparent 70%);
+}
+
+/* Diagonal Gold Crease Lines */
+.origami-crease-diag-1,
+.origami-crease-diag-2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150vmax;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(212, 175, 55, 0.3) 25%, 
+    #FFD700 50%, 
+    rgba(212, 175, 55, 0.3) 75%, 
     transparent 100%
   );
-  box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+  box-shadow: 0 0 14px rgba(255, 215, 0, 0.7);
+  pointer-events: none;
+  transition: opacity 0.6s ease, transform 0.8s ease;
 }
 
-.transition-origami-top {
-  top: 0;
-  transform-origin: top center;
-  transform: perspective(2000px) rotateX(0deg);
+.origami-crease-diag-1 {
+  transform: translate(-50%, -50%) rotate(45deg);
 }
 
-.transition-origami-top::after {
-  bottom: 0;
+.origami-crease-diag-2 {
+  transform: translate(-50%, -50%) rotate(-45deg);
 }
 
-.transition-origami-bottom {
-  bottom: 0;
-  transform-origin: bottom center;
-  transform: perspective(2000px) rotateX(0deg);
-}
-
-.transition-origami-bottom::after {
-  top: 0;
-}
-
-/* Unfold — rotate panels away */
-.transition-origami-top.transition-origami-unfold {
-  transform: perspective(2000px) rotateX(-95deg);
+/* Unfolding State — 3D fold outward */
+.origami-unfolding .origami-facet-top {
+  transform: perspective(1400px) rotateX(102deg);
   opacity: 0;
 }
 
-.transition-origami-bottom.transition-origami-unfold {
-  transform: perspective(2000px) rotateX(95deg);
+.origami-unfolding .origami-facet-right {
+  transform: perspective(1400px) rotateY(102deg);
   opacity: 0;
 }
 
+.origami-unfolding .origami-facet-bottom {
+  transform: perspective(1400px) rotateX(-102deg);
+  opacity: 0;
+}
+
+.origami-unfolding .origami-facet-left {
+  transform: perspective(1400px) rotateY(-102deg);
+  opacity: 0;
+}
+
+.origami-unfolding .origami-crease-diag-1,
+.origami-unfolding .origami-crease-diag-2 {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1.4);
+}
+
+/* Center Emblem — Folded Origami Crane & Golden Crest */
+.origami-center-emblem {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100000;
+  pointer-events: none;
+  transition: transform 0.75s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.65s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.origami-bird-wings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 90px;
+  height: 90px;
+}
+
+.origami-bird-svg {
+  width: 64px;
+  height: 64px;
+  filter: drop-shadow(0 0 16px rgba(212, 175, 55, 0.7));
+  animation: origamiPulse 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes origamiPulse {
+  0% { transform: scale(0.96) rotate(-2deg); filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.6)); }
+  100% { transform: scale(1.04) rotate(2deg); filter: drop-shadow(0 0 24px rgba(255, 215, 0, 0.9)); }
+}
+
+.origami-wing {
+  position: absolute;
+  top: 24px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.origami-wing-l {
+  left: -14px;
+  border-width: 0 0 22px 28px;
+  border-color: transparent transparent #D4AF37 transparent;
+  transform-origin: right bottom;
+  animation: flapWingLeft 0.8s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
+}
+
+.origami-wing-r {
+  right: -14px;
+  border-width: 0 28px 22px 0;
+  border-color: transparent transparent #FFD700 transparent;
+  transform-origin: left bottom;
+  animation: flapWingRight 0.8s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
+}
+
+@keyframes flapWingLeft {
+  0% { transform: perspective(400px) rotateY(0deg) rotateZ(-12deg); }
+  100% { transform: perspective(400px) rotateY(60deg) rotateZ(16deg); }
+}
+
+@keyframes flapWingRight {
+  0% { transform: perspective(400px) rotateY(0deg) rotateZ(12deg); }
+  100% { transform: perspective(400px) rotateY(-60deg) rotateZ(-16deg); }
+}
+
+.origami-tagline {
+  margin-top: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #FFD700 0%, #FFF8DC 50%, #D4AF37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+}
+
+.origami-subtag {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(212, 175, 55, 0.8);
+  margin-top: 4px;
+}
+
+.origami-unfolding .origami-center-emblem {
+  transform: translate(-50%, -50%) scale(1.3);
+  opacity: 0;
+}
+
+/* Page content 3D Origami Unfold */
 .transition-origami-content {
-  opacity: 0;
-  transform: perspective(1500px) rotateX(15deg) scale(0.92);
-  transition: opacity 0.6s ease 0.5s,
-              transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s;
+  opacity: 0.05;
+  transform: perspective(1400px) rotateX(12deg) scale(0.96);
+  transform-origin: top center;
+  transition: opacity 0.7s cubic-bezier(0.25, 1, 0.5, 1) 0.15s,
+              transform 0.85s cubic-bezier(0.25, 1, 0.5, 1) 0.15s;
+  will-change: transform, opacity;
 }
 
-.transition-origami-content-visible {
+.transition-origami-content-unfolded {
   opacity: 1;
-  transform: perspective(1500px) rotateX(0deg) scale(1);
+  transform: perspective(1400px) rotateX(0deg) scale(1);
 }
 
 /* ─────────────── 3D Origami Loading Screen ─────────────── */
