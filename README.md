@@ -1,46 +1,38 @@
 # Code Weave Planet
 
-A comprehensive digital skills training platform built with React, featuring role-based authentication and full CRUD operations for courses, tutors, and students.
+A modern digital skills training platform built with React and Supabase, featuring permanent user profiles, role-based dashboards, and complete workflows for Students, Tutors, and Administrators.
 
-## 🚀 Features
+**Live Deployment**: [https://code-weave-planet-main.vercel.app](https://code-weave-planet-main.vercel.app)
 
-### Three User Roles
+## 🚀 Portals & Features
 
-#### 1. **Admin Dashboard**
-- Full CRUD operations for courses (Create, Read, Update, Delete)
-- Manage and approve tutors
-- Monitor student enrollments
-- View platform statistics
-- Search and filter functionality
-
-#### 2. **Tutor Portal**
-- Create and manage courses
-- Add/edit/delete lessons with ordering
-- Set class schedules and WhatsApp group links
-- Track student enrollment numbers
-- Full course content management
-
-#### 3. **Student Portal**
+### 1. **Student Portal (`/student`)**
 - Browse available courses
-- Search courses by name, tutor, or description
-- Enroll in courses
-- Access WhatsApp class groups
-- View enrolled courses and details
+- Submit course application form (name, email, phone, motivation)
+- Real-time application status tracker (`pending`, `approved`, `rejected`)
+- "My Courses" area with completion indicators (`enrolled`, `completed`)
+- Access study materials and resource links posted by course tutors
 
-### 🔐 Authentication System
-- Login with role-based access control
-- Registration with validation
-- Protected routes
-- Persistent sessions using localStorage
-- Context-based state management
+### 2. **Tutor Dashboard (`/tutor`)**
+- Create and manage courses
+- Course student roster with **live online/offline indicators**
+- Filter students by `enrolled`, `completed`, and `dropped`
+- Add student directly or remove/drop enrolled students
+- Mark student course completion status
+- Post and manage resource links for enrolled students
+- Review course applications and approve/reject them
 
-## 📋 Demo Credentials
+### 3. **Admin Dashboard (`/admin`)**
+- Real-time platform metrics: total students, tutors, active courses, and online users count
+- Full course CRUD management across the platform
+- Review all course applications and enrollments
+- Manage student and tutor accounts (change roles, suspend, activate, delete)
+- Full visibility and control over platform resources
 
-Use these credentials to test different user roles:
-
-- **Admin**: admin@codeweave.com / admin123
-- **Tutor**: tutor@codeweave.com / tutor123
-- **Student**: student@codeweave.com / student123
+### 🔐 Authentication & Supabase Database
+- Supabase Auth with PKCE and automatic profile generation trigger
+- Row Level Security (RLS) policies protecting student, tutor, and admin data
+- Role-based redirect routing via `/auth/callback`
 
 ## 🛠️ Tech Stack
 
