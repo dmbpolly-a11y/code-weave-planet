@@ -1,47 +1,41 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import OrigamiLoader from './OrigamiLoader';
 
 export default function ProtectedRoute({ children, allowedRoles = [] }) {
-  const { user, loading } = useAuth();
+  const { user, profile, loading } = useAuth();
 
   if (loading) {
-    return <OrigamiLoader text="Loading Code Weave Planet..." />;
+    return (
+      <div className="loading-screen">
+        <div className="spinner"></div>
+        <p>Loading...</p>
+      </div>
+    );
   }
 
-  // Not authenticated at all — redirect to login
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  // If role-checking is needed, get role from localStorage (dashboards use this)
-  // or from user.user_metadata.role (set via Supabase)
-  if (allowedRoles.length > 0) {
-    const localUser = (() => {
-      try {
-        return JSON.parse(localStorage.getItem('user') || '{}');
-      } catch {
-        return {};
-      }
-    })();
+  // Profile not yet loaded — wait briefly
+  if (!profile) {
+    return (
+      <div className="loading-screen">
+        <div className="spinner"></div>
+        <p>Loading profile...</p>
+      </div>
+    );
+  }
 
-    const userRole =
-      localUser?.role ||
-      user?.user_metadata?.role ||
-      user?.app_metadata?.role ||
-      'student'; // default role
+  const role = profile.role;
 
-    if (!allowedRoles.includes(userRole)) {
-      switch (userRole) {
-        case 'admin':
-          return <Navigate to="/admin" replace />;
-        case 'tutor':
-          return <Navigate to="/tutor" replace />;
-        case 'student':
-          return <Navigate to="/student" replace />;
-        default:
-          return <Navigate to="/" replace />;
-      }
+  if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
+    // Redirect to the correct dashboard
+    switch (role) {
+      case 'admin': return <Navigate to="/admin" replace />;
+      case 'tutor': return <Navigate to="/tutor" replace />;
+      case 'student': return <Navigate to="/student" replace />;
+      default: return <Navigate to="/" replace />;
     }
   }
 

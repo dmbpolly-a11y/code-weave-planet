@@ -1,495 +1,529 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
+import { supabase } from '../lib/supabaseClient';
+import { useAuth } from '../context/AuthContext';
 import PageTransition from '../components/PageTransition';
 import cwLogo from '../../public/images/Cwlogo.png';
 
-const AVAILABLE_COURSES = [
-  {
-    id: 1,
-    name: 'AI and Machine Learning',
-    tutor: 'Dr. Sarah Johnson',
-    description: 'Build models that actually ship — from data cleaning to a working prediction API.',
-    duration: '12 weeks',
-    schedule: 'Mon, Wed, Fri - 6:00 PM',
-    fee: '800,000 UGX',
-    whatsappGroup: 'https://chat.whatsapp.com/ai-ml-class',
-    enrolled: false
-  },
-  {
-    id: 2,
-    name: 'Web Design with Vite.js',
-    tutor: 'Mike Chen',
-    description: 'Fast, modern front ends. Component-driven builds you can deploy the same week you learn them.',
-    duration: '8 weeks',
-    schedule: 'Tue, Thu - 7:00 PM',
-    fee: '600,000 UGX',
-    whatsappGroup: 'https://chat.whatsapp.com/web-design-vite',
-    enrolled: false
-  },
-  {
-    id: 3,
-    name: 'System Development with PHP Laravel',
-    tutor: 'John Okello',
-    description: 'Backend systems that hold up in production: auth, databases, APIs, admin dashboards.',
-    duration: '10 weeks',
-    schedule: 'Mon, Wed - 8:00 PM',
-    fee: '700,000 UGX',
-    whatsappGroup: 'https://chat.whatsapp.com/laravel-dev',
-    enrolled: false
-  },
-  {
-    id: 4,
-    name: 'Digital Marketing',
-    tutor: 'Grace Nakato',
-    description: 'SEO, paid ads, and content strategy for businesses trying to be found online.',
-    duration: '6 weeks',
-    schedule: 'Sat - 3:00 PM',
-    fee: '500,000 UGX',
-    whatsappGroup: 'https://chat.whatsapp.com/digital-marketing',
-    enrolled: false
-  },
-  {
-    id: 5,
-    name: 'Mobile App Development',
-    tutor: 'David Mwesigwa',
-    description: 'React Native and Flutter — one skill set, apps on both Android and iOS.',
-    duration: '14 weeks',
-    schedule: 'Tue, Thu, Sat - 5:00 PM',
-    fee: '900,000 UGX',
-    whatsappGroup: 'https://chat.whatsapp.com/mobile-dev',
-    enrolled: false
-  }
-];
-
 export default function StudentDashboard() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  const { profile, logout, updateProfile, uploadAvatar } = useAuth();
+
   const [activeTab, setActiveTab] = useState('browse');
-  const [courses, setCourses] = useState(AVAILABLE_COURSES);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [allCourses, setAllCourses] = useState([]);
+  const [enrollments, setEnrollments] = useState([]);
+  const [applications, setApplications] = useState([]);
+  const [resources, setResources] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [showCourseDetail, setShowCourseDetail] = useState(false);
-  const [profilePic, setProfilePic] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState('');
+  const [applyForm, setApplyForm] = useState({ full_name: '', email: '', phone: '', motivation: '' });
+
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [toast, setToast] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [editingProfile, setEditingProfile] = useState(false);
+  const [profileForm, setProfileForm] = useState({});
 
-  useEffect(() => {
-    const userData = localStorage.getItem('user');
-    if (!userData) {
-      navigate('/login');
-      return;
-    }
-    const parsedUser = JSON.parse(userData);
-    if (parsedUser.role !== 'student') {
-      navigate('/');
-      return;
-    }
-    setUser(parsedUser);
-
-    // Load profile picture
-    const savedProfilePic = localStorage.getItem('profilePic');
-    if (savedProfilePic) {
-      setProfilePic(savedProfilePic);
-    }
-
-    // Load enrolled courses from localStorage
-    const enrolledCourses = JSON.parse(localStorage.getItem('enrolledCourses') || '[]');
-    const updatedCourses = AVAILABLE_COURSES.map(course => ({
-      ...course,
-      enrolled: enrolledCourses.includes(course.id)
-    }));
-    setCourses(updatedCourses);
-  }, [navigate]);
-
-  const handleProfilePicChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfilePic(reader.result);
-        localStorage.setItem('profilePic', reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
+  const showToast = (msg, type = 'success') => {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 3500);
   };
 
-  const removeProfilePic = () => {
-    setProfilePic(null);
-    localStorage.removeItem('profilePic');
+  const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-UG', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
+
+  useEffect(() => {
+    if (!profile || profile.role !== 'student') { navigate('/'); return; }
+    loadAll();
+  }, [profile]);
+
+  const loadAll = async () => {
+    setLoading(true);
+    await Promise.all([loadCourses(), loadEnrollments(), loadApplications()]);
+    setLoading(false);
+  };
+
+  const loadCourses = async () => {
+    const { data } = await supabase
+      .from('courses')
+      .select('*, tutor:profiles!courses_tutor_id_fkey(full_name)')
+      .eq('status', 'active')
+      .order('created_at', { ascending: false });
+    setAllCourses(data || []);
+  };
+
+  const loadEnrollments = async () => {
+    const { data } = await supabase
+      .from('enrollments')
+      .select('*, course:courses(*, tutor:profiles!courses_tutor_id_fkey(full_name))')
+      .eq('student_id', profile.id);
+    setEnrollments(data || []);
+  };
+
+  const loadApplications = async () => {
+    const { data } = await supabase
+      .from('applications')
+      .select('*, course:courses(title)')
+      .eq('student_id', profile.id)
+      .order('applied_at', { ascending: false });
+    setApplications(data || []);
+  };
+
+  const loadResourcesForCourse = async (courseId) => {
+    const { data } = await supabase
+      .from('resources')
+      .select('*')
+      .eq('course_id', courseId)
+      .order('created_at', { ascending: false });
+    setResources(data || []);
+  };
+
+  // ─── Logout & Profile ─────────────────────────────────────
+  const handleLogout = async () => { await logout(); navigate('/'); };
+
+  const openProfileEdit = () => {
+    setProfileForm({ full_name: profile.full_name, phone: profile.phone, bio: profile.bio });
+    setEditingProfile(true);
     setShowProfileMenu(false);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('user');
-    navigate('/');
+  const saveProfile = async () => {
+    setSaving(true);
+    const { error } = await updateProfile(profileForm);
+    setSaving(false);
+    if (error) { showToast(error, 'error'); return; }
+    showToast('Profile updated!');
+    setEditingProfile(false);
   };
 
-  const handleEnroll = (courseId) => {
-    const enrolledCourses = JSON.parse(localStorage.getItem('enrolledCourses') || '[]');
-    
-    if (!enrolledCourses.includes(courseId)) {
-      enrolledCourses.push(courseId);
-      localStorage.setItem('enrolledCourses', JSON.stringify(enrolledCourses));
-      
-      const updatedCourses = courses.map(c =>
-        c.id === courseId ? { ...c, enrolled: true } : c
-      );
-      setCourses(updatedCourses);
-      
-      alert('Successfully enrolled! Check your email for payment instructions.');
-      setShowCourseDetail(false);
-    }
+  const handleAvatarUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const { error } = await uploadAvatar(file);
+    if (error) { showToast(error, 'error'); return; }
+    showToast('Avatar updated!');
+    setShowProfileMenu(false);
   };
 
-  const handleUnenroll = (courseId) => {
-    if (confirm('Are you sure you want to unenroll from this course?')) {
-      const enrolledCourses = JSON.parse(localStorage.getItem('enrolledCourses') || '[]');
-      const updatedEnrolled = enrolledCourses.filter(id => id !== courseId);
-      localStorage.setItem('enrolledCourses', JSON.stringify(updatedEnrolled));
-      
-      const updatedCourses = courses.map(c =>
-        c.id === courseId ? { ...c, enrolled: false } : c
-      );
-      setCourses(updatedCourses);
-    }
-  };
-
-  const openCourseDetail = (course) => {
+  // ─── Application ──────────────────────────────────────────
+  const openApplyModal = (course) => {
     setSelectedCourse(course);
-    setShowCourseDetail(true);
+    setApplyForm({
+      full_name: profile.full_name || '',
+      email: profile.email || '',
+      phone: profile.phone || '',
+      motivation: '',
+    });
+    setModalType('apply');
+    setShowModal(true);
   };
 
-  const filteredCourses = courses.filter(c =>
-    c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    c.tutor.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    c.description.toLowerCase().includes(searchTerm.toLowerCase())
+  const submitApplication = async () => {
+    if (!applyForm.full_name || !applyForm.email) { showToast('Please fill required fields', 'error'); return; }
+    setSaving(true);
+
+    const { error } = await supabase.from('applications').upsert([{
+      student_id: profile.id,
+      course_id: selectedCourse.id,
+      ...applyForm,
+    }]);
+
+    setSaving(false);
+    if (error) { showToast(error.message, 'error'); return; }
+    showToast('Application submitted! The tutor will review it.');
+    setShowModal(false);
+    await loadApplications();
+  };
+
+  // ─── Resources view ───────────────────────────────────────
+  const openResources = async (enrollment) => {
+    setSelectedCourse(enrollment.course);
+    await loadResourcesForCourse(enrollment.course_id);
+    setModalType('resources');
+    setShowModal(true);
+  };
+
+  // ─── Helpers ─────────────────────────────────────────────
+  const enrolledCourseIds = new Set(enrollments.map(e => e.course_id));
+  const appliedCourseIds = new Set(applications.map(a => a.course_id));
+
+  const availableCourses = allCourses.filter(c =>
+    !enrolledCourseIds.has(c.id) &&
+    (!searchTerm || c.title.toLowerCase().includes(searchTerm.toLowerCase()) || (c.tutor?.full_name || '').toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
-  const enrolledCourses = courses.filter(c => c.enrolled);
-  const availableCourses = filteredCourses.filter(c => !c.enrolled);
+  const getApplicationStatus = (courseId) => applications.find(a => a.course_id === courseId)?.status;
+
+  if (loading) return <div className="loading-screen"><div className="spinner" /><p>Loading Student Portal...</p></div>;
 
   return (
-    <PageTransition type="origami">
-    <div className="dashboard-container page-container">
-      {/* Sidebar */}
-      <aside className="dashboard-sidebar">
-        <div className="sidebar-header">
-          <img src={cwLogo} alt="Logo" className="sidebar-logo" />
-          <h2>Student Portal</h2>
-        </div>
-
-        <nav className="sidebar-nav">
-          <button
-            className={activeTab === 'browse' ? 'active' : ''}
-            onClick={() => setActiveTab('browse')}
-          >
-            <Icon icon="mdi:magnify" width="20" />
-            Browse Courses
-          </button>
-          <button
-            className={activeTab === 'enrolled' ? 'active' : ''}
-            onClick={() => setActiveTab('enrolled')}
-          >
-            <Icon icon="mdi:school" width="20" />
-            My Courses ({enrolledCourses.length})
-          </button>
-        </nav>
-
-        <div className="sidebar-footer">
-          <div className="user-profile">
-            <div className="profile-pic-container">
-              {profilePic ? (
-                <img src={profilePic} alt="Profile" className="profile-pic" />
-              ) : (
-                <div className="profile-pic-placeholder">
-                  <Icon icon="mdi:account" width="24" />
-                </div>
-              )}
-              <button 
-                className="profile-pic-edit"
-                onClick={() => setShowProfileMenu(!showProfileMenu)}
-              >
-                <Icon icon="mdi:cog" width="14" />
-              </button>
-              {showProfileMenu && (
-                <div className="profile-menu">
-                  <label className="profile-menu-item">
-                    <Icon icon="mdi:camera" width="16" />
-                    <span>Upload Photo</span>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleProfilePicChange}
-                      style={{ display: 'none' }}
-                    />
-                  </label>
-                  {profilePic && (
-                    <button className="profile-menu-item" onClick={removeProfilePic}>
-                      <Icon icon="mdi:logout" width="16" />
-                      <span>Remove Photo</span>
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
-            <div className="user-info">
-              <p className="user-name">{user?.name}</p>
-              <p className="user-role">{user?.role}</p>
-            </div>
+    <PageTransition>
+      <div className="dashboard-container page-container">
+        {toast && (
+          <div style={{
+            position: 'fixed', top: 20, right: 20, zIndex: 9999,
+            padding: '12px 20px', borderRadius: '10px',
+            background: toast.type === 'error' ? '#EF4444' : '#22C55E',
+            color: '#fff', fontWeight: 600, fontSize: '14px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+          }}>
+            {toast.msg}
           </div>
-          <button onClick={handleLogout} className="btn-logout">
-            <Icon icon="mdi:logout" width="18" />
-            Logout
-          </button>
-        </div>
-      </aside>
+        )}
 
-      {/* Main Content */}
-      <main className="dashboard-main">
-        <header className="dashboard-header">
-          <h1>
-            {activeTab === 'browse' && 'Browse Available Courses'}
-            {activeTab === 'enrolled' && 'My Enrolled Courses'}
-          </h1>
-        </header>
+        {/* Sidebar */}
+        <aside className="dashboard-sidebar">
+          <div className="sidebar-header">
+            <img src={cwLogo} alt="Logo" className="sidebar-logo" />
+            <h2>Student Portal</h2>
+          </div>
 
-        <div className="dashboard-content">
-          {/* Browse Courses Tab */}
-          {activeTab === 'browse' && (
-            <>
-              <div className="content-header">
-                <div className="search-bar">
-                  <Icon icon="mdi:magnify" width="18" />
-                  <input
-                    type="text"
-                    placeholder="Search courses by name, tutor, or description..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-              </div>
+          <nav className="sidebar-nav">
+            {[
+              { id: 'browse',       icon: 'mdi:magnify',              label: 'Browse Courses' },
+              { id: 'enrolled',     icon: 'mdi:school',               label: `My Courses (${enrollments.length})` },
+              { id: 'applications', icon: 'mdi:file-document-edit',   label: `Applications (${applications.length})` },
+            ].map(tab => (
+              <button key={tab.id} className={activeTab === tab.id ? 'active' : ''}
+                onClick={() => setActiveTab(tab.id)}>
+                <Icon icon={tab.icon} width="20" /> {tab.label}
+              </button>
+            ))}
+          </nav>
 
-              <div className="course-grid">
-                {availableCourses.length === 0 ? (
-                  <div className="empty-state">
-                    <Icon icon="mdi:book-open" width="48" />
-                    <p>No courses found matching your search.</p>
-                  </div>
+          <div className="sidebar-footer">
+            <div className="user-profile">
+              <div className="profile-pic-container">
+                {profile?.avatar_url ? (
+                  <img src={profile.avatar_url} alt="Profile" className="profile-pic" />
                 ) : (
-                  availableCourses.map(course => (
-                    <div key={course.id} className="course-card-student">
-                      <div className="course-card-body">
-                        <h3>{course.name}</h3>
-                        <p className="course-tutor">
-                          <Icon icon="mdi:account" width="16" />
-                          {course.tutor}
-                        </p>
-                        <p className="course-description">{course.description}</p>
-                        
-                        <div className="course-info">
-                          <div className="info-item">
-                            <Icon icon="mdi:calendar" width="16" />
-                            <span>{course.duration}</span>
-                          </div>
-                          <div className="info-item">
-                            <Icon icon="mdi:file-document" width="16" />
-                            <span>{course.schedule}</span>
-                          </div>
-                        </div>
-
-                        <div className="course-fee">{course.fee}</div>
-                      </div>
-
-                      <div className="course-card-footer">
-                        <button
-                          className="btn-secondary"
-                          onClick={() => openCourseDetail(course)}
-                        >
-                          View Details
-                          <Icon icon="mdi:arrow-right" width="16" />
-                        </button>
-                        <button
-                          className="btn-primary"
-                          onClick={() => handleEnroll(course.id)}
-                        >
-                          <Icon icon="mdi:check-circle" width="16" />
-                          Enroll Now
-                        </button>
-                      </div>
-                    </div>
-                  ))
+                  <div className="profile-pic-placeholder"><Icon icon="mdi:account" width="24" /></div>
+                )}
+                <button className="profile-pic-edit" onClick={() => setShowProfileMenu(!showProfileMenu)}>
+                  <Icon icon="mdi:cog" width="14" />
+                </button>
+                {showProfileMenu && (
+                  <div className="profile-menu">
+                    <label className="profile-menu-item">
+                      <Icon icon="mdi:camera" width="16" /><span>Upload Photo</span>
+                      <input type="file" accept="image/*" onChange={handleAvatarUpload} style={{ display: 'none' }} />
+                    </label>
+                    <button className="profile-menu-item" onClick={openProfileEdit}>
+                      <Icon icon="mdi:account-edit" width="16" /><span>Edit Profile</span>
+                    </button>
+                  </div>
                 )}
               </div>
-            </>
-          )}
+              <div className="user-info">
+                <p className="user-name">{profile?.full_name || 'Student'}</p>
+                <p className="user-role">Student</p>
+              </div>
+            </div>
+            <button onClick={handleLogout} className="btn-logout">
+              <Icon icon="mdi:logout" width="18" /> Logout
+            </button>
+          </div>
+        </aside>
 
-          {/* Enrolled Courses Tab */}
-          {activeTab === 'enrolled' && (
-            <>
-              {enrolledCourses.length === 0 ? (
-                <div className="empty-state">
-                  <Icon icon="mdi:school" width="48" />
-                  <p>You haven't enrolled in any courses yet.</p>
-                  <button
-                    className="btn-primary"
-                    onClick={() => setActiveTab('browse')}
-                  >
-                    Browse Courses
-                  </button>
+        {/* Main */}
+        <main className="dashboard-main">
+          <header className="dashboard-header">
+            <h1>
+              {activeTab === 'browse' && 'Browse Available Courses'}
+              {activeTab === 'enrolled' && 'My Enrolled Courses'}
+              {activeTab === 'applications' && 'My Applications'}
+            </h1>
+          </header>
+
+          <div className="dashboard-content">
+
+            {/* ── BROWSE ── */}
+            {activeTab === 'browse' && (
+              <>
+                <div className="content-header">
+                  <div className="search-bar">
+                    <Icon icon="mdi:magnify" width="18" />
+                    <input placeholder="Search courses by name or tutor..."
+                      value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+                  </div>
                 </div>
-              ) : (
-                <div className="enrolled-courses-list">
-                  {enrolledCourses.map(course => (
-                    <div key={course.id} className="enrolled-course-card">
-                      <div className="enrolled-header">
-                        <div>
-                          <h3>{course.name}</h3>
+
+                <div className="course-grid">
+                  {availableCourses.map(course => {
+                    const appStatus = getApplicationStatus(course.id);
+                    return (
+                      <div key={course.id} className="course-card-student">
+                        <div className="course-card-body">
+                          <h3>{course.title}</h3>
                           <p className="course-tutor">
                             <Icon icon="mdi:account" width="16" />
-                            Tutor: {course.tutor}
+                            {course.tutor?.full_name || 'TBD'}
                           </p>
+                          <p className="course-description">{course.description}</p>
+                          <div className="course-info">
+                            {course.duration && <div className="info-item"><Icon icon="mdi:clock" width="15" /><span>{course.duration}</span></div>}
+                            {course.schedule && <div className="info-item"><Icon icon="mdi:calendar" width="15" /><span>{course.schedule}</span></div>}
+                          </div>
+                          {course.fee && <div className="course-fee">{course.fee}</div>}
                         </div>
-                        <span className="enrolled-badge">
-                          <Icon icon="mdi:check-circle" width="16" />
-                          Enrolled
-                        </span>
-                      </div>
-
-                      <p className="course-description">{course.description}</p>
-
-                      <div className="enrolled-info">
-                        <div className="info-item">
-                          <Icon icon="mdi:calendar" width="16" />
-                          <span>Duration: {course.duration}</span>
+                        <div className="course-card-footer">
+                          {appStatus === 'pending' && (
+                            <span style={{ color: '#F59E0B', fontSize: '13px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <Icon icon="mdi:clock" width="16" /> Application Pending
+                            </span>
+                          )}
+                          {appStatus === 'rejected' && (
+                            <span style={{ color: '#EF4444', fontSize: '13px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <Icon icon="mdi:close-circle" width="16" /> Application Rejected
+                            </span>
+                          )}
+                          {!appStatus && (
+                            <button className="btn-primary" onClick={() => openApplyModal(course)}>
+                              <Icon icon="mdi:file-document-edit" width="16" /> Apply Now
+                            </button>
+                          )}
                         </div>
-                        <div className="info-item">
-                          <Icon icon="mdi:file-document" width="16" />
-                          <span>Schedule: {course.schedule}</span>
-                        </div>
                       </div>
-
-                      <div className="enrolled-actions">
-                        <a
-                          href={course.whatsappGroup}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn-primary"
-                        >
-                          <Icon icon="mdi:message" width="16" />
-                          Join WhatsApp Class
-                        </a>
-                        <button
-                          className="btn-secondary"
-                          onClick={() => openCourseDetail(course)}
-                        >
-                          Course Details
-                        </button>
-                        <button
-                          className="btn-danger-outline"
-                          onClick={() => handleUnenroll(course.id)}
-                        >
-                          Unenroll
-                        </button>
-                      </div>
+                    );
+                  })}
+                  {availableCourses.length === 0 && (
+                    <div className="empty-state">
+                      <Icon icon="mdi:book-open" width="48" />
+                      <p>{searchTerm ? 'No courses match your search.' : 'No available courses right now.'}</p>
                     </div>
-                  ))}
+                  )}
                 </div>
-              )}
-            </>
-          )}
-        </div>
-      </main>
+              </>
+            )}
 
-      {/* Course Detail Modal */}
-      {showCourseDetail && selectedCourse && (
-        <div className="modal-overlay" onClick={() => setShowCourseDetail(false)}>
-          <div className="modal-content modal-large" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h2>{selectedCourse.name}</h2>
-              <button className="btn-icon" onClick={() => setShowCourseDetail(false)}>
-                <Icon icon="mdi:logout" width="20" />
-              </button>
-            </div>
+            {/* ── ENROLLED ── */}
+            {activeTab === 'enrolled' && (
+              <>
+                {enrollments.length === 0 ? (
+                  <div className="empty-state">
+                    <Icon icon="mdi:school" width="48" />
+                    <p>You haven't been enrolled in any courses yet.</p>
+                    <button className="btn-primary" onClick={() => setActiveTab('browse')}>Browse Courses</button>
+                  </div>
+                ) : (
+                  <div className="enrolled-courses-list">
+                    {enrollments.map(e => (
+                      <div key={e.id} className="enrolled-course-card">
+                        <div className="enrolled-header">
+                          <div>
+                            <h3>{e.course?.title}</h3>
+                            <p className="course-tutor">
+                              <Icon icon="mdi:account" width="16" />
+                              Tutor: {e.course?.tutor?.full_name || 'TBD'}
+                            </p>
+                          </div>
+                          <span className={`enrolled-badge ${e.status === 'completed' ? 'completed' : ''}`}>
+                            <Icon icon={e.status === 'completed' ? 'mdi:check-circle' : 'mdi:school'} width="16" />
+                            {e.status === 'completed' ? 'Completed' : 'Enrolled'}
+                          </span>
+                        </div>
 
-            <div className="modal-body">
-              <div className="course-detail-section">
-                <h3>
-                  <Icon icon="mdi:account" width="20" />
-                  Instructor
-                </h3>
-                <p>{selectedCourse.tutor}</p>
+                        {e.course?.description && <p className="course-description">{e.course.description}</p>}
+
+                        <div className="enrolled-info">
+                          {e.course?.duration && <div className="info-item"><Icon icon="mdi:clock" width="16" /><span>{e.course.duration}</span></div>}
+                          {e.course?.schedule && <div className="info-item"><Icon icon="mdi:calendar" width="16" /><span>{e.course.schedule}</span></div>}
+                          <div className="info-item"><Icon icon="mdi:calendar-check" width="16" /><span>Enrolled: {fmtDate(e.enrolled_at)}</span></div>
+                          {e.completed_at && <div className="info-item"><Icon icon="mdi:check-circle" width="16" /><span style={{ color: '#22C55E' }}>Completed: {fmtDate(e.completed_at)}</span></div>}
+                        </div>
+
+                        <div className="enrolled-actions">
+                          <button className="btn-primary" onClick={() => openResources(e)}>
+                            <Icon icon="mdi:link-variant" width="16" /> View Resources
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* ── APPLICATIONS ── */}
+            {activeTab === 'applications' && (
+              <>
+                {applications.length === 0 ? (
+                  <div className="empty-state">
+                    <Icon icon="mdi:file-document-edit" width="48" />
+                    <p>You haven't applied to any courses yet.</p>
+                    <button className="btn-primary" onClick={() => setActiveTab('browse')}>Browse Courses</button>
+                  </div>
+                ) : (
+                  <div className="data-table">
+                    <table>
+                      <thead><tr><th>Course</th><th>Applied</th><th>Status</th></tr></thead>
+                      <tbody>
+                        {applications.map(app => (
+                          <tr key={app.id}>
+                            <td><strong>{app.course?.title}</strong></td>
+                            <td>{fmtDate(app.applied_at)}</td>
+                            <td>
+                              <span className={`status-badge ${app.status}`}>{app.status}</span>
+                              {app.status === 'approved' && (
+                                <span style={{ marginLeft: '8px', color: '#22C55E', fontSize: '12px' }}>✓ You are enrolled!</span>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </>
+            )}
+
+          </div>
+        </main>
+
+        {/* ── Application Modal ── */}
+        {showModal && modalType === 'apply' && selectedCourse && (
+          <div className="modal-overlay" onClick={() => setShowModal(false)}>
+            <div className="modal-content modal-large" onClick={e => e.stopPropagation()}>
+              <div className="modal-header">
+                <div>
+                  <h2>Apply for Course</h2>
+                  <p style={{ color: '#8B7355', fontSize: '14px', marginTop: '4px' }}>{selectedCourse.title}</p>
+                </div>
+                <button className="btn-icon" onClick={() => setShowModal(false)}><Icon icon="mdi:close" width="20" /></button>
               </div>
-
-              <div className="course-detail-section">
-                <h3>
-                  <Icon icon="mdi:file-document" width="20" />
-                  Course Description
-                </h3>
-                <p>{selectedCourse.description}</p>
-              </div>
-
-              <div className="course-detail-grid">
-                <div className="course-detail-section">
-                  <h3>
-                    <Icon icon="mdi:calendar" width="20" />
-                    Duration
-                  </h3>
-                  <p>{selectedCourse.duration}</p>
+              <div className="modal-body">
+                <div style={{
+                  background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)',
+                  borderRadius: '10px', padding: '14px', marginBottom: '20px',
+                }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', fontSize: '13px', color: '#8B7355' }}>
+                    {selectedCourse.tutor?.full_name && <span><strong style={{ color: '#D4AF37' }}>Tutor:</strong> {selectedCourse.tutor.full_name}</span>}
+                    {selectedCourse.duration && <span><strong style={{ color: '#D4AF37' }}>Duration:</strong> {selectedCourse.duration}</span>}
+                    {selectedCourse.schedule && <span><strong style={{ color: '#D4AF37' }}>Schedule:</strong> {selectedCourse.schedule}</span>}
+                    {selectedCourse.fee && <span><strong style={{ color: '#D4AF37' }}>Fee:</strong> {selectedCourse.fee}</span>}
+                  </div>
                 </div>
 
-                <div className="course-detail-section">
-                  <h3>
-                    <Icon icon="mdi:calendar" width="20" />
-                    Schedule
-                  </h3>
-                  <p>{selectedCourse.schedule}</p>
+                {[
+                  { label: 'Full Name *', key: 'full_name', type: 'text', ph: 'Your full name' },
+                  { label: 'Email Address *', key: 'email', type: 'email', ph: 'your@email.com' },
+                  { label: 'Phone Number', key: 'phone', type: 'tel', ph: '0750937506' },
+                ].map(f => (
+                  <div className="form-group" key={f.key}>
+                    <label>{f.label}</label>
+                    <input type={f.type} value={applyForm[f.key]} placeholder={f.ph}
+                      onChange={e => setApplyForm({ ...applyForm, [f.key]: e.target.value })} />
+                  </div>
+                ))}
+
+                <div className="form-group">
+                  <label>Why do you want to take this course? (optional)</label>
+                  <textarea value={applyForm.motivation} rows="3" placeholder="Tell us about your motivation and goals..."
+                    onChange={e => setApplyForm({ ...applyForm, motivation: e.target.value })} />
                 </div>
               </div>
-
-              <div className="course-detail-section">
-                <h3>Course Fee</h3>
-                <p className="course-fee-large">{selectedCourse.fee}</p>
-              </div>
-
-              {selectedCourse.enrolled && (
-                <div className="course-detail-section whatsapp-section">
-                  <h3>
-                    <Icon icon="mdi:message" width="20" />
-                    WhatsApp Class Group
-                  </h3>
-                  <a
-                    href={selectedCourse.whatsappGroup}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-primary"
-                  >
-                    <Icon icon="mdi:message" width="16" />
-                    Join WhatsApp Group
-                  </a>
-                </div>
-              )}
-            </div>
-
-            <div className="modal-footer">
-              {!selectedCourse.enrolled ? (
-                <button
-                  className="btn-primary btn-large"
-                  onClick={() => handleEnroll(selectedCourse.id)}
-                >
-                  <Icon icon="mdi:check-circle" width="18" />
-                  Enroll in This Course
+              <div className="modal-footer">
+                <button className="btn-secondary" onClick={() => setShowModal(false)}>Cancel</button>
+                <button className="btn-primary" onClick={submitApplication} disabled={saving || !applyForm.full_name || !applyForm.email}>
+                  <Icon icon="mdi:send" width="18" />
+                  {saving ? 'Submitting...' : 'Submit Application'}
                 </button>
-              ) : (
-                <button className="btn-secondary btn-large" onClick={() => setShowCourseDetail(false)}>
-                  Close
-                </button>
-              )}
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+
+        {/* ── Resources Modal ── */}
+        {showModal && modalType === 'resources' && (
+          <div className="modal-overlay" onClick={() => setShowModal(false)}>
+            <div className="modal-content modal-large" onClick={e => e.stopPropagation()}>
+              <div className="modal-header">
+                <div>
+                  <h2>Course Resources</h2>
+                  <p style={{ color: '#8B7355', fontSize: '14px', marginTop: '4px' }}>{selectedCourse?.title}</p>
+                </div>
+                <button className="btn-icon" onClick={() => setShowModal(false)}><Icon icon="mdi:close" width="20" /></button>
+              </div>
+              <div className="modal-body">
+                {resources.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: '32px', color: '#5C4B3A' }}>
+                    <Icon icon="mdi:link-variant" width="48" style={{ opacity: 0.4, display: 'block', margin: '0 auto 12px' }} />
+                    <p>No resources have been posted yet. Check back soon!</p>
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {resources.map(r => (
+                      <div key={r.id} style={{
+                        background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(212,175,55,0.15)',
+                        borderRadius: '12px', padding: '16px', display: 'flex', gap: '14px', alignItems: 'flex-start',
+                      }}>
+                        <div style={{ padding: '10px', background: 'rgba(34,211,238,0.1)', borderRadius: '8px', flexShrink: 0 }}>
+                          <Icon icon="mdi:link-variant" width="22" style={{ color: '#22D3EE' }} />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <h3 style={{ color: '#F5F0E8', fontWeight: 700, marginBottom: '4px', fontSize: '15px' }}>{r.title}</h3>
+                          {r.description && <p style={{ color: '#8B7355', fontSize: '13px', marginBottom: '8px' }}>{r.description}</p>}
+                          <a href={r.url} target="_blank" rel="noreferrer"
+                            style={{
+                              display: 'inline-flex', alignItems: 'center', gap: '6px',
+                              padding: '7px 14px', background: 'rgba(34,211,238,0.12)',
+                              color: '#22D3EE', borderRadius: '8px', fontSize: '13px',
+                              fontWeight: 600, textDecoration: 'none', border: '1px solid rgba(34,211,238,0.25)',
+                              transition: 'all 0.2s',
+                            }}>
+                            <Icon icon="mdi:open-in-new" width="14" /> Open Resource
+                          </a>
+                          <p style={{ color: '#5C4B3A', fontSize: '11px', marginTop: '6px' }}>
+                            Posted {fmtDate(r.created_at)}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="modal-footer">
+                <button className="btn-secondary" onClick={() => setShowModal(false)}>Close</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── Profile Edit Modal ── */}
+        {editingProfile && (
+          <div className="modal-overlay" onClick={() => setEditingProfile(false)}>
+            <div className="modal-content" onClick={e => e.stopPropagation()}>
+              <div className="modal-header">
+                <h2>Edit Profile</h2>
+                <button className="btn-icon" onClick={() => setEditingProfile(false)}><Icon icon="mdi:close" width="20" /></button>
+              </div>
+              <div className="modal-body">
+                {[{ label: 'Full Name', key: 'full_name', type: 'text' }, { label: 'Phone', key: 'phone', type: 'tel' }].map(f => (
+                  <div className="form-group" key={f.key}>
+                    <label>{f.label}</label>
+                    <input type={f.type} value={profileForm[f.key] || ''}
+                      onChange={e => setProfileForm({ ...profileForm, [f.key]: e.target.value })} />
+                  </div>
+                ))}
+                <div className="form-group">
+                  <label>Bio</label>
+                  <textarea value={profileForm.bio || ''} rows="3"
+                    onChange={e => setProfileForm({ ...profileForm, bio: e.target.value })} />
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button className="btn-secondary" onClick={() => setEditingProfile(false)}>Cancel</button>
+                <button className="btn-primary" onClick={saveProfile} disabled={saving}>
+                  <Icon icon="mdi:content-save" width="18" /> {saving ? 'Saving...' : 'Save Profile'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </PageTransition>
   );
 }
-

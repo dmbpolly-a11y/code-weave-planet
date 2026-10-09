@@ -1,8 +1,6 @@
-import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
-import VortexTransition from './components/VortexTransition'
 import CodeWeavePlanetLanding from './components/CodeWeavePlanetLanding'
 import AboutUs from './pages/AboutUs'
 import Login from './pages/Login'
@@ -13,13 +11,8 @@ import TutorDashboard from './pages/TutorDashboard'
 import StudentDashboard from './pages/StudentDashboard'
 
 function App() {
-  const [showVortex, setShowVortex] = useState(true);
-
   return (
     <AuthProvider>
-      {showVortex && (
-        <VortexTransition duration={6000} onComplete={() => setShowVortex(false)} />
-      )}
       <Router>
         <Routes>
           {/* Public Routes */}

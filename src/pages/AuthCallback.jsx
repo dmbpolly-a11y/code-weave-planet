@@ -1,44 +1,63 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../lib/supabaseClient';
-import OrigamiLoader from '../components/OrigamiLoader';
+import { useAuth } from '../context/AuthContext';
 
 export default function AuthCallback() {
   const navigate = useNavigate();
+  const { profile, loading, refreshProfile, user } = useAuth();
 
   useEffect(() => {
-    // Supabase redirects back here after OAuth
-    const handleCallback = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+    if (loading) return;
 
-      if (session?.user) {
-        const user = session.user;
-        const role =
-          user?.user_metadata?.role ||
-          user?.app_metadata?.role ||
-          'student';
+    const redirect = async () => {
+      let p = profile;
 
-        // Store user in localStorage so dashboards can access it
-        localStorage.setItem('user', JSON.stringify({
-          id: user.id,
-          email: user.email,
-          name: user.user_metadata?.full_name || user.email,
-          role,
-        }));
+      // For OAuth flows profile might not be loaded yet — try refreshing
+      if (!p && user) {
+        p = await refreshProfile();
+      }
 
-        // Navigate to appropriate dashboard
-        if (role === 'admin') navigate('/admin', { replace: true });
-        else if (role === 'tutor') navigate('/tutor', { replace: true });
-        else navigate('/student', { replace: true });
-      } else {
-        // No session — go back to login
-        setTimeout(() => navigate('/login', { replace: true }), 1500);
+      if (!p) {
+        // Give the trigger another moment then go to student as fallback
+        setTimeout(() => navigate('/student', { replace: true }), 1500);
+        return;
+      }
+
+      switch (p.role) {
+        case 'admin':  navigate('/admin',   { replace: true }); break;
+        case 'tutor':  navigate('/tutor',   { replace: true }); break;
+        default:       navigate('/student', { replace: true }); break;
       }
     };
 
-    handleCallback();
-  }, [navigate]);
+    redirect();
+  }, [loading, profile, user, navigate, refreshProfile]);
 
-  return <OrigamiLoader text="Completing your sign in..." />;
+  return (
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: '100vh',
+      background: 'linear-gradient(180deg, #0A0F1E 0%, #0D1A2E 100%)',
+    }}>
+      <div style={{ textAlign: 'center', color: '#D4AF37' }}>
+        <div style={{
+          width: '48px',
+          height: '48px',
+          border: '3px solid rgba(212, 175, 55, 0.3)',
+          borderTopColor: '#D4AF37',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite',
+          margin: '0 auto 16px',
+        }} />
+        <p style={{ fontSize: '18px', fontWeight: '500', color: '#fff' }}>
+          Signing you in...
+        </p>
+      </div>
+      <style>{`
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      `}</style>
+    </div>
+  );
 }
-
