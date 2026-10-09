@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
+import ErrorBoundary from './components/ErrorBoundary'
 import ProtectedRoute from './components/ProtectedRoute'
 import CodeWeavePlanetLanding from './components/CodeWeavePlanetLanding'
 import AboutUs from './pages/AboutUs'
@@ -12,8 +13,9 @@ import StudentDashboard from './pages/StudentDashboard'
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
+    <ErrorBoundary>
+      <AuthProvider>
+        <Router>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<CodeWeavePlanetLanding />} />
@@ -53,6 +55,7 @@ function App() {
         </Routes>
       </Router>
     </AuthProvider>
+    </ErrorBoundary>
   )
 }
 
