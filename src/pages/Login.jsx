@@ -52,27 +52,6 @@ export default function Login() {
             <p>Sign in to your account</p>
           </div>
 
-          {!isSupabaseConfigured && (
-            <div style={{
-              background: 'rgba(234, 179, 8, 0.12)',
-              border: '1px solid rgba(234, 179, 8, 0.4)',
-              color: '#92400e',
-              padding: '12px 16px',
-              borderRadius: '8px',
-              fontSize: '0.85rem',
-              marginBottom: '18px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              lineHeight: 1.4
-            }}>
-              <Icon icon="mdi:alert-circle" width="22" style={{ flexShrink: 0, color: '#d97706' }} />
-              <span>
-                <strong>Supabase Config Required:</strong> Set <code>VITE_SUPABASE_URL</code> and <code>VITE_SUPABASE_ANON_KEY</code> in <code>.env.local</code> (or Vercel dashboard) to connect your database.
-              </span>
-            </div>
-          )}
-
           {error && (
             <div className="error-message">
               <Icon icon="mdi:alert-circle" width="18" />
