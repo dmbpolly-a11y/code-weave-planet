@@ -22,10 +22,9 @@ DROP TABLE IF EXISTS public.enrollments CASCADE;
 DROP TABLE IF EXISTS public.courses CASCADE;
 DROP TABLE IF EXISTS public.profiles CASCADE;
 
--- 5. Drop storage bucket policies and avatars bucket
+-- 5. Drop storage bucket policies (bucket itself is preserved safely for reuse)
 DROP POLICY IF EXISTS "Avatars publicly readable" ON storage.objects;
 DROP POLICY IF EXISTS "Auth users can upload avatars" ON storage.objects;
 DROP POLICY IF EXISTS "Users can update own avatar" ON storage.objects;
-DELETE FROM storage.buckets WHERE id = 'avatars';
 
 -- Completed: Database is now completely clean and ready for a fresh schema!
