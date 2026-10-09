@@ -100,6 +100,24 @@ const COURSES = [
 const WHATSAPP_NUMBER = "0750937506";
 const WHATSAPP_GROUP = "Tech Over Ten with Polly";
 
+const ROLES = [
+  {
+    icon: "mdi:shield-account",
+    title: "Admin",
+    text: "Sets up courses, manages instructors, and keeps the platform running day-to-day.",
+  },
+  {
+    icon: "mdi:human-male-board",
+    title: "Instructor",
+    text: "Creates lessons, grades assignments, and mentors students through each module.",
+  },
+  {
+    icon: "mdi:school",
+    title: "Student",
+    text: "Enrols in courses, completes hands-on projects, and earns certificates on completion.",
+  },
+];
+
 export default function CodeWeavePlanetLanding() {
   const [threadsDrawn, setThreadsDrawn] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -376,7 +394,7 @@ export default function CodeWeavePlanetLanding() {
                 </div>
                 <div style={styles.coursePrice}>{c.price}</div>
                 <span style={styles.courseLink}>
-                  View course details <ArrowUpRight size={13} />
+                  View course details <Icon icon="mdi:arrow-top-right" width="13" />
                 </span>
               </div>
             ))
@@ -401,7 +419,7 @@ export default function CodeWeavePlanetLanding() {
         <div style={styles.roleGrid}>
           {ROLES.map((r) => (
             <div key={r.title} style={styles.roleCard}>
-              <r.icon size={20} color="#D4AF37" strokeWidth={1.6} />
+              <Icon icon={r.icon} width={20} color="#D4AF37" />
               <h3 style={styles.roleTitle}>{r.title}</h3>
               <p style={styles.roleText}>{r.text}</p>
             </div>
