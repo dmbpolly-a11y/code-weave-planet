@@ -57,7 +57,7 @@ export default function Register() {
 
   const handleGoogleSignUp = async () => {
     setLoading(true);
-    const { error: err } = await signInWithGoogle();
+    const { error: err } = await signInWithGoogle(formData.role);
     if (err) { setError(err); setLoading(false); }
   };
 

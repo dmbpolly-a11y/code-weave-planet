@@ -115,16 +115,27 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = async (role = 'student') => {
     try {
       setError(null);
+      const redirectUrl = `${window.location.origin}/auth/callback`;
       const { data, error: err } = await supabase.auth.signInWithOAuth({
         provider: 'google',
-        options: { redirectTo: `${window.location.origin}/auth/callback` },
+        options: {
+          redirectTo: redirectUrl,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
+          data: {
+            role: role || 'student',
+          },
+        },
       });
       if (err) throw err;
       return { data, error: null };
     } catch (err) {
+      console.error('signInWithGoogle error:', err);
       setError(err.message);
       return { data: null, error: err.message };
     }
@@ -182,7 +193,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const refreshProfile = () => fetchProfile(user);
+  const refreshProfile = (targetUser = null) => fetchProfile(targetUser || user);
 
   const isAuthenticated = () => !!user;
 
