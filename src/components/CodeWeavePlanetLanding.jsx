@@ -97,24 +97,6 @@ const COURSES = [
   },
 ];
 
-const ROLES = [
-  {
-    icon: UserCog,
-    title: "Admin",
-    text: "Runs the whole platform — approves tutors, manages every course page, and moderates everything that gets posted.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Tutors",
-    text: "Own their course content — post detailed lessons, resource links, and their WhatsApp class group.",
-  },
-  {
-    icon: Users,
-    title: "Students",
-    text: "Browse courses, follow tutor links, join WhatsApp groups for live sessions, and reach the team directly.",
-  },
-];
-
 const WHATSAPP_NUMBER = "0750937506";
 const WHATSAPP_GROUP = "Tech Over Ten with Polly";
 
