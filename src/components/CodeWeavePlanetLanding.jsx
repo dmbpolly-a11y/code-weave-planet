@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Icon } from '@iconify/react';
-import PageTransition from './PageTransition';
+import ScrollReactiveCircle from './ScrollReactiveCircle';
 import cwLogo from "../../public/images/Cwlogo.png";
 
 const COURSES = [
@@ -201,7 +201,6 @@ export default function CodeWeavePlanetLanding() {
   };
 
   return (
-    <PageTransition>
     <div style={styles.page} className="page-container">
       <style>{css}</style>
 
@@ -318,10 +317,10 @@ export default function CodeWeavePlanetLanding() {
 
       {/* Hero */}
       <section style={styles.hero}>
-        <div style={styles.heroGrid}>
+        <div style={styles.heroGrid} className="heroGrid">
           <div>
             <p style={styles.heroKicker}>Digital skills training, from Mbarara to anywhere</p>
-            <h1 style={styles.heroHeadline}>
+            <h1 style={styles.heroHeadline} className="heroHeadline">
               Skills woven into careers you can start this year.
             </h1>
             <p style={styles.heroSub}>
@@ -344,48 +343,38 @@ export default function CodeWeavePlanetLanding() {
             </p>
           </div>
 
-          <div style={styles.heroArt}>
-            <svg viewBox="0 0 360 360" width="100%" height="100%">
-              <defs>
-                <clipPath id="frame"><rect x="0" y="0" width="360" height="360" rx="18" /></clipPath>
-              </defs>
-              <g clipPath="url(#frame)">
-                <rect width="360" height="360" fill="#F5F5F5" />
-                {Array.from({ length: 5 }).map((_, row) => {
-                  const y = 40 + row * 68;
-                  const cyan = row % 2 === 0;
-                  return (
-                    <path
-                      key={row}
-                      d={`M -20 ${y} C 70 ${y - 34}, 110 ${y + 34}, 180 ${y} S 290 ${y - 34}, 380 ${y}`}
-                      fill="none"
-                      stroke={cyan ? "#22D3EE" : "#D4AF37"}
-                      strokeWidth="2.2"
-                      strokeLinecap="round"
-                      opacity={cyan ? 0.75 : 0.55}
-                      style={{
-                        strokeDasharray: 900,
-                        strokeDashoffset: threadsDrawn ? 0 : 900,
-                        transition: `stroke-dashoffset 1.6s cubic-bezier(.2,.7,.3,1) ${row * 0.12}s`,
-                      }}
-                    />
-                  );
-                })}
-                {[
-                  [80, 108], [230, 176], [130, 244], [280, 40], [55, 312],
-                ].map(([cx, cy], i) => (
-                  <circle
-                    key={i}
-                    cx={cx}
-                    cy={cy}
-                    r="4.5"
-                    fill="#D4AF37"
-                    opacity={threadsDrawn ? 0.9 : 0}
-                    style={{ transition: `opacity .5s ease ${1 + i * 0.15}s` }}
-                  />
-                ))}
-              </g>
-            </svg>
+          <div style={styles.heroArt} className="heroArt">
+            <div
+              style={{
+                padding: '24px 16px',
+                background: '#FFFFFF',
+                borderRadius: '18px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 10px 30px rgba(44, 24, 16, 0.06)',
+                border: '1px solid rgba(212, 175, 55, 0.25)',
+              }}
+            >
+              <ScrollReactiveCircle size="290px" showFloatingIndicator={true} />
+              <div
+                style={{
+                  marginTop: '16px',
+                  fontSize: '11.5px',
+                  color: '#8C7E72',
+                  fontWeight: 600,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                }}
+              >
+                <Icon icon="mdi:arrow-up-down" width="14" color="#1D70E2" />
+                Scroll down/up to contract & expand arcs
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -709,7 +698,6 @@ export default function CodeWeavePlanetLanding() {
         </div>
       )}
     </div>
-    </PageTransition>
   );
 }
 

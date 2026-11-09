@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/planetLoader.css';
 
-export default function PlanetLoader({ onLoaded, duration = 2200 }) {
+export default function PlanetLoader({ onLoaded, duration = 8000 }) {
   const [progress, setProgress] = useState(0);
   const [isBursting, setIsBursting] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
@@ -15,20 +15,20 @@ export default function PlanetLoader({ onLoaded, duration = 2200 }) {
       const pct = Math.min(Math.round((elapsed / duration) * 100), 100);
       setProgress(pct);
 
-      // Trigger intense cosmic light burst at 82%
-      if (pct >= 82 && !isBursting) {
+      // Trigger intense cosmic light burst at 88% (~7 seconds into the 8s load)
+      if (pct >= 88 && !isBursting) {
         setIsBursting(true);
       }
 
-      // Finish at 100%
+      // Finish at 100% (8.0s)
       if (pct >= 100) {
         clearInterval(timer);
         setTimeout(() => {
           setIsFinished(true);
           setTimeout(() => {
             if (onLoaded) onLoaded();
-          }, 650);
-        }, 300);
+          }, 850);
+        }, 350);
       }
     }, intervalTime);
 
@@ -40,7 +40,7 @@ export default function PlanetLoader({ onLoaded, duration = 2200 }) {
     setTimeout(() => {
       setIsFinished(true);
       if (onLoaded) onLoaded();
-    }, 350);
+    }, 400);
   };
 
   return (
@@ -75,9 +75,11 @@ export default function PlanetLoader({ onLoaded, duration = 2200 }) {
       <div className="planet-loader-info">
         <h1 className="planet-loader-title">Code Weave Planet</h1>
         <p className="planet-loader-subtitle">
-          {progress < 40 && 'Initializing Cosmic Tech Platform...'}
-          {progress >= 40 && progress < 80 && 'Weaving Skills into Careers...'}
-          {progress >= 80 && 'Igniting System...'}
+          {progress < 25 && 'Initializing Cosmic Tech Universe...'}
+          {progress >= 25 && progress < 50 && 'Aligning Digital Orbits & Skills...'}
+          {progress >= 50 && progress < 75 && 'Weaving Careers into Reality...'}
+          {progress >= 75 && progress < 90 && 'Charging Core Supernova...'}
+          {progress >= 90 && 'Supernova Light Burst!'}
         </p>
 
         {/* Neon Progress Bar */}
