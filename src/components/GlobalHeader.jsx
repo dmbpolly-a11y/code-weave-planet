@@ -74,51 +74,63 @@ export default function GlobalHeader({ onOpenPayment = null }) {
             object-fit: contain;
           }
 
-          /* Desktop Nav */
+          /* Desktop Nav in Blocks of Rectangle Shape */
           .cwp-desktop-nav {
             display: flex;
             align-items: center;
-            gap: 26px;
+            gap: 10px;
           }
 
+          /* Buttons for pages in blocks of rectangle shape with hover pointing */
           .cwp-nav-link {
-            font-size: 14.5px;
-            font-weight: 500;
+            font-size: 13.5px;
+            font-weight: 600;
             color: #0A1128;
             text-decoration: none;
-            transition: color 0.2s ease;
-            position: relative;
             cursor: pointer;
-            background: transparent;
-            border: none;
-            padding: 4px 0;
+            background: #F8F9FA;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 6px;
+            padding: 8px 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 1px 3px rgba(10, 17, 40, 0.04);
+            white-space: nowrap;
           }
 
+          /* Hover pointing animation */
           .cwp-nav-link:hover {
-            color: #C99726;
+            background: #0A1128;
+            border-color: #0A1128;
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(10, 17, 40, 0.15);
+          }
+
+          .cwp-nav-link:active {
+            transform: translateY(0);
           }
 
           .cwp-nav-link.active {
-            color: #C99726;
-            font-weight: 600;
+            background: #FFFDF0;
+            border-color: #C99726;
+            color: #92400E;
+            box-shadow: 0 2px 8px rgba(201, 151, 38, 0.2);
           }
 
-          .cwp-nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            right: 0;
-            height: 2.5px;
+          .cwp-nav-link.active:hover {
             background: #C99726;
-            border-radius: 2px;
+            border-color: #C99726;
+            color: #FFFFFF;
           }
 
-          /* Header Actions */
+          /* Header Actions in Blocks of Rectangle Shape */
           .cwp-header-actions {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
           }
 
           .cwp-pay-btn {
@@ -126,57 +138,70 @@ export default function GlobalHeader({ onOpenPayment = null }) {
             border: 1.5px solid #C99726;
             color: #92400E;
             padding: 8px 16px;
-            border-radius: 24px;
+            border-radius: 6px;
             font-size: 13.5px;
             font-weight: 700;
             display: inline-flex;
             align-items: center;
             gap: 6px;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
             text-decoration: none;
+            box-shadow: 0 1px 3px rgba(201, 151, 38, 0.15);
           }
 
           .cwp-pay-btn:hover {
             background: #C99726;
+            border-color: #C99726;
             color: #FFFFFF;
             box-shadow: 0 4px 14px rgba(201, 151, 38, 0.35);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
           }
 
           .cwp-login-btn {
             color: #0A1128;
-            border: 1px solid #D4D4D8;
+            border: 1.5px solid #0A1128;
             background: #FFFFFF;
             padding: 8px 16px;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 13.5px;
             font-weight: 600;
             text-decoration: none;
-            transition: all 0.2s;
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
           }
 
           .cwp-login-btn:hover {
             border-color: #0A1128;
-            background: #F4F4F5;
+            background: #0A1128;
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(10, 17, 40, 0.15);
           }
 
           .cwp-register-btn {
             background: #C99726;
             color: #FFFFFF;
-            border: 1px solid #C99726;
+            border: 1.5px solid #C99726;
             padding: 8px 18px;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 13.5px;
             font-weight: 600;
             text-decoration: none;
-            transition: all 0.2s;
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 2px 8px rgba(201, 151, 38, 0.25);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
           }
 
           .cwp-register-btn:hover {
             background: #B3831D;
+            border-color: #B3831D;
             box-shadow: 0 4px 14px rgba(201, 151, 38, 0.4);
+            transform: translateY(-2px);
           }
 
           .cwp-user-menu {
@@ -188,60 +213,72 @@ export default function GlobalHeader({ onOpenPayment = null }) {
           .cwp-user-badge {
             background: #F4F4F5;
             color: #0A1128;
-            padding: 6px 12px;
-            border-radius: 20px;
+            padding: 7px 14px;
+            border-radius: 6px;
+            border: 1px solid #E4E4E7;
             font-size: 13px;
             font-weight: 600;
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 6px;
+            transition: all 0.2s;
+          }
+
+          .cwp-user-badge:hover {
+            border-color: #C99726;
+            background: #FFFDF0;
           }
 
           .cwp-logout-btn {
             background: transparent;
-            border: 1px solid #E4E4E7;
+            border: 1.5px solid #E4E4E7;
             color: #71717A;
-            padding: 6px 12px;
+            padding: 7px 14px;
             border-radius: 6px;
             font-size: 12.5px;
             cursor: pointer;
             transition: all 0.2s;
+            font-weight: 600;
           }
 
           .cwp-logout-btn:hover {
             color: #DC2626;
             border-color: #FCA5A5;
             background: #FEF2F2;
+            transform: translateY(-1px);
           }
 
-          /* Mobile Hamburger Button */
+          /* Mobile Hamburger Button (Rectangular Block Frame) */
           .cwp-mobile-hamburger-btn {
             display: none;
             background: #FAF8F5;
-            border: 1.5px solid #E4E4E7;
+            border: 2px solid #0A1128;
             color: #0A1128;
             width: 44px;
             height: 44px;
-            border-radius: 10px;
+            border-radius: 6px;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(10, 17, 40, 0.1);
           }
 
           .cwp-mobile-hamburger-btn:hover {
             border-color: #C99726;
             background: #FFFDF0;
+            color: #C99726;
+            transform: translateY(-1px);
           }
 
-          /* Mobile Slide-down Drawer */
+          /* Mobile Slide-down Drawer with Rectangular Block Navigation */
           .cwp-mobile-drawer {
             display: none;
             background: #FFFFFF;
-            border-top: 1px solid #EFECE6;
+            border-top: 2px solid #EFECE6;
             box-shadow: 0 16px 30px rgba(10, 17, 40, 0.12);
-            padding: 16px 20px 24px 20px;
+            padding: 18px 20px 24px 20px;
             animation: mobileDrawerSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
           }
 
@@ -250,34 +287,43 @@ export default function GlobalHeader({ onOpenPayment = null }) {
             to { opacity: 1; transform: translateY(0); }
           }
 
+          /* Mobile Nav Links in Blocks of Rectangle Shape with Hover Pointing */
           .cwp-mobile-nav-link {
             display: flex;
             align-items: center;
             gap: 12px;
             padding: 12px 14px;
+            margin-bottom: 8px;
             color: #0A1128;
-            font-size: 15px;
-            font-weight: 500;
+            font-size: 14.5px;
+            font-weight: 600;
             text-decoration: none;
-            border-radius: 8px;
-            transition: background 0.15s;
-            background: transparent;
-            border: none;
+            background: #F8F9FA;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 6px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             width: 100%;
             text-align: left;
             cursor: pointer;
+            box-sizing: border-box;
           }
 
           .cwp-mobile-nav-link:hover, .cwp-mobile-nav-link.active {
-            background: #FFFDF0;
-            color: #C99726;
-            font-weight: 600;
+            background: #0A1128;
+            border-color: #0A1128;
+            color: #FFFFFF;
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(10, 17, 40, 0.15);
+          }
+
+          .cwp-mobile-nav-link:hover .iconify, .cwp-mobile-nav-link.active .iconify {
+            color: #C99726 !important;
           }
 
           .cwp-mobile-drawer-actions {
-            margin-top: 16px;
+            margin-top: 14px;
             padding-top: 16px;
-            border-top: 1px solid #EFECE6;
+            border-top: 1.5px dashed #EFECE6;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -289,11 +335,14 @@ export default function GlobalHeader({ onOpenPayment = null }) {
             justify-content: center;
             gap: 8px;
             padding: 12px;
-            border-radius: 10px;
-            font-size: 14.5px;
-            font-weight: 600;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 700;
             text-decoration: none;
             text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+            box-sizing: border-box;
           }
 
           .cwp-mobile-drawer-btn.pay {
@@ -343,30 +392,35 @@ export default function GlobalHeader({ onOpenPayment = null }) {
             <img src={cwLogo} alt="Code Weave Planet" className="cwp-header-logo-img" />
           </Link>
 
-          {/* Desktop Navigation Menus */}
+          {/* Desktop Navigation Menus in Blocks of Rectangle Shape */}
           <nav className="cwp-desktop-nav">
             <Link to="/" className={`cwp-nav-link ${isActive('/') ? 'active' : ''}`}>
-              Home
+              <Icon icon="mdi:home" width="16" />
+              <span>Home</span>
             </Link>
             <button
               type="button"
               onClick={() => handleNavClick('#courses')}
               className="cwp-nav-link"
             >
-              Courses
+              <Icon icon="mdi:book-open-variant" width="16" />
+              <span>Courses</span>
             </button>
             <button
               type="button"
               onClick={() => handleNavClick('#how')}
               className="cwp-nav-link"
             >
-              How It Works
+              <Icon icon="mdi:help-circle-outline" width="16" />
+              <span>How It Works</span>
             </button>
             <Link to="/about" className={`cwp-nav-link ${isActive('/about') ? 'active' : ''}`}>
-              About Us
+              <Icon icon="mdi:information-outline" width="16" />
+              <span>About Us</span>
             </Link>
             <Link to="/profiles" className={`cwp-nav-link ${isActive('/profiles') ? 'active' : ''}`}>
-              Community Profiles
+              <Icon icon="mdi:account-group" width="16" />
+              <span>Community Profiles</span>
             </Link>
           </nav>
 

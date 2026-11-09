@@ -60,6 +60,7 @@
   flex-wrap: wrap;
 }
 
+/* Buttons for pages in blocks of rectangle shape with hover pointing */
 .profiles-btn-create {
   display: inline-flex;
   align-items: center;
@@ -67,20 +68,22 @@
   background: #C99726;
   color: #FFFFFF;
   font-weight: 700;
-  font-size: 14.5px;
-  padding: 12px 22px;
-  border-radius: 10px;
-  border: 1px solid #C99726;
+  font-size: 14px;
+  padding: 11px 22px;
+  border-radius: 6px; /* Block of rectangle shape */
+  border: 2px solid #C99726;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(201, 151, 38, 0.35);
-  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(201, 151, 38, 0.3);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
 }
 
 .profiles-btn-create:hover {
-  background: #B3831D;
+  background: #0A1128;
+  border-color: #0A1128;
+  color: #FFFFFF;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(201, 151, 38, 0.45);
+  box-shadow: 0 6px 18px rgba(10, 17, 40, 0.25);
 }
 
 .profiles-btn-secondary {
@@ -88,20 +91,23 @@
   align-items: center;
   gap: 8px;
   background: #FFFFFF;
-  border: 1.5px solid #D1D5DB;
+  border: 1.5px solid #0A1128;
   color: #0A1128;
-  font-size: 14.5px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
   padding: 11px 20px;
-  border-radius: 10px;
+  border-radius: 6px; /* Block of rectangle shape */
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 4px rgba(10, 17, 40, 0.05);
 }
 
 .profiles-btn-secondary:hover {
-  background: #F9FAFB;
-  border-color: #0A1128;
+  background: #0A1128;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(10, 17, 40, 0.18);
 }
 
 /* Stats Ribbon */
@@ -234,16 +240,20 @@
   color: #4B5563;
   font-size: 13px;
   font-weight: 600;
-  padding: 7px 16px;
-  border-radius: 100px;
+  padding: 8px 16px;
+  border-radius: 6px; /* Block of rectangle shape */
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s ease;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(10, 17, 40, 0.04);
 }
 
 .category-pill:hover {
-  background: #F3F4F6;
-  color: #0A1128;
+  background: #0A1128;
+  border-color: #0A1128;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(10, 17, 40, 0.15);
 }
 
 .category-pill.active {
@@ -251,6 +261,13 @@
   border-color: #C99726;
   color: #92400E;
   font-weight: 700;
+  box-shadow: 0 2px 8px rgba(201, 151, 38, 0.25);
+}
+
+.category-pill.active:hover {
+  background: #C99726;
+  border-color: #C99726;
+  color: #FFFFFF;
 }
 
 .results-count {
@@ -468,17 +485,28 @@
 .btn-view-card {
   background: #0A1128;
   color: #FFFFFF;
-  border: none;
+  border: 1.5px solid #0A1128;
   padding: 8px 14px;
-  border-radius: 8px;
+  border-radius: 6px; /* Block of rectangle shape */
   font-size: 12.5px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .btn-view-card:hover {
   background: #C99726;
+  border-color: #C99726;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(201, 151, 38, 0.35);
+}
+
+.btn-view-card:active {
+  transform: translateY(0);
 }
 
 /* Modals */

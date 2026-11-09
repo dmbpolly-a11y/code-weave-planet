@@ -4,6 +4,7 @@ import { Icon } from '@iconify/react';
 import { useAuth } from '../context/AuthContext';
 import PageTransition from '../components/PageTransition';
 import GlobalHeader from '../components/GlobalHeader';
+import GlobalFooter from '../components/GlobalFooter';
 import PaymentModal from '../components/PaymentModal';
 import cwLogo from '../../public/images/Cwlogo.png';
 import {
@@ -1300,6 +1301,9 @@ export default function Profiles() {
             </div>
           </div>
         )}
+
+        {/* Interactive Steering Wheel Circle and Modular Animated Footer in Blocks */}
+        <GlobalFooter showSteering={true} />
 
         {/* Embedded Global Payment Modal */}
         <PaymentModal

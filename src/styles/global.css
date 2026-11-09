@@ -274,3 +274,34 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Universal Page Buttons in Blocks of Rectangle Shape with Hover Pointing */
+.btn-block-rectangle,
+.btn-primary,
+.btn-secondary,
+.cta-btn-primary,
+.cta-btn-secondary,
+.profiles-btn-create,
+.profiles-btn-secondary,
+.cwp-nav-link,
+.cwp-block-btn,
+.cwp-pay-btn,
+.cwp-login-btn,
+.cwp-register-btn,
+.cwp-mobile-nav-link,
+.cwp-mobile-drawer-btn {
+  border-radius: 6px !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.btn-block-rectangle:hover,
+.btn-primary:hover,
+.cta-btn-primary:hover,
+.cta-btn-secondary:hover,
+.profiles-btn-create:hover,
+.profiles-btn-secondary:hover,
+.cwp-nav-link:hover,
+.cwp-block-btn:hover {
+  transform: translateY(-2px);
+  cursor: pointer;
+}

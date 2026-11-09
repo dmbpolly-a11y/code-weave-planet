@@ -4,6 +4,8 @@ import { Icon } from '@iconify/react';
 import { useAuth } from '../context/AuthContext';
 import { isSupabaseConfigured } from '../lib/supabaseClient';
 import PageTransition from '../components/PageTransition';
+import GlobalHeader from '../components/GlobalHeader';
+import GlobalFooter from '../components/GlobalFooter';
 import cwLogo from '../../public/images/Cwlogo.png';
 
 export default function Login() {
@@ -64,8 +66,12 @@ export default function Login() {
 
   return (
     <PageTransition>
-      <div className="auth-container page-container">
-        <div className="auth-card auth-card-animated">
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#FFFFFF' }}>
+        {/* Global Unified Header with Hamburger Menu */}
+        <GlobalHeader />
+
+        <div className="auth-container page-container" style={{ flex: 1, padding: '40px 20px' }}>
+          <div className="auth-card auth-card-animated">
           <div className="auth-header">
             <img src={cwLogo} alt="Code Weave Planet" className="auth-logo" />
             <h1>Code Weave Planet</h1>
@@ -192,6 +198,10 @@ export default function Login() {
           </div>
         </div>
       </div>
-    </PageTransition>
-  );
+
+      {/* Interactive Steering Wheel Circle and Modular Animated Footer in Blocks */}
+      <GlobalFooter showSteering={true} />
+    </div>
+  </PageTransition>
+);
 }

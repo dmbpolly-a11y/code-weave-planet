@@ -19,6 +19,7 @@ import {
 import { Icon } from '@iconify/react';
 import PageTransition from '../components/PageTransition';
 import GlobalHeader from '../components/GlobalHeader';
+import GlobalFooter from '../components/GlobalFooter';
 import PaymentModal from '../components/PaymentModal';
 import cwLogo from '../../public/images/Cwlogo.png';
 import '../styles/aboutus.css';
@@ -279,38 +280,8 @@ export default function AboutUs() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="about-footer">
-        <div className="about-footer-content">
-          <div className="footer-brand">
-            <img src={cwLogo} alt="Code Weave Planet" className="footer-logo-img" />
-            <h3>Code Weave Planet</h3>
-            <p>Weaving Skills into Careers</p>
-          </div>
-          <div className="footer-info">
-            <div className="footer-links">
-              <a href="#home">Home</a>
-              <a href="#courses">Courses</a>
-              <Link to="/login">Login</Link>
-              <Link to="/register">Register</Link>
-            </div>
-            <div className="footer-contact">
-              <a href={`tel:+256${WHATSAPP_NUMBER.slice(1)}`}>
-                <Phone size={16} />
-                {WHATSAPP_NUMBER}
-              </a>
-              <a href={`https://wa.me/256${WHATSAPP_NUMBER.slice(1)}`}>
-                <MessageCircle size={16} />
-                WhatsApp
-              </a>
-            </div>
-          </div>
-        </div>
-        <div className="footer-bottom">
-          <p>© {new Date().getFullYear()} Code Weave Planet. All rights reserved.</p>
-          <p>Revolutionising Tech Education</p>
-        </div>
-      </footer>
+      {/* Interactive Steering Wheel Circle and Modular Animated Footer in Blocks */}
+      <GlobalFooter showSteering={true} />
 
       {/* Embedded Global Payment Modal */}
       <PaymentModal

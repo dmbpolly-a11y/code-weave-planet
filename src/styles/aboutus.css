@@ -616,37 +616,46 @@
   flex-wrap: wrap;
 }
 
+/* Buttons for pages in blocks of rectangle shape with hover pointing */
 .cta-btn-primary,
 .cta-btn-secondary {
-  padding: 14px 32px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
+  padding: 13px 30px;
+  border-radius: 6px; /* Block of rectangle shape */
+  font-size: 15px;
+  font-weight: 700;
   text-decoration: none;
-  transition: all 0.3s ease;
-  display: inline-block;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(10, 17, 40, 0.1);
 }
 
 .cta-btn-primary {
-  background: #2C1810;
-  color: #D4AF37;
-  border: 2px solid #2C1810;
+  background: #C99726;
+  color: #FFFFFF;
+  border: 2px solid #C99726;
 }
 
 .cta-btn-primary:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  background: #0A1128;
+  border-color: #0A1128;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(10, 17, 40, 0.25);
 }
 
 .cta-btn-secondary {
-  background: transparent;
-  color: #2C1810;
-  border: 2px solid #2C1810;
+  background: #FFFFFF;
+  color: #0A1128;
+  border: 2px solid #0A1128;
 }
 
 .cta-btn-secondary:hover {
-  background: rgba(44, 24, 16, 0.1);
-  transform: translateY(-4px);
+  background: #0A1128;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(10, 17, 40, 0.2);
 }
 
 /* Footer */

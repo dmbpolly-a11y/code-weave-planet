@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Icon } from '@iconify/react';
 import ScrollReactiveCircle from './ScrollReactiveCircle';
 import GlobalHeader from './GlobalHeader';
+import GlobalFooter from './GlobalFooter';
 import PaymentModal from './PaymentModal';
 import cwLogo from "../../public/images/Cwlogo.png";
 
@@ -474,87 +475,10 @@ export default function CodeWeavePlanetLanding() {
             />
           </div>
         </div>
-
-        {/* Footer with Social Media */}
-        <div style={styles.footer}>
-          <div style={styles.footerContent}>
-            <div style={styles.footerSection}>
-              <img src={cwLogo} alt="Code Weave Planet" style={styles.footerLogo} />
-              <h3 style={styles.footerBrand}>Code Weave Planet</h3>
-              <p style={styles.footerTagline}>Weaving Skills into Careers</p>
-              <p style={styles.footerAboutText}>
-                Discover our full story, mission, and everything about Code Weave Planet on our dedicated About Us page.
-              </p>
-              <Link to="/about" style={styles.aboutLink}>
-                Visit About Us Page →
-              </Link>
-            </div>
-
-            <div style={styles.footerSection}>
-              <h4 style={styles.footerHeading}>Connect With Us</h4>
-              <div style={styles.socialLinks}>
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" style={styles.socialLink} title="Facebook">
-                  <Icon icon="mdi:facebook" width="20" />
-                </a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" style={styles.socialLink} title="Twitter/X">
-                  <Icon icon="mdi:twitter" width="20" />
-                </a>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" style={styles.socialLink} title="Instagram">
-                  <Icon icon="mdi:instagram" width="20" />
-                </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style={styles.socialLink} title="LinkedIn">
-                  <Icon icon="mdi:linkedin" width="20" />
-                </a>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" style={styles.socialLink} title="YouTube">
-                  <Icon icon="mdi:youtube" width="20" />
-                </a>
-                <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" style={styles.socialLink} title="TikTok">
-                  <Icon icon="ic:baseline-tiktok" width="20" />
-                </a>
-                <a href={`https://wa.me/256${WHATSAPP_NUMBER.slice(1)}`} target="_blank" rel="noopener noreferrer" style={styles.socialLink} title="WhatsApp">
-                  <Icon icon="mdi:whatsapp" width="20" />
-                </a>
-                <a href="https://telegram.org" target="_blank" rel="noopener noreferrer" style={styles.socialLink} title="Telegram">
-                  <Icon icon="mdi:telegram" width="20" />
-                </a>
-              </div>
-            </div>
-
-            <div style={styles.footerSection}>
-              <h4 style={styles.footerHeading}>Quick Links</h4>
-              <div style={styles.footerLinks}>
-                <a href="#courses" style={styles.footerLink}>Courses</a>
-                <a href="#how" style={styles.footerLink}>How it Works</a>
-                <Link to="/profiles" style={styles.footerLink}>Community Profiles</Link>
-                <Link to="/about" style={styles.footerLink}>About Us</Link>
-                <a href="#contact" style={styles.footerLink}>Contact</a>
-                <Link to="/login" style={styles.footerLink}>Login</Link>
-                <Link to="/register" style={styles.footerLink}>Register</Link>
-              </div>
-            </div>
-
-            <div style={styles.footerSection}>
-              <h4 style={styles.footerHeading}>Contact Info</h4>
-              <div style={styles.contactInfo}>
-                <p style={styles.contactItem}>
-                  <Icon icon="mdi:phone" width="16" style={{ marginRight: 8 }} />
-                  {WHATSAPP_NUMBER}
-                </p>
-                <p style={styles.contactItem}>
-                  <Icon icon="mdi:message" width="16" style={{ marginRight: 8 }} />
-                  WhatsApp Available
-                </p>
-                <p style={styles.contactItem}>Mbarara, Western Uganda</p>
-              </div>
-            </div>
-          </div>
-
-          <div style={styles.footerBar}>
-            <span>© {new Date().getFullYear()} Code Weave Planet. All rights reserved.</span>
-            <span>Revolutionising Tech Education</span>
-          </div>
-        </div>
       </section>
+
+      {/* Interactive Steering Wheel Circle and Modular Animated Footer in Blocks */}
+      <GlobalFooter showSteering={true} />
 
       {/* Course Detail Modal */}
       {showCourseModal && selectedCourse && (
@@ -1387,13 +1311,19 @@ const css = `
   }
 
   .primaryBtn:hover {
+    background: #0A1128 !important;
+    border-color: #0A1128 !important;
+    color: #FFFFFF !important;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(212,175,55,0.4);
+    box-shadow: 0 6px 20px rgba(10, 17, 40, 0.25) !important;
   }
 
   .secondaryBtn:hover {
-    background: rgba(212,175,55,0.1);
-    border-color: rgba(212,175,55,0.7);
+    background: #0A1128 !important;
+    border-color: #0A1128 !important;
+    color: #FFFFFF !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(10, 17, 40, 0.2) !important;
   }
 
   .modalEnrollButton:hover {
