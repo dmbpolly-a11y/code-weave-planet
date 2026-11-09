@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Icon } from '@iconify/react';
 import ScrollReactiveCircle from './ScrollReactiveCircle';
+import GlobalHeader from './GlobalHeader';
+import PaymentModal from './PaymentModal';
 import cwLogo from "../../public/images/Cwlogo.png";
 
 const COURSES = [
@@ -126,6 +128,8 @@ export default function CodeWeavePlanetLanding() {
   const [filteredCourses, setFilteredCourses] = useState(COURSES);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [showCourseModal, setShowCourseModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [selectedPaymentCourse, setSelectedPaymentCourse] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const heroImages = [
