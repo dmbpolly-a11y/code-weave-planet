@@ -1,4 +1,5 @@
 {
+  "name": "code-weave-planet",
   "rewrites": [
     {
       "source": "/(.*)",
