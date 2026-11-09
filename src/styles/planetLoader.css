@@ -1,0 +1,416 @@
+/* planetLoader.css - Cosmic Planet Loading Screen with Intense Light Burst */
+
+.planet-loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: radial-gradient(circle at center, #0F172A 0%, #0A0F1E 45%, #050814 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+}
+
+.planet-loader-overlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Background Stars Canvas / Particles */
+.planet-stars-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 100px 150px, #22D3EE, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 220px 80px, #D4AF37, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 320px 240px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 450px 180px, #22D3EE, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 600px 320px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 750px 120px, #D4AF37, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 890px 280px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 1050px 90px, #22D3EE, rgba(0,0,0,0));
+  background-size: 550px 550px;
+  animation: starsRotate 90s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes starsRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Nebula Glow Behind Planet */
+.planet-nebula-glow {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.28) 0%, rgba(212, 175, 55, 0.18) 45%, transparent 70%);
+  filter: blur(40px);
+  animation: nebulaPulse 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes nebulaPulse {
+  0% { transform: scale(0.9); opacity: 0.5; }
+  100% { transform: scale(1.2); opacity: 0.9; }
+}
+
+/* Planet System Container */
+.planet-system {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 900px;
+}
+
+/* The Planet Sphere */
+.planet-sphere {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  position: relative;
+  background: radial-gradient(circle at 35% 30%, #5EEAD4 0%, #06B6D4 20%, #0369A1 50%, #0F172A 85%, #050814 100%);
+  box-shadow: 
+    inset -18px -18px 30px rgba(0, 0, 0, 0.85),
+    inset 10px 10px 25px rgba(255, 255, 255, 0.4),
+    0 0 45px rgba(34, 211, 238, 0.6),
+    0 0 90px rgba(212, 175, 55, 0.35);
+  animation: planetFloat 4s ease-in-out infinite alternate;
+  overflow: hidden;
+  z-index: 5;
+}
+
+@keyframes planetFloat {
+  0% { transform: translateY(-6px) rotate(0deg); }
+  100% { transform: translateY(6px) rotate(4deg); }
+}
+
+/* Planet Surface Weave Texture (Code Weave Planet Continents / Digital Grid) */
+.planet-surface-waves {
+  position: absolute;
+  inset: -10px;
+  background: 
+    radial-gradient(ellipse at 40% 50%, rgba(212, 175, 55, 0.35) 0%, transparent 40%),
+    repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(34, 211, 238, 0.15) 10px, rgba(34, 211, 238, 0.15) 12px),
+    repeating-linear-gradient(-45deg, transparent, transparent 14px, rgba(212, 175, 55, 0.12) 14px, rgba(212, 175, 55, 0.12) 16px);
+  border-radius: 50%;
+  animation: surfaceSpin 16s linear infinite;
+  mix-blend-mode: overlay;
+}
+
+@keyframes surfaceSpin {
+  from { transform: rotate(0deg) scale(1.1); }
+  to { transform: rotate(360deg) scale(1.1); }
+}
+
+/* Glowing Atmosphere Rim */
+.planet-atmosphere {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid rgba(34, 211, 238, 0.65);
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.7);
+  pointer-events: none;
+}
+
+/* Orbital Rings (The Saturn-like Planetary Weave) */
+.planet-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.planet-ring.ring-primary {
+  width: 250px;
+  height: 90px;
+  border: 3.5px solid transparent;
+  border-top: 3.5px solid #22D3EE;
+  border-bottom: 2.5px solid #D4AF37;
+  transform: rotateX(72deg) rotateY(-18deg);
+  box-shadow: 
+    0 0 20px rgba(34, 211, 238, 0.7),
+    inset 0 0 15px rgba(212, 175, 55, 0.5);
+  animation: ringSpin 6s linear infinite;
+  z-index: 6;
+}
+
+.planet-ring.ring-secondary {
+  width: 290px;
+  height: 110px;
+  border: 2px dashed rgba(212, 175, 55, 0.65);
+  transform: rotateX(65deg) rotateY(25deg);
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+  animation: ringCounterSpin 10s linear infinite;
+  z-index: 4;
+}
+
+.planet-ring.ring-tertiary {
+  width: 200px;
+  height: 70px;
+  border: 1.5px solid rgba(34, 211, 238, 0.4);
+  transform: rotateX(78deg) rotateY(-35deg);
+  animation: ringSpin 8s linear infinite reverse;
+  z-index: 7;
+}
+
+@keyframes ringSpin {
+  from { transform: rotateX(72deg) rotateY(-18deg) rotateZ(0deg); }
+  to { transform: rotateX(72deg) rotateY(-18deg) rotateZ(360deg); }
+}
+
+@keyframes ringCounterSpin {
+  from { transform: rotateX(65deg) rotateY(25deg) rotateZ(360deg); }
+  to { transform: rotateX(65deg) rotateY(25deg) rotateZ(0deg); }
+}
+
+/* Orbiting Energy Node / Satellite */
+.orbiting-node {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  box-shadow: 0 0 14px #22D3EE, 0 0 24px #D4AF37;
+  offset-path: ellipse(125px 45px at 50% 50%);
+  animation: orbitNodeMove 3s linear infinite;
+  z-index: 10;
+}
+
+@keyframes orbitNodeMove {
+  0% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+/* Typography & Info */
+.planet-loader-info {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  z-index: 10;
+}
+
+.planet-loader-title {
+  font-family: 'Space Grotesk', -apple-system, sans-serif;
+  font-size: clamp(20px, 4vw, 26px);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0;
+  background: linear-gradient(135deg, #FFFFFF 0%, #22D3EE 50%, #D4AF37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 10px rgba(34, 211, 238, 0.4));
+}
+
+.planet-loader-subtitle {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: #8B96AC;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Progress Container */
+.planet-progress-container {
+  width: 240px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  margin-top: 4px;
+}
+
+.planet-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #0284C7 0%, #22D3EE 50%, #D4AF37 100%);
+  border-radius: 10px;
+  box-shadow: 0 0 14px rgba(34, 211, 238, 0.8);
+  transition: width 0.15s ease-out;
+}
+
+.planet-progress-text {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: #22D3EE;
+  letter-spacing: 0.05em;
+}
+
+/* Skip Button */
+.planet-skip-btn {
+  margin-top: 14px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #8B96AC;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 20;
+}
+
+.planet-skip-btn:hover {
+  color: #EDEFF7;
+  border-color: #22D3EE;
+}
+
+/* ======================================================== */
+/* 💥 THE INTENSE PLANET LIGHT BURST AT THE END            */
+/* "would light much at the end before display"             */
+/* ======================================================== */
+
+.planet-light-burst {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+}
+
+.planet-light-burst.active {
+  animation: supernovaBurst 0.9s cubic-bezier(0.12, 0.8, 0.32, 1) forwards;
+}
+
+@keyframes supernovaBurst {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0;
+    box-shadow: 
+      0 0 0 0 rgba(255, 255, 255, 1),
+      0 0 0 0 rgba(34, 211, 238, 0.9),
+      0 0 0 0 rgba(212, 175, 55, 0.9);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(2.5);
+    background: radial-gradient(circle, #FFFFFF 20%, #A5F3FC 55%, #22D3EE 80%, transparent 100%);
+    box-shadow: 
+      0 0 100px 60px rgba(255, 255, 255, 1),
+      0 0 200px 120px rgba(34, 211, 238, 0.95),
+      0 0 350px 220px rgba(212, 175, 55, 0.85);
+  }
+  65% {
+    /* Peak blinding radiant light covering the entire viewport */
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(35);
+    background: radial-gradient(circle, #FFFFFF 60%, #E0F2FE 85%, #BAE6FD 100%);
+    box-shadow: 
+      0 0 400px 300px #FFFFFF,
+      0 0 800px 600px #22D3EE;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(45);
+    background: #FFFFFF;
+  }
+}
+
+/* Light Rays Flash */
+.planet-light-rays {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255, 255, 255, 0.8) 20deg,
+    transparent 40deg,
+    rgba(34, 211, 238, 0.8) 75deg,
+    transparent 110deg,
+    rgba(212, 175, 55, 0.85) 160deg,
+    transparent 200deg,
+    rgba(255, 255, 255, 0.9) 250deg,
+    transparent 290deg,
+    rgba(34, 211, 238, 0.8) 330deg,
+    transparent 360deg
+  );
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0;
+}
+
+.planet-light-rays.active {
+  animation: lightRaysSpin 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes lightRaysSpin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) scale(0.1);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(90deg) scale(2.8);
+  }
+  80% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) rotate(180deg) scale(6);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(240deg) scale(8);
+  }
+}
+
+/* Shockwave expansion */
+.planet-shockwave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.1);
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 30px #22D3EE, inset 0 0 30px #D4AF37;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 9997;
+}
+
+.planet-shockwave.active {
+  animation: shockwaveExpand 0.85s ease-out forwards;
+}
+
+@keyframes shockwaveExpand {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 1;
+    border-width: 6px;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(15);
+    opacity: 0;
+    border-width: 1px;
+  }
+}

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /tutor
+Disallow: /auth/callback
+
+Sitemap: https://code-weave-planet-main.vercel.app/sitemap.xml
