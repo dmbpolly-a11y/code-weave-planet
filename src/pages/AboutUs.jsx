@@ -18,12 +18,15 @@ import {
 } from 'lucide-react';
 import { Icon } from '@iconify/react';
 import PageTransition from '../components/PageTransition';
+import GlobalHeader from '../components/GlobalHeader';
+import PaymentModal from '../components/PaymentModal';
 import cwLogo from '../../public/images/Cwlogo.png';
 import '../styles/aboutus.css';
 
 export default function AboutUs() {
   const [curtainOpen, setCurtainOpen] = useState(false);
   const [contentVisible, setContentVisible] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   useEffect(() => {
     const curtainTimer = setTimeout(() => {
@@ -50,25 +53,8 @@ export default function AboutUs() {
         <div className="curtain curtain-right"></div>
       </div>
 
-      {/* Header */}
-      <header className="about-header">
-        <div className="about-header-inner">
-          <Link to="/" className="about-logo">
-            <img src={cwLogo} alt="Code Weave Planet" className="about-logo-image" />
-            <span className="about-logo-text">Code Weave Planet</span>
-          </Link>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <Link to="/profiles" className="back-home-btn" style={{ borderColor: 'rgba(34, 211, 238, 0.3)', color: '#22D3EE' }}>
-              <Users size={18} />
-              Community Profiles
-            </Link>
-            <Link to="/" className="back-home-btn">
-              <ArrowLeft size={18} />
-              Back to Home
-            </Link>
-          </div>
-        </div>
-      </header>
+      {/* Unified Global Navigation Header with Mobile Hamburger */}
+      <GlobalHeader onOpenPayment={() => setShowPaymentModal(true)} />
 
       {/* Main Content */}
       <main className={`about-content ${contentVisible ? 'visible' : ''}`}>
@@ -325,6 +311,12 @@ export default function AboutUs() {
           <p>Revolutionising Tech Education</p>
         </div>
       </footer>
+
+      {/* Embedded Global Payment Modal */}
+      <PaymentModal
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+      />
     </div>
   );
 }

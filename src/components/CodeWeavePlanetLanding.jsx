@@ -208,83 +208,8 @@ export default function CodeWeavePlanetLanding() {
     <div style={styles.page} className="page-container">
       <style>{css}</style>
 
-      {/* Header */}
-      <header style={styles.header}>
-        <div style={styles.headerInner} className="headerInner">
-          <div style={styles.logo}>
-            <img src={cwLogo} alt="Code Weave Planet" style={styles.logoImage} className="logoImage" />
-            <span style={styles.logoText} className="logoText">Code Weave Planet</span>
-          </div>
-          <nav style={styles.nav} className="desktopNav">
-            <a href="#courses" style={styles.navLink}>Courses</a>
-            <a href="#how" style={styles.navLink}>How it works</a>
-            <Link to="/about" style={styles.navLink}>About</Link>
-            <Link to="/profiles" style={styles.navLink}>Profiles</Link>
-            <a href="#contact" style={styles.navLink}>Contact</a>
-          </nav>
-          <div className="desktopActions" style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <Link to="/login" style={styles.headerLogin}>
-              <Icon icon="mdi:login" width="15" />
-              Login
-            </Link>
-            <a
-              href={`https://wa.me/256${WHATSAPP_NUMBER.slice(1)}`}
-              style={styles.headerCta}
-            >
-              <Icon icon="mdi:message" width="15" />
-              WhatsApp us
-            </a>
-          </div>
-
-          {/* Mobile Menu Hamburger Toggle */}
-          <button
-            className="mobileMenuToggleBtn"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle navigation"
-            type="button"
-          >
-            <Icon icon={mobileMenuOpen ? "mdi:close" : "mdi:menu"} width="28" />
-          </button>
-        </div>
-
-        {/* Mobile Navigation Drawer */}
-        {mobileMenuOpen && (
-          <div className="mobileNavDrawer">
-            <a href="#courses" className="mobileNavLink" onClick={() => setMobileMenuOpen(false)}>
-              <Icon icon="mdi:book-open-outline" width="18" /> Courses
-            </a>
-            <a href="#how" className="mobileNavLink" onClick={() => setMobileMenuOpen(false)}>
-              <Icon icon="mdi:help-circle-outline" width="18" /> How It Works
-            </a>
-            <Link to="/about" className="mobileNavLink" onClick={() => setMobileMenuOpen(false)}>
-              <Icon icon="mdi:information-outline" width="18" /> About Us
-            </Link>
-            <Link to="/profiles" className="mobileNavLink" onClick={() => setMobileMenuOpen(false)}>
-              <Icon icon="mdi:account-group" width="18" /> Community Profiles
-            </Link>
-            <a href="#contact" className="mobileNavLink" onClick={() => setMobileMenuOpen(false)}>
-              <Icon icon="mdi:phone-outline" width="18" /> Contact
-            </a>
-            <div className="mobileDrawerActions">
-              <Link to="/login" className="mobileDrawerBtn primary" onClick={() => setMobileMenuOpen(false)}>
-                <Icon icon="mdi:login" width="18" /> Login
-              </Link>
-              <Link to="/register" className="mobileDrawerBtn gold" onClick={() => setMobileMenuOpen(false)}>
-                <Icon icon="mdi:account-plus" width="18" /> Register
-              </Link>
-              <a
-                href={`https://wa.me/256${WHATSAPP_NUMBER.slice(1)}`}
-                className="mobileDrawerBtn whatsapp"
-                onClick={() => setMobileMenuOpen(false)}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Icon icon="mdi:whatsapp" width="18" /> WhatsApp Us
-              </a>
-            </div>
-          </div>
-        )}
-      </header>
+      {/* Global Header with White Theme, Menus & Mobile Hamburger */}
+      <GlobalHeader onOpenPayment={() => { setSelectedPaymentCourse(null); setShowPaymentModal(true); }} />
 
       {/* Hero Section with Image Slider */}
       <section style={styles.heroSection}>
@@ -688,9 +613,29 @@ export default function CodeWeavePlanetLanding() {
               </div>
               
               <div style={styles.modalActions}>
-                <Link to="/register" style={styles.modalEnrollButton}>
-                  <Icon icon="mdi:trending-up" width="18" />
-                  Enroll Now
+                <button
+                  type="button"
+                  onClick={() => {
+                    const c = selectedCourse;
+                    closeCourseModal();
+                    setSelectedPaymentCourse(c);
+                    setShowPaymentModal(true);
+                  }}
+                  style={{
+                    ...styles.modalEnrollButton,
+                    background: '#C99726',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontWeight: 700,
+                  }}
+                >
+                  <Icon icon="mdi:cash-fast" width="20" />
+                  Pay with MTN / Airtel / Bank ({selectedCourse.price})
+                </button>
+                <Link to="/register" style={{ ...styles.modalEnrollButton, background: '#0A1128' }}>
+                  <Icon icon="mdi:account-plus" width="18" />
+                  Create Account
                 </Link>
                 <a href={`https://wa.me/256${WHATSAPP_NUMBER.slice(1)}`} style={styles.modalWhatsAppButton}>
                   <Icon icon="mdi:message" width="18" />
@@ -701,6 +646,13 @@ export default function CodeWeavePlanetLanding() {
           </div>
         </div>
       )}
+
+      {/* Embedded Global Payment Modal for MTN / Airtel / Bank */}
+      <PaymentModal
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        initialCourse={selectedPaymentCourse}
+      />
     </div>
   );
 }

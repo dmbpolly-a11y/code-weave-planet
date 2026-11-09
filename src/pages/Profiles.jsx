@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { useAuth } from '../context/AuthContext';
 import PageTransition from '../components/PageTransition';
+import GlobalHeader from '../components/GlobalHeader';
+import PaymentModal from '../components/PaymentModal';
 import cwLogo from '../../public/images/Cwlogo.png';
 import {
   getProfiles,
@@ -48,6 +50,7 @@ export default function Profiles() {
   const [toastMessage, setToastMessage] = useState(null);
   const [currentSkillInput, setCurrentSkillInput] = useState('');
   const [showLivePreview, setShowLivePreview] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   // My profile tracking
   const [myProfileId, setMyProfileId] = useState(() => getSavedMyProfileId());
@@ -342,49 +345,8 @@ export default function Profiles() {
           </div>
         )}
 
-        {/* Global Navigation Header */}
-        <header className="profiles-header">
-          <div className="profiles-header-inner">
-            <Link to="/" className="profiles-logo">
-              <img src={cwLogo} alt="Code Weave Planet" className="profiles-logo-image" />
-              <span className="profiles-logo-text">Code Weave Planet</span>
-            </Link>
-
-            <nav className="profiles-nav">
-              <Link to="/" className="profiles-nav-link">Home</Link>
-              <Link to="/about" className="profiles-nav-link">About</Link>
-              <Link to="/profiles" className="profiles-nav-link active">Profiles</Link>
-              <a href="/#courses" className="profiles-nav-link">Courses</a>
-              <a href="/#contact" className="profiles-nav-link">Contact</a>
-            </nav>
-
-            <div className="profiles-header-actions">
-              <button onClick={handleOpenCreate} className="profiles-btn-create">
-                <Icon icon="mdi:account-plus" width="18" />
-                {userExistingProfile ? 'Edit My Profile' : 'Create Profile'}
-              </button>
-
-              {user ? (
-                <button
-                  onClick={() => {
-                    const role = authProfile?.role || 'student';
-                    navigate(`/${role}`);
-                  }}
-                  className="profiles-btn-secondary"
-                  title="Go to Dashboard"
-                >
-                  <Icon icon="mdi:view-dashboard" width="16" />
-                  Dashboard
-                </button>
-              ) : (
-                <Link to="/login" className="profiles-btn-secondary">
-                  <Icon icon="mdi:login" width="16" />
-                  Login
-                </Link>
-              )}
-            </div>
-          </div>
-        </header>
+        {/* Unified Global Navigation Header with Mobile Hamburger */}
+        <GlobalHeader onOpenPayment={() => setShowPaymentModal(true)} />
 
         {/* Hero Section */}
         <section className="profiles-hero">
@@ -406,6 +368,14 @@ export default function Profiles() {
             <button onClick={handleOpenCreate} className="profiles-btn-create" style={{ fontSize: 16, padding: '12px 24px' }}>
               <Icon icon="mdi:card-account-details-outline" width="20" />
               {userExistingProfile ? 'Update Your Profile' : 'Fill Form & Create Your Profile'}
+            </button>
+            <button
+              onClick={() => setShowPaymentModal(true)}
+              className="profiles-btn-create"
+              style={{ fontSize: 15, padding: '12px 20px', background: '#FFFDF0', color: '#92400E', border: '1.5px solid #C99726' }}
+            >
+              <Icon icon="mdi:cash-fast" width="18" color="#C99726" />
+              Pay Tuition (MTN/Airtel/Bank)
             </button>
             <a
               href={`https://wa.me/256${WHATSAPP_NUMBER.slice(1)}`}
@@ -1330,6 +1300,12 @@ export default function Profiles() {
             </div>
           </div>
         )}
+
+        {/* Embedded Global Payment Modal */}
+        <PaymentModal
+          isOpen={showPaymentModal}
+          onClose={() => setShowPaymentModal(false)}
+        />
       </div>
     </PageTransition>
   );
