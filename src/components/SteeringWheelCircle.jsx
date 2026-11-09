@@ -247,8 +247,8 @@ export default function SteeringWheelCircle({ title = "Tech Command Steering Hel
         /* Center Steering Canvas */
         .cwp-steering-wheel-wrapper {
           position: relative;
-          width: 320px;
-          height: 320px;
+          width: min(320px, 86vw);
+          height: min(320px, 86vw);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -347,8 +347,8 @@ export default function SteeringWheelCircle({ title = "Tech Command Steering Hel
             margin: 0 auto;
           }
           .cwp-steering-wheel-wrapper {
-            width: 280px;
-            height: 280px;
+            width: min(280px, 84vw);
+            height: min(280px, 84vw);
           }
         }
       `}</style>

@@ -479,14 +479,30 @@ export default function GlobalHeader({ onOpenPayment = null }) {
           </button>
         </div>
 
-        {/* Mobile Navigation Drawer */}
+        {/* Mobile Navigation Drawer & Backdrop */}
         {mobileMenuOpen && (
-          <div className="cwp-mobile-drawer">
-            <Link
-              to="/"
-              className={`cwp-mobile-nav-link ${isActive('/') ? 'active' : ''}`}
+          <>
+            <div
+              className="cwp-mobile-backdrop"
               onClick={() => setMobileMenuOpen(false)}
-            >
+              style={{
+                position: 'fixed',
+                top: '72px',
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'rgba(10, 17, 40, 0.45)',
+                backdropFilter: 'blur(3px)',
+                WebkitBackdropFilter: 'blur(3px)',
+                zIndex: 998,
+              }}
+            />
+            <div className="cwp-mobile-drawer" style={{ position: 'relative', zIndex: 999 }}>
+              <Link
+                to="/"
+                className={`cwp-mobile-nav-link ${isActive('/') ? 'active' : ''}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
               <Icon icon="mdi:home" width="20" color="#C99726" /> Home
             </Link>
             <button
@@ -586,7 +602,8 @@ export default function GlobalHeader({ onOpenPayment = null }) {
               </a>
             </div>
           </div>
-        )}
+        </>
+      )}
       </header>
 
       {/* Embedded Global Payment Modal */}
