@@ -279,141 +279,226 @@
   justify-content: space-between;
 }
 
-/* Profiles Grid */
+/* ============================================
+   PROFILES GRID — Vertical card layout
+   ============================================ */
 .profiles-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 28px;
 }
 
-/* Individual Profile Card */
+/* ============================================
+   PROFILE CARD — Fully vertical, centre-aligned
+   ============================================ */
 .profile-card {
   background: #FFFFFF;
   border: 1.5px solid #E5E7EB;
-  border-radius: 18px;
+  border-radius: 20px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  align-items: center;         /* vertical centre alignment */
+  text-align: center;
   position: relative;
-  box-shadow: 0 4px 14px rgba(10, 17, 40, 0.04);
+  box-shadow: 0 4px 18px rgba(10, 17, 40, 0.06);
+  /* ease-in-out hover transition */
+  transition:
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    border-color 0.3s ease;
+  cursor: pointer;
+  /* square aspect ratio */
+  aspect-ratio: 1 / 1;
+}
+  background: #FFFFFF;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;         /* vertical centre alignment */
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 18px rgba(10, 17, 40, 0.06);
+  /* ease-in-out hover transition */
+  transition:
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    border-color 0.3s ease;
+  cursor: pointer;
 }
 
+/* Hover: lift + gold glow */
 .profile-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-8px) scale(1.03);
   border-color: #C99726;
-  box-shadow: 0 12px 30px rgba(201, 151, 38, 0.16);
+  box-shadow:
+    0 20px 48px rgba(201, 151, 38, 0.18),
+    0 4px 12px rgba(10, 17, 40, 0.08);
+}
+  transform: translateY(-8px);
+  border-color: #C99726;
+  box-shadow:
+    0 20px 48px rgba(201, 151, 38, 0.18),
+    0 4px 12px rgba(10, 17, 40, 0.08);
 }
 
+/* Subtle pointer animation indicator on top of card when hovered */
+.profile-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 60%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #C99726, transparent);
+  border-radius: 0 0 4px 4px;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 3;
+}
+.profile-card:hover::before {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/* ============================================
+   CARD BANNER (top coloured strip)
+   ============================================ */
 .profile-card-banner {
-  height: 84px;
-  background: linear-gradient(135deg, rgba(201, 151, 38, 0.18) 0%, rgba(10, 17, 40, 0.08) 100%);
+  width: 100%;
+  height: 90px;
+  background: linear-gradient(135deg, #0A1128 0%, #1A2550 60%, rgba(201, 151, 38, 0.3) 100%);
   position: relative;
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
-  padding: 12px;
+  padding: 12px 14px;
+  flex-shrink: 0;
 }
 
+/* Dot-grid pattern on banner */
 .profile-card-pattern {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 0.12;
+  inset: 0;
+  opacity: 0.15;
   background-image: radial-gradient(#C99726 1px, transparent 1px);
-  background-size: 12px 12px;
+  background-size: 14px 14px;
 }
 
+/* Role badge in top-right corner */
 .profile-role-badge {
   position: relative;
   z-index: 2;
   padding: 4px 10px;
   border-radius: 20px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
 }
 
-.profile-role-badge.tutor {
-  background: #FFFDF0;
-  color: #92400E;
-  border: 1px solid #C99726;
-}
+.profile-role-badge.tutor    { background: #FFFDF0; color: #92400E; border: 1px solid #C99726; }
+.profile-role-badge.student  { background: #EFF6FF; color: #1D4ED8; border: 1px solid #93C5FD; }
+.profile-role-badge.alumni   { background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; }
+.profile-role-badge.admin    { background: #FAF5FF; color: #6B21A8; border: 1px solid #D8B4FE; }
+.profile-role-badge.developer{ background: #FFF1F2; color: #BE123C; border: 1px solid #FECDD3; }
+.profile-role-badge.designer { background: #F0FDFA; color: #0F766E; border: 1px solid #99F6E4; }
+.profile-role-badge.marketer { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
 
-.profile-role-badge.student {
-  background: #EFF6FF;
-  color: #1D4ED8;
-  border: 1px solid #93C5FD;
-}
-
-.profile-role-badge.alumni {
-  background: #ECFDF5;
-  color: #047857;
-  border: 1px solid #A7F3D0;
-}
-
-.profile-role-badge.admin {
-  background: #FAF5FF;
-  color: #6B21A8;
-  border: 1px solid #D8B4FE;
-}
-
+/* ============================================
+   CARD BODY — centred vertical stack
+   ============================================ */
 .profile-card-body {
-  padding: 0 20px 20px;
+  padding: 0 22px 22px;
   display: flex;
   flex-direction: column;
+  align-items: center;    /* centre everything vertically */
   flex: 1;
+  width: 100%;
+  box-sizing: border-box;
 }
 
+/* ============================================
+   AVATAR — centred, lifts on card hover
+   ============================================ */
 .profile-avatar-wrap {
-  margin-top: -38px;
-  margin-bottom: 12px;
+  margin-top: -44px;
+  margin-bottom: 14px;
   position: relative;
   display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.profile-card:hover .profile-avatar-wrap {
+  transform: scale(1.07);
 }
 
 .profile-avatar {
-  width: 74px;
-  height: 74px;
+  width: 82px;
+  height: 82px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3.5px solid #FFFFFF;
-  box-shadow: 0 4px 14px rgba(10, 17, 40, 0.15);
+  border: 4px solid #FFFFFF;
+  box-shadow: 0 6px 20px rgba(10, 17, 40, 0.18);
   background: #FFFFFF;
+}
+
+/* Verified tick */
+.verified-dot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 20px;
+  height: 20px;
+  background: #10B981;
+  border-radius: 50%;
+  border: 2px solid #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #FFFFFF;
+}
+
+/* ============================================
+   IDENTITY INFO — vertically centred
+   ============================================ */
+.profile-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 4px;
 }
 
 .profile-name {
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 800;
   color: #0A1128;
-  margin: 0 0 4px;
+  margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 .profile-headline {
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 600;
   color: #C99726;
   margin: 0 0 8px;
 }
 
 .profile-location {
-  font-size: 12.5px;
+  font-size: 12px;
   color: #6B7280;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
   margin-bottom: 12px;
 }
 
 .profile-bio {
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.55;
   color: #4B5563;
   margin: 0 0 16px;
   display: -webkit-box;
@@ -421,32 +506,101 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   flex: 1;
+  text-align: center;
 }
 
+/* ============================================
+   SKILLS CHIPS — centred row
+   ============================================ */
 .profile-skills {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 6px;
   margin-bottom: 16px;
 }
 
-.skill-tag {
+.skill-chip, .skill-tag {
   background: #F3F4F6;
   border: 1px solid #E5E7EB;
   color: #374151;
-  padding: 3px 8px;
+  padding: 3px 10px;
   border-radius: 6px;
   font-size: 11.5px;
-  font-weight: 500;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s;
+}
+.skill-chip:hover, .skill-tag:hover {
+  background: #FFFDF0;
+  border-color: #C99726;
+  color: #92400E;
 }
 
+/* ============================================
+   SOCIAL ICONS — horizontal, centred, animated
+   ============================================ */
+.profile-social-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  width: 100%;
+}
+
+/* Each social icon block */
+.social-icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #F3F4F6;
+  color: #4B5563;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  text-decoration: none;
+  border: 1.5px solid #E5E7EB;
+  /* ease-in-out icon animation */
+  transition:
+    background 0.35s ease-in-out,
+    color 0.35s ease-in-out,
+    border-color 0.35s ease-in-out,
+    transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.35s ease-in-out;
+}
+
+/* Pointing / lift animation on hover */
+.social-icon-btn:hover {
+  transform: translateY(-5px) scale(1.15);
+  box-shadow: 0 8px 20px rgba(201, 151, 38, 0.3);
+}
+
+/* Per-platform brand colours */
+.social-icon-btn.github    { }
+.social-icon-btn.github:hover    { background: #24292e; color: #fff; border-color: #24292e; }
+.social-icon-btn.linkedin:hover  { background: #0077B5; color: #fff; border-color: #0077B5; }
+.social-icon-btn.twitter:hover   { background: #000000; color: #fff; border-color: #000; }
+.social-icon-btn.whatsapp:hover  { background: #25D366; color: #fff; border-color: #25D366; }
+.social-icon-btn.instagram:hover { background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); color: #fff; border-color: #e6683c; }
+.social-icon-btn.youtube:hover   { background: #FF0000; color: #fff; border-color: #FF0000; }
+.social-icon-btn.tiktok:hover    { background: #010101; color: #fff; border-color: #010101; }
+.social-icon-btn.telegram:hover  { background: #2CA5E0; color: #fff; border-color: #2CA5E0; }
+.social-icon-btn.facebook:hover  { background: #1877F2; color: #fff; border-color: #1877F2; }
+.social-icon-btn.website:hover   { background: #C99726; color: #fff; border-color: #C99726; }
+
+/* ============================================
+   CARD FOOTER
+   ============================================ */
 .profile-card-footer {
   border-top: 1px solid #E5E7EB;
   padding-top: 14px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 10px;
+  width: 100%;
 }
 
 .profile-socials {
@@ -455,58 +609,64 @@
   gap: 8px;
 }
 
-.social-icon-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: #F3F4F6;
-  color: #4B5563;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  transition: all 0.2s;
-  border: 1px solid #E5E7EB;
-}
-
-.social-icon-btn:hover {
-  background: #FFFDF0;
-  color: #C99726;
-  border-color: #C99726;
-  transform: translateY(-2px);
-}
-
 .profile-card-actions {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
+/* View profile / action buttons */
+.btn-view-profile,
 .btn-view-card {
   background: #0A1128;
   color: #FFFFFF;
   border: 1.5px solid #0A1128;
-  padding: 8px 14px;
-  border-radius: 6px; /* Block of rectangle shape */
+  padding: 9px 16px;
+  border-radius: 6px;
   font-size: 12.5px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
+  text-decoration: none;
 }
-
+.btn-view-profile:hover,
 .btn-view-card:hover {
   background: #C99726;
   border-color: #C99726;
   color: #FFFFFF;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(201, 151, 38, 0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(201, 151, 38, 0.35);
 }
+.btn-view-profile:active,
+.btn-view-card:active { transform: translateY(0); }
 
-.btn-view-card:active {
-  transform: translateY(0);
+/* Small icon-only action buttons (edit, delete) */
+.card-action-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  border: 1.5px solid #E5E7EB;
+  background: #F9FAFB;
+  color: #4B5563;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.card-action-icon:hover {
+  background: #FFFDF0;
+  border-color: #C99726;
+  color: #C99726;
+  transform: translateY(-2px);
+}
+.card-action-icon.delete:hover {
+  background: #FEF2F2;
+  border-color: #EF4444;
+  color: #EF4444;
 }
 
 /* Modals */
@@ -592,4 +752,13 @@
   .profiles-toolbar {
     padding: 14px;
   }
+}
+
+/* Vertical social icon bar for profile cards */
+.profile-social-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
 }

@@ -40,8 +40,18 @@ export default function GlobalFooter() {
     <>
       {/* Modular Animated Footer in Blocks */}
       <footer className="cwp-modular-footer" role="contentinfo">
-        <style>{`
+                {/* Water floating wave animation */}
+        <div className="cwp-water"></div>
+        <style>{`\n          .cwp-water {\n            position: absolute;\n            bottom: 0;\n            left: 0;\n            width: 100%;\n            height: 80px;\n            background: url('/images/water-wave.svg') repeat-x;\n            background-size: contain;\n            animation: wave 6s linear infinite;\n          }\n          @keyframes wave {\n            from { background-position-x: 0; }\n            to { background-position-x: 1000px; }\n          }\n        `}</style>
           .cwp-modular-footer {
+  background: #0A1128;
+  color: #E2E8F0;
+  padding: 60px 24px 30px 24px;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  position: relative;
+  overflow: hidden;
+  border-top: 3px solid #C99726;
+  padding-bottom: 80px;
             background: #0A1128;
             color: #E2E8F0;
             padding: 60px 24px 30px 24px;
@@ -341,6 +351,8 @@ export default function GlobalFooter() {
             }
           }
         `}</style>
+        {/* Water floating wave animation */}
+        <div className="cwp-water"></div>
 
         {/* Ambient Shimmer */}
         <div className="cwp-footer-shimmer" />

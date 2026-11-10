@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="80" viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 40 Q 150 0, 300 40 T 600 40 T 900 40 T 1200 40 V80 H0 Z" fill="#0A1128" stroke="none"/>
+</svg>
