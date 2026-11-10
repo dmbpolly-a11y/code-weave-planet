@@ -20,6 +20,16 @@
     <!-- Canonical Link -->
     <link rel="canonical" href="https://code-weave-planet.vercel.app/" />
 
+    <!-- Instant redirect if visited via branch alias or staging URL -->
+    <script>
+      (function() {
+        var h = window.location.hostname;
+        if (h === 'code-weave-planet-main.vercel.app' || h === 'code-weave-planet-vercel.app') {
+          window.location.replace('https://code-weave-planet.vercel.app' + window.location.pathname + window.location.search + window.location.hash);
+        }
+      })();
+    </script>
+
     <!-- Favicon & Icons -->
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />

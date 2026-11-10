@@ -2,7 +2,7 @@
 
 A modern digital skills training platform built with React and Supabase, featuring permanent user profiles, role-based dashboards, and complete workflows for Students, Tutors, and Administrators.
 
-**Live Deployment**: [https://code-weave-planet-main.vercel.app](https://code-weave-planet-main.vercel.app)
+**Live Deployment**: [https://code-weave-planet.vercel.app](https://code-weave-planet.vercel.app)
 
 ## 🚀 Portals & Features
 

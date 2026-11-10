@@ -4,6 +4,30 @@
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "framework": "vite",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "code-weave-planet-main.vercel.app"
+        }
+      ],
+      "destination": "https://code-weave-planet.vercel.app/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "code-weave-planet-vercel.app"
+        }
+      ],
+      "destination": "https://code-weave-planet.vercel.app/:path*",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
