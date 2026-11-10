@@ -4,4 +4,4 @@ Disallow: /admin
 Disallow: /tutor
 Disallow: /auth/callback
 
-Sitemap: https://code-weave-planet-main.vercel.app/sitemap.xml
+Sitemap: https://code-weave-planet-vercel.app/sitemap.xml
