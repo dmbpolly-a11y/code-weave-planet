@@ -6,25 +6,25 @@
   "framework": "vite",
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [
         {
           "type": "host",
           "value": "code-weave-planet-main.vercel.app"
         }
       ],
-      "destination": "https://code-weave-planet.vercel.app/:path*",
+      "destination": "https://code-weave-planet.vercel.app/$1",
       "permanent": true
     },
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [
         {
           "type": "host",
           "value": "code-weave-planet-vercel.app"
         }
       ],
-      "destination": "https://code-weave-planet.vercel.app/:path*",
+      "destination": "https://code-weave-planet.vercel.app/$1",
       "permanent": true
     }
   ],
