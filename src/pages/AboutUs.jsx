@@ -281,7 +281,7 @@ export default function AboutUs() {
       </main>
 
       {/* Interactive Steering Wheel Circle and Modular Animated Footer in Blocks */}
-      <GlobalFooter showSteering={true} />
+      <GlobalFooter />
 
       {/* Embedded Global Payment Modal */}
       <PaymentModal

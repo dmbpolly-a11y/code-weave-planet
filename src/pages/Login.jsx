@@ -200,7 +200,7 @@ export default function Login() {
       </div>
 
       {/* Interactive Steering Wheel Circle and Modular Animated Footer in Blocks */}
-      <GlobalFooter showSteering={true} />
+      <GlobalFooter />
     </div>
   </PageTransition>
 );

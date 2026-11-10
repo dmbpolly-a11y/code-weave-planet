@@ -43,6 +43,26 @@ export default function PlanetLoader({ onLoaded, duration = 8000 }) {
     }, 400);
   };
 
+  // Tech description stages with clear summaries of the platform
+  const getDescription = () => {
+    if (progress < 20) {
+      return 'A hands-on tech training platform from Mbarara, Uganda';
+    }
+    if (progress < 40) {
+      return 'Learn AI, Web Dev, Laravel, Mobile Apps & Digital Marketing';
+    }
+    if (progress < 60) {
+      return 'Live WhatsApp classes • Real projects • Working tutors';
+    }
+    if (progress < 80) {
+      return 'Pay via MTN MoMo, Airtel Money, or Bank Transfer';
+    }
+    if (progress < 92) {
+      return 'From lesson to job — skills woven into careers';
+    }
+    return 'Welcome to Code Weave Planet ☀️';
+  };
+
   return (
     <div className={`planet-loader-overlay ${isFinished ? 'fade-out' : ''}`}>
       {/* Background stars & celestial nebula */}
@@ -74,12 +94,9 @@ export default function PlanetLoader({ onLoaded, duration = 8000 }) {
       {/* Brand & Loading Info */}
       <div className="planet-loader-info">
         <h1 className="planet-loader-title">Code Weave Planet</h1>
+        <p className="planet-loader-tagline">Weaving Skills into Careers</p>
         <p className="planet-loader-subtitle">
-          {progress < 25 && 'Initializing Cosmic Tech Universe...'}
-          {progress >= 25 && progress < 50 && 'Aligning Digital Orbits & Skills...'}
-          {progress >= 50 && progress < 75 && 'Weaving Careers into Reality...'}
-          {progress >= 75 && progress < 90 && 'Charging Core Supernova...'}
-          {progress >= 90 && 'Supernova Light Burst!'}
+          {getDescription()}
         </p>
 
         {/* Neon Progress Bar */}

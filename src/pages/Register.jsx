@@ -224,7 +224,7 @@ export default function Register() {
       </div>
 
       {/* Interactive Steering Wheel Circle and Modular Animated Footer in Blocks */}
-      <GlobalFooter showSteering={true} />
+      <GlobalFooter />
     </div>
   </PageTransition>
 );

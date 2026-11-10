@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import cwLogo from '../../public/images/Cwlogo.png';
-import SteeringWheelCircle from './SteeringWheelCircle';
+
 import PaymentModal from './PaymentModal';
 
 const WHATSAPP_NUMBER = "0750937506";
 
-export default function GlobalFooter({ showSteering = true }) {
+export default function GlobalFooter() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
@@ -38,10 +38,7 @@ export default function GlobalFooter({ showSteering = true }) {
 
   return (
     <>
-      {/* 1. Steering Wheel Circle placed right before the footer */}
-      {showSteering && <SteeringWheelCircle />}
-
-      {/* 2. Modular Animated Footer in Blocks */}
+      {/* Modular Animated Footer in Blocks */}
       <footer className="cwp-modular-footer" role="contentinfo">
         <style>{`
           .cwp-modular-footer {

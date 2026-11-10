@@ -477,8 +477,8 @@ export default function CodeWeavePlanetLanding() {
         </div>
       </section>
 
-      {/* Interactive Steering Wheel Circle and Modular Animated Footer in Blocks */}
-      <GlobalFooter showSteering={true} />
+      {/* Modular Animated Footer */}
+      <GlobalFooter />
 
       {/* Course Detail Modal */}
       {showCourseModal && selectedCourse && (
