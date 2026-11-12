@@ -1,148 +1,281 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-// Context to prevent duplicate nested origami transitions
-const OrigamiContext = createContext(false);
+// Context to prevent duplicate nested door transitions
+const DoorContext = createContext(false);
 
 /**
- * PageTransition - 3D Origami Paper Unfolding Transition
- * Every page loads with an authentic 3D origami fold-and-unfold sequence,
- * simulating crisp geometric paper facets opening into full view.
+ * PageTransition - High-Tech Celestial Double-Door Opening Transition
+ * Every page opens with grand celestial double doors that slide/swing open
+ * from the center with a burst of golden cosmic light, revealing the page.
  */
 export default function PageTransition({ children }) {
-  const isNested = useContext(OrigamiContext);
-  const [isUnfolded, setIsUnfolded] = useState(false);
+  const isNested = useContext(DoorContext);
+  const [animationActive, setAnimationActive] = useState(true);
 
   useEffect(() => {
     if (isNested) return;
-    setIsUnfolded(false);
-    const raf = requestAnimationFrame(() => {
-      setIsUnfolded(true);
-    });
-    return () => cancelAnimationFrame(raf);
+    setAnimationActive(true);
+    const timer = setTimeout(() => {
+      setAnimationActive(false);
+    }, 1100);
+
+    return () => clearTimeout(timer);
   }, [isNested]);
 
-  // If already wrapped by an outer PageTransition, render children directly
   if (isNested) {
     return <>{children}</>;
   }
 
   return (
-    <OrigamiContext.Provider value={true}>
-      <div className="origami-viewport">
+    <DoorContext.Provider value={true}>
+      <div className="cwp-door-viewport">
         <style>{`
-          .origami-viewport {
-            perspective: 1600px;
-            perspective-origin: 50% 30%;
+          .cwp-door-viewport {
+            position: relative;
             min-height: 100vh;
             width: 100%;
             overflow-x: hidden;
-            background: transparent;
           }
 
-          .origami-page-container {
+          /* The Content beneath the doors */
+          .cwp-door-content {
             width: 100%;
             min-height: 100vh;
-            transform-style: preserve-3d;
-            transform-origin: 50% 15%;
-            backface-visibility: hidden;
-            will-change: transform, opacity, clip-path;
+            animation: cwpContentReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
           }
 
-          /* 3D Origami Paper Unfolding Animation */
-          .origami-unfolding {
-            animation: origamiPaperUnfold 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-          }
-
-          @keyframes origamiPaperUnfold {
+          @keyframes cwpContentReveal {
             0% {
-              opacity: 0;
-              transform: perspective(1600px) rotateX(-38deg) rotateY(16deg) rotateZ(-3deg) scale(0.92) translateY(-40px);
-              clip-path: polygon(10% 0%, 90% 0%, 100% 75%, 50% 100%, 0% 75%);
-              filter: brightness(1.25) contrast(1.1) drop-shadow(0 25px 35px rgba(44, 24, 16, 0.35));
+              opacity: 0.35;
+              transform: scale(0.97);
+              filter: blur(4px);
             }
-            35% {
-              opacity: 0.88;
-              transform: perspective(1600px) rotateX(16deg) rotateY(-8deg) rotateZ(1.5deg) scale(0.97) translateY(12px);
-              clip-path: polygon(3% 0%, 97% 0%, 100% 92%, 50% 98%, 0% 92%);
-              filter: brightness(1.1) contrast(1.05) drop-shadow(0 15px 25px rgba(44, 24, 16, 0.2));
-            }
-            70% {
-              transform: perspective(1600px) rotateX(-5deg) rotateY(2.5deg) rotateZ(-0.5deg) scale(0.995) translateY(-3px);
-              clip-path: polygon(0% 0%, 100% 0%, 100% 99%, 50% 100%, 0% 99%);
-              filter: brightness(1.03) contrast(1.02);
+            40% {
+              opacity: 0.8;
+              transform: scale(0.99);
+              filter: blur(1px);
             }
             100% {
               opacity: 1;
-              transform: perspective(1600px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1) translateY(0);
-              clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-              filter: brightness(1) contrast(1) drop-shadow(0 0 0 transparent);
+              transform: scale(1);
+              filter: blur(0);
             }
           }
 
-          /* Origami Crease Light Flare Overlay */
-          .origami-crease-flare {
+          /* Grand Double Door Overlay */
+          .cwp-door-overlay {
             position: fixed;
             inset: 0;
+            z-index: 99999;
             pointer-events: none;
-            z-index: 999;
-            background: linear-gradient(
-              135deg,
-              transparent 30%,
-              rgba(255, 255, 255, 0.5) 48%,
-              rgba(212, 175, 55, 0.4) 50%,
-              rgba(34, 211, 238, 0.35) 52%,
-              transparent 68%
-            );
-            opacity: 0;
-            transform: translateX(-100%) rotate(25deg);
-            animation: origamiCreaseShimmer 0.85s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+            display: flex;
+            overflow: hidden;
+            perspective: 1200px;
           }
 
-          @keyframes origamiCreaseShimmer {
+          /* Left Door Panel */
+          .cwp-door-panel-left {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #070B19 0%, #0D1630 60%, #152042 100%);
+            border-right: 3px solid #C99726;
+            box-shadow: inset -10px 0 30px rgba(201, 151, 38, 0.25), 10px 0 35px rgba(0, 0, 0, 0.7);
+            transform-origin: left center;
+            animation: cwpLeftDoorSlideOpen 0.95s cubic-bezier(0.77, 0, 0.175, 1) 0.12s forwards;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+          }
+
+          /* Right Door Panel */
+          .cwp-door-panel-right {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50vw;
+            height: 100vh;
+            background: linear-gradient(225deg, #070B19 0%, #0D1630 60%, #152042 100%);
+            border-left: 3px solid #C99726;
+            box-shadow: inset 10px 0 30px rgba(201, 151, 38, 0.25), -10px 0 35px rgba(0, 0, 0, 0.7);
+            transform-origin: right center;
+            animation: cwpRightDoorSlideOpen 0.95s cubic-bezier(0.77, 0, 0.175, 1) 0.12s forwards;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+          }
+
+          /* Geometric Tech Patterns on Doors */
+          .cwp-door-grooves {
+            position: absolute;
+            inset: 0;
+            opacity: 0.15;
+            background-image: 
+              linear-gradient(rgba(201, 151, 38, 0.4) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(201, 151, 38, 0.4) 1px, transparent 1px);
+            background-size: 40px 40px;
+          }
+
+          /* Golden Seam Light in the Center */
+          .cwp-door-center-light {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 6px;
+            transform: translateX(-50%);
+            background: #FFFFFF;
+            box-shadow: 0 0 25px 8px rgba(201, 151, 38, 0.8), 0 0 50px 15px rgba(255, 215, 0, 0.6);
+            animation: cwpCenterSeamGlow 0.8s ease-out forwards;
+            pointer-events: none;
+          }
+
+          /* Center Cosmic Emblem on the Doors */
+          .cwp-door-center-emblem {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #C99726 0%, #0A1128 70%);
+            border: 2px solid #FFD700;
+            box-shadow: 0 0 30px rgba(201, 151, 38, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            font-family: 'Space Grotesk', sans-serif;
+            animation: cwpEmblemPart 0.85s cubic-bezier(0.77, 0, 0.175, 1) 0.12s forwards;
+            z-index: 10;
+          }
+
+          /* Left Door Opening Animation */
+          @keyframes cwpLeftDoorSlideOpen {
+            0% {
+              transform: translateX(0) rotateY(0deg);
+              opacity: 1;
+            }
+            15% {
+              transform: translateX(0) rotateY(0deg);
+              opacity: 1;
+            }
+            85% {
+              transform: translateX(-100%) rotateY(15deg);
+              opacity: 0.95;
+            }
+            100% {
+              transform: translateX(-105%) rotateY(20deg);
+              opacity: 0;
+              visibility: hidden;
+            }
+          }
+
+          /* Right Door Opening Animation */
+          @keyframes cwpRightDoorSlideOpen {
+            0% {
+              transform: translateX(0) rotateY(0deg);
+              opacity: 1;
+            }
+            15% {
+              transform: translateX(0) rotateY(0deg);
+              opacity: 1;
+            }
+            85% {
+              transform: translateX(100%) rotateY(-15deg);
+              opacity: 0.95;
+            }
+            100% {
+              transform: translateX(105%) rotateY(-20deg);
+              opacity: 0;
+              visibility: hidden;
+            }
+          }
+
+          /* Center Seam Flash & Dissolve */
+          @keyframes cwpCenterSeamGlow {
             0% {
               opacity: 0;
-              transform: translateX(-80%) rotate(25deg);
+              transform: translateX(-50%) scaleY(0);
             }
-            25% {
-              opacity: 0.75;
+            30% {
+              opacity: 1;
+              transform: translateX(-50%) scaleY(1);
             }
-            65% {
-              opacity: 0.5;
-              transform: translateX(60%) rotate(25deg);
+            70% {
+              opacity: 0.8;
+              transform: translateX(-50%) scaleX(4);
             }
             100% {
               opacity: 0;
-              transform: translateX(120%) rotate(25deg);
+              transform: translateX(-50%) scaleX(8);
+            }
+          }
+
+          /* Center Emblem Scale & Fade Out */
+          @keyframes cwpEmblemPart {
+            0% {
+              transform: translate(-50%, -50%) scale(1);
+              opacity: 1;
+            }
+            35% {
+              transform: translate(-50%, -50%) scale(1.15);
+              opacity: 1;
+            }
+            80% {
+              transform: translate(-50%, -50%) scale(0.6);
+              opacity: 0;
+            }
+            100% {
+              transform: translate(-50%, -50%) scale(0);
+              opacity: 0;
+              visibility: hidden;
             }
           }
 
           @media (max-width: 768px) {
-            .origami-viewport {
-              perspective: 1000px;
-            }
-            @keyframes origamiPaperUnfold {
-              0% {
-                opacity: 0;
-                transform: perspective(1000px) rotateX(-25deg) scale(0.95) translateY(-25px);
-                clip-path: polygon(5% 0%, 95% 0%, 100% 85%, 50% 100%, 0% 85%);
-              }
-              100% {
-                opacity: 1;
-                transform: perspective(1000px) rotateX(0deg) scale(1) translateY(0);
-                clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-              }
+            .cwp-door-center-emblem {
+              width: 70px;
+              height: 70px;
+              font-size: 22px;
             }
           }
         `}</style>
 
-        {/* Origami diagonal crease flare */}
-        {isUnfolded && <div className="origami-crease-flare" />}
+        {/* Cinematic Close-Door / Double-Door Transition Overlay */}
+        {animationActive && (
+          <div className="cwp-door-overlay" aria-hidden="true">
+            {/* Left Door */}
+            <div className="cwp-door-panel-left">
+              <div className="cwp-door-grooves" />
+            </div>
 
-        {/* Unfolding Content Container */}
-        <div className={`origami-page-container ${isUnfolded ? 'origami-unfolding' : ''}`}>
+            {/* Right Door */}
+            <div className="cwp-door-panel-right">
+              <div className="cwp-door-grooves" />
+            </div>
+
+            {/* Glowing Golden Center Seam Light */}
+            <div className="cwp-door-center-light" />
+
+            {/* Cosmic Seal / Emblem */}
+            <div className="cwp-door-center-emblem">
+              <span>CWP</span>
+            </div>
+          </div>
+        )}
+
+        {/* Revealed Page Content */}
+        <div className="cwp-door-content">
           {children}
         </div>
       </div>
-    </OrigamiContext.Provider>
+    </DoorContext.Provider>
   );
 }

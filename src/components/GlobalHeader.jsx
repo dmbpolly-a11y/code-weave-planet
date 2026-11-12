@@ -422,6 +422,14 @@ export default function GlobalHeader({ onOpenPayment = null }) {
               <Icon icon="mdi:account-group" width="16" />
               <span>Community Profiles</span>
             </Link>
+            <Link to="/testimonials" className={`cwp-nav-link ${isActive('/testimonials') ? 'active' : ''}`}>
+              <Icon icon="mdi:comment-quote" width="16" />
+              <span>Testimonials</span>
+            </Link>
+            <Link to="/portal" className={`cwp-nav-link ${isActive('/portal') ? 'active' : ''}`}>
+              <Icon icon="mdi:pencil-box-multiple-outline" width="16" />
+              <span>Share Story</span>
+            </Link>
           </nav>
 
           {/* Desktop Actions & Pay Button */}
@@ -532,6 +540,20 @@ export default function GlobalHeader({ onOpenPayment = null }) {
               onClick={() => setMobileMenuOpen(false)}
             >
               <Icon icon="mdi:account-group" width="20" color="#C99726" /> Community Profiles
+            </Link>
+            <Link
+              to="/testimonials"
+              className={`cwp-mobile-nav-link ${isActive('/testimonials') ? 'active' : ''}`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Icon icon="mdi:comment-quote" width="20" color="#C99726" /> Testimonials
+            </Link>
+            <Link
+              to="/portal"
+              className={`cwp-mobile-nav-link ${isActive('/portal') ? 'active' : ''}`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Icon icon="mdi:pencil-box-multiple-outline" width="20" color="#C99726" /> Share Story (Portal)
             </Link>
 
             <div className="cwp-mobile-drawer-actions">

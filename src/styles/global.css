@@ -1,4 +1,41 @@
 /* Global Page Transitions and Animations */
+/* ======================================================== */
+/* 🌌 LIGHT ETHEREAL COSMOS & CELESTIAL MESH BACKGROUND     */
+/* ======================================================== */
+body,
+.page-container,
+.dashboard-container,
+.portal-container,
+.testimonials-page {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  color: #0A1128;
+  background-color: #F8FAFC !important;
+  background-image: 
+    radial-gradient(at 15% 15%, rgba(212, 175, 55, 0.22) 0px, transparent 45%),
+    radial-gradient(at 85% 10%, rgba(147, 197, 253, 0.40) 0px, transparent 48%),
+    radial-gradient(at 50% 50%, rgba(233, 213, 255, 0.42) 0px, transparent 55%),
+    radial-gradient(at 80% 85%, rgba(199, 210, 254, 0.45) 0px, transparent 50%),
+    radial-gradient(at 10% 90%, rgba(254, 240, 138, 0.25) 0px, transparent 45%),
+    radial-gradient(at 50% 95%, rgba(186, 230, 253, 0.35) 0px, transparent 50%),
+    linear-gradient(135deg, #FDFEFE 0%, #F5F7FB 40%, #F3F4F9 70%, #FAF8F2 100%) !important;
+  background-size: 200% 200% !important;
+  background-attachment: fixed !important;
+  animation: celestialMeshDrift 20s ease-in-out infinite alternate !important;
+}
+
+@keyframes celestialMeshDrift {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 50% 100%;
+  }
+}
 
 @keyframes pageRipple {
   0% {

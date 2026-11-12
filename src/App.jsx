@@ -14,6 +14,9 @@ import AuthCallback from './pages/AuthCallback'
 import AdminDashboard from './pages/AdminDashboard'
 import TutorDashboard from './pages/TutorDashboard'
 import StudentDashboard from './pages/StudentDashboard'
+import ScrollProgressRing from './components/ScrollProgressRing'
+import Testimonials from './pages/Testimonials'
+import Portal from './pages/Portal'
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -23,6 +26,8 @@ function AnimatedRoutes() {
       <Routes location={location}>
         {/* Public Routes */}
         <Route path="/" element={<CodeWeavePlanetLanding />} />
+        <Route path="/testimonials" element={<Testimonials />} />
+        <Route path="/portal" element={<Portal />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/profiles" element={<Profiles />} />
         <Route path="/login" element={<Login />} />
@@ -61,8 +66,6 @@ function AnimatedRoutes() {
     </PageTransition>
   );
 }
-
-import ScrollProgressRing from './components/ScrollProgressRing';
 
 function App() {
   const [showPlanetLoader, setShowPlanetLoader] = useState(true);

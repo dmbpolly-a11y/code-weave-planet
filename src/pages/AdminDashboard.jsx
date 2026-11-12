@@ -278,6 +278,20 @@ export default function AdminDashboard() {
               <Icon icon="mdi:card-account-details-outline" width="20" />
               Community Profiles
             </button>
+            <button
+              onClick={() => navigate('/testimonials')}
+              style={{ color: '#F59E0B' }}
+            >
+              <Icon icon="mdi:star-outline" width="20" />
+              View Testimonials
+            </button>
+            <button
+              onClick={() => navigate('/portal')}
+              style={{ color: '#C99726' }}
+            >
+              <Icon icon="mdi:comment-quote" width="20" />
+              Post Story (Portal)
+            </button>
           </nav>
 
           <div className="sidebar-footer">
