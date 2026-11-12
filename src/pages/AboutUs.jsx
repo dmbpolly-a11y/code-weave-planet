@@ -238,6 +238,95 @@ export default function AboutUs() {
           </div>
         </section>
 
+        {/* Leadership & Founder Spotlight */}
+        <section className="why-choose-section" style={{ marginTop: '40px' }}>
+          <div className="section-header">
+            <h2>Leadership & Founder</h2>
+            <p>The vision and driving force behind Code Weave Planet</p>
+          </div>
+
+          <div style={{
+            maxWidth: '920px',
+            margin: '0 auto',
+            background: 'rgba(255, 255, 255, 0.92)',
+            backdropFilter: 'blur(16px)',
+            borderRadius: '16px',
+            border: '2px solid #C99726',
+            boxShadow: '0 12px 36px rgba(10, 17, 40, 0.08)',
+            padding: '36px 30px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '32px',
+            flexWrap: 'wrap'
+          }}>
+            <div style={{ position: 'relative', flexShrink: 0, margin: '0 auto' }}>
+              <img
+                src="/images/CEO.png"
+                alt="Founder & CEO, Code Weave Planet"
+                style={{
+                  width: '180px',
+                  height: '180px',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  border: '3px solid #C99726',
+                  boxShadow: '0 8px 24px rgba(201, 151, 38, 0.35)'
+                }}
+              />
+              <div style={{
+                position: 'absolute',
+                bottom: '6px',
+                right: '6px',
+                background: '#C99726',
+                color: '#FFFFFF',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+              }}>
+                <Icon icon="mdi:shield-check" width="18" />
+              </div>
+            </div>
+
+            <div style={{ flex: 1, minWidth: '280px' }}>
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                background: 'rgba(201, 151, 38, 0.15)',
+                color: '#B45309',
+                padding: '4px 12px',
+                borderRadius: '999px',
+                fontSize: '12px',
+                fontWeight: 800,
+                marginBottom: '8px'
+              }}>
+                <Icon icon="mdi:crown" width="14" color="#C99726" />
+                FOUNDER & LEAD DIRECTOR
+              </div>
+
+              <h3 style={{ fontSize: '24px', fontWeight: 800, color: '#0A1128', margin: '0 0 10px 0', fontFamily: "'Space Grotesk', sans-serif" }}>
+                Polly — Founder & CEO
+              </h3>
+
+              <p style={{ fontSize: '15px', color: '#475569', lineHeight: 1.6, marginBottom: '16px', fontStyle: 'italic' }}>
+                "At Code Weave Planet, we believe tech education shouldn't be about endless theory or outdated slides. We build a straight line from zero experience to production systems — connecting African youth directly to real-world software engineering, artificial intelligence, and digital careers."
+              </p>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '13px', fontWeight: 700, color: '#0A1128', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Icon icon="mdi:map-marker" width="16" color="#C99726" /> Mbarara, Western Uganda
+                </span>
+                <span style={{ fontSize: '13px', fontWeight: 700, color: '#0A1128', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Icon icon="mdi:whatsapp" width="16" color="#22C55E" /> Host of Tech Over Ten with Polly
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Stats Section */}
         <section className="stats-section">
           <div className="stats-grid">
