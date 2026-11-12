@@ -62,6 +62,8 @@ function AnimatedRoutes() {
   );
 }
 
+import ScrollProgressRing from './components/ScrollProgressRing';
+
 function App() {
   const [showPlanetLoader, setShowPlanetLoader] = useState(true);
 
@@ -74,6 +76,7 @@ function App() {
         <Router>
           <AnimatedRoutes />
         </Router>
+        <ScrollProgressRing />
       </AuthProvider>
     </ErrorBoundary>
   );
