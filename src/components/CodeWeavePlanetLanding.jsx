@@ -583,7 +583,7 @@ export default function CodeWeavePlanetLanding() {
 
 const styles = {
   page: {
-    background: "linear-gradient(180deg, #FFFFFF 0%, #F9F8F6 50%, #FFF9E6 100%)",
+    background: "transparent",
     color: "#2C1810",
     fontFamily: "'Inter', system-ui, sans-serif",
     minHeight: "100vh",

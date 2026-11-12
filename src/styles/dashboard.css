@@ -1,21 +1,32 @@
-/* Dashboard Layout */
+/* Dashboard Layout with Light Ethereal Cosmos / Celestial Mesh Background */
 .dashboard-container {
   display: flex;
   min-height: 100vh;
-  background: #0A0F1E;
-  color: #EDEFF7;
+  background-color: #F8FAFC !important;
+  background-image: 
+    radial-gradient(at 15% 15%, rgba(212, 175, 55, 0.22) 0px, transparent 45%),
+    radial-gradient(at 85% 10%, rgba(147, 197, 253, 0.40) 0px, transparent 48%),
+    radial-gradient(at 50% 50%, rgba(233, 213, 255, 0.42) 0px, transparent 55%),
+    radial-gradient(at 80% 85%, rgba(199, 210, 254, 0.45) 0px, transparent 50%),
+    radial-gradient(at 10% 90%, rgba(254, 240, 138, 0.25) 0px, transparent 45%),
+    linear-gradient(135deg, #FDFEFE 0%, #F5F7FB 40%, #F3F4F9 70%, #FAF8F2 100%) !important;
+  background-size: 200% 200% !important;
+  animation: celestialMeshDrift 20s ease-in-out infinite alternate !important;
+  color: #0A1128;
 }
 
 /* Sidebar */
 .dashboard-sidebar {
   width: 260px;
-  background: #121A2E;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0A1128;
+  border-right: 1.5px solid rgba(201, 151, 38, 0.3);
   display: flex;
   flex-direction: column;
   position: fixed;
   height: 100vh;
   overflow-y: auto;
+  z-index: 100;
+  box-shadow: 4px 0 20px rgba(10, 17, 40, 0.12);
 }
 
 .sidebar-header {
@@ -1190,4 +1201,60 @@
     font-size: 15px;
   }
 }
+
+/* ======================================================== */
+/* 🌌 LIGHT ETHEREAL COSMOS / CELESTIAL PORTAL ENHANCEMENTS */
+/* ======================================================== */
+.dashboard-header h1 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #0A1128 !important;
+  font-family: 'Space Grotesk', sans-serif;
+  margin: 0;
+}
+
+.course-card-tutor,
+.enrolled-course-card,
+.stat-card,
+.overview-card,
+.modal-content,
+.data-table {
+  background: rgba(255, 255, 255, 0.94) !important;
+  color: #0A1128 !important;
+  border: 1.5px solid rgba(201, 151, 38, 0.28) !important;
+  box-shadow: 0 6px 20px rgba(10, 17, 40, 0.05) !important;
+  border-radius: 12px !important;
+}
+
+.course-card-header h3,
+.stat-card h3,
+.overview-card h3 {
+  color: #0A1128 !important;
+}
+
+.course-description,
+.stat-label,
+.info-item {
+  color: #475569 !important;
+}
+
+.data-table th {
+  color: #0A1128 !important;
+  border-bottom: 2px solid #E2E8F0 !important;
+  background: rgba(201, 151, 38, 0.08) !important;
+  font-weight: 700;
+}
+
+.data-table td {
+  color: #1E293B !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+}
+
+.empty-state {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1.5px dashed rgba(201, 151, 38, 0.4) !important;
+  border-radius: 12px;
+  color: #475569 !important;
+}
+
 

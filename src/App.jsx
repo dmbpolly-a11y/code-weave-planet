@@ -78,8 +78,8 @@ function App() {
         )}
         <Router>
           <AnimatedRoutes />
+          <ScrollProgressRing />
         </Router>
-        <ScrollProgressRing />
       </AuthProvider>
     </ErrorBoundary>
   );

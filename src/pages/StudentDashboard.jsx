@@ -27,6 +27,15 @@ export default function StudentDashboard() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [editingProfile, setEditingProfile] = useState(false);
   const [profileForm, setProfileForm] = useState({});
+  const [testimonyForm, setTestimonyForm] = useState({
+    course: 'Web Design with Vite.js',
+    rating: 5,
+    title: '',
+    story: '',
+    outcome: ''
+  });
+  const [submittingTestimony, setSubmittingTestimony] = useState(false);
+  const [myTestimonies, setMyTestimonies] = useState([]);
 
   const showToast = (msg, type = 'success') => {
     setToast({ msg, type });
@@ -43,7 +52,63 @@ export default function StudentDashboard() {
   const loadAll = async () => {
     setLoading(true);
     await Promise.all([loadCourses(), loadEnrollments(), loadApplications()]);
+    loadStudentTestimonies();
     setLoading(false);
+  };
+
+  const loadStudentTestimonies = () => {
+    try {
+      const stored = JSON.parse(localStorage.getItem('testimonials') || '[]');
+      const mine = stored.filter(t => t.student_id === profile?.id || (profile?.full_name && t.name === profile.full_name));
+      setMyTestimonies(mine);
+    } catch {
+      setMyTestimonies([]);
+    }
+  };
+
+  const handlePostTestimony = (e) => {
+    e.preventDefault();
+    if (!testimonyForm.story.trim() || !testimonyForm.title.trim()) {
+      showToast('Please provide a headline and your story', 'error');
+      return;
+    }
+    setSubmittingTestimony(true);
+
+    const chosenCourse = testimonyForm.course || (enrollments[0]?.course?.title || 'Web Design with Vite.js');
+    const newEntry = {
+      id: `student-${profile.id}-${Date.now()}`,
+      name: profile.full_name || 'Code Weave Student',
+      student_id: profile.id,
+      role: 'Student at Code Weave Planet',
+      course: chosenCourse,
+      rating: Number(testimonyForm.rating) || 5,
+      avatar: profile.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
+      title: testimonyForm.title.trim(),
+      message: testimonyForm.story.trim(),
+      outcome: testimonyForm.outcome.trim() || 'Active Student',
+      date: new Date().toISOString(),
+      likes: 1,
+      verified: true
+    };
+
+    try {
+      const existing = JSON.parse(localStorage.getItem('testimonials') || '[]');
+      const updated = [newEntry, ...existing];
+      localStorage.setItem('testimonials', JSON.stringify(updated));
+      setMyTestimonies([newEntry, ...myTestimonies]);
+      showToast('Your testimony has been published live to the Testimonials page!');
+      setTestimonyForm({
+        course: chosenCourse,
+        rating: 5,
+        title: '',
+        story: '',
+        outcome: ''
+      });
+    } catch (err) {
+      showToast('Failed to save testimony', 'error');
+    } finally {
+      setSubmittingTestimony(false);
+    }
   };
 
   const loadCourses = async () => {
@@ -186,6 +251,7 @@ export default function StudentDashboard() {
               { id: 'browse',       icon: 'mdi:magnify',              label: 'Browse Courses' },
               { id: 'enrolled',     icon: 'mdi:school',               label: `My Courses (${enrollments.length})` },
               { id: 'applications', icon: 'mdi:file-document-edit',   label: `Applications (${applications.length})` },
+              { id: 'testimony',    icon: 'mdi:star-box-multiple',    label: 'Post Testimony Story' },
             ].map(tab => (
               <button key={tab.id} className={activeTab === tab.id ? 'active' : ''}
                 onClick={() => setActiveTab(tab.id)}>
@@ -193,22 +259,16 @@ export default function StudentDashboard() {
               </button>
             ))}
             <button
+              onClick={() => navigate('/testimonials')}
+              style={{ marginTop: 6, color: '#C99726' }}
+            >
+              <Icon icon="mdi:comment-quote" width="20" /> View Testimonials Wall
+            </button>
+            <button
               onClick={() => navigate('/profiles')}
-              style={{ marginTop: 6, color: '#22D3EE' }}
+              style={{ color: '#22D3EE' }}
             >
               <Icon icon="mdi:card-account-details-outline" width="20" /> Community Profiles
-            </button>
-            <button
-              onClick={() => navigate('/portal')}
-              style={{ color: '#C99726' }}
-            >
-              <Icon icon="mdi:comment-quote" width="20" /> Share Testimonial
-            </button>
-            <button
-              onClick={() => navigate('/testimonials')}
-              style={{ color: '#F59E0B' }}
-            >
-              <Icon icon="mdi:star-outline" width="20" /> View Testimonials
             </button>
           </nav>
 
@@ -253,6 +313,7 @@ export default function StudentDashboard() {
               {activeTab === 'browse' && 'Browse Available Courses'}
               {activeTab === 'enrolled' && 'My Enrolled Courses'}
               {activeTab === 'applications' && 'My Applications'}
+              {activeTab === 'testimony' && 'Post Testimony Story'}
             </h1>
           </header>
 
@@ -365,38 +426,310 @@ export default function StudentDashboard() {
               </>
             )}
 
-            {/* ── APPLICATIONS ── */}
-            {activeTab === 'applications' && (
-              <>
-                {applications.length === 0 ? (
-                  <div className="empty-state">
-                    <Icon icon="mdi:file-document-edit" width="48" />
-                    <p>You haven't applied to any courses yet.</p>
-                    <button className="btn-primary" onClick={() => setActiveTab('browse')}>Browse Courses</button>
+            {/* ── TESTIMONY STORY SECTION ── */}
+            {activeTab === 'testimony' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                {/* Intro Banner */}
+                <div style={{
+                  background: 'linear-gradient(135deg, rgba(201, 151, 38, 0.15) 0%, rgba(10, 17, 40, 0.05) 100%)',
+                  border: '1.5px solid rgba(201, 151, 38, 0.35)',
+                  borderRadius: '12px',
+                  padding: '24px 20px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  gap: '16px'
+                }}>
+                  <div>
+                    <h2 style={{ fontSize: '20px', fontWeight: 800, color: '#0A1128', margin: '0 0 6px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Icon icon="mdi:star-circle" width="24" color="#C99726" />
+                      Post Your Student Testimony & Success Story
+                    </h2>
+                    <p style={{ margin: 0, fontSize: '14px', color: '#475569', maxWidth: '650px', lineHeight: 1.5 }}>
+                      Share what you’ve learned, how your tutors supported you, and how your skills are advancing. Your story is published immediately to the public Testimonials page!
+                    </p>
                   </div>
-                ) : (
-                  <div className="data-table">
-                    <table>
-                      <thead><tr><th>Course</th><th>Applied</th><th>Status</th></tr></thead>
-                      <tbody>
-                        {applications.map(app => (
-                          <tr key={app.id}>
-                            <td><strong>{app.course?.title}</strong></td>
-                            <td>{fmtDate(app.applied_at)}</td>
-                            <td>
-                              <span className={`status-badge ${app.status}`}>{app.status}</span>
-                              {app.status === 'approved' && (
-                                <span style={{ marginLeft: '8px', color: '#22C55E', fontSize: '12px' }}>✓ You are enrolled!</span>
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+
+                  <button
+                    type="button"
+                    onClick={() => navigate('/testimonials')}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      background: '#0A1128',
+                      color: '#FFD700',
+                      border: '1.5px solid #C99726',
+                      borderRadius: '8px',
+                      padding: '10px 18px',
+                      fontSize: '13.5px',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      boxShadow: '0 4px 12px rgba(10, 17, 40, 0.15)'
+                    }}
+                  >
+                    <Icon icon="mdi:open-in-new" width="16" />
+                    View Live Testimonials Page
+                  </button>
+                </div>
+
+                {/* Form & Live Preview Grid */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                  gap: '24px',
+                  alignItems: 'start'
+                }}>
+                  {/* Testimony Form */}
+                  <div style={{
+                    background: 'rgba(255, 255, 255, 0.94)',
+                    backdropFilter: 'blur(16px)',
+                    borderRadius: '12px',
+                    border: '1.5px solid rgba(201, 151, 38, 0.28)',
+                    padding: '24px',
+                    boxShadow: '0 6px 20px rgba(0, 0, 0, 0.05)'
+                  }}>
+                    <h3 style={{ fontSize: '17px', fontWeight: 700, color: '#0A1128', marginBottom: '18px' }}>
+                      Write Your Experience
+                    </h3>
+
+                    <form onSubmit={handlePostTestimony} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                      {/* Course Selection */}
+                      <div>
+                        <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: '#0A1128', marginBottom: '6px' }}>
+                          Course or Program
+                        </label>
+                        <select
+                          value={testimonyForm.course}
+                          onChange={e => setTestimonyForm({ ...testimonyForm, course: e.target.value })}
+                          style={{
+                            width: '100%',
+                            padding: '10px 12px',
+                            borderRadius: '8px',
+                            border: '1.5px solid #CBD5E1',
+                            fontSize: '14px',
+                            background: '#FFFFFF'
+                          }}
+                        >
+                          {enrollments.map(e => (
+                            <option key={e.id} value={e.course?.title || 'Course'}>
+                              {e.course?.title} (Enrolled)
+                            </option>
+                          ))}
+                          <option value="AI and Machine Learning">AI and Machine Learning</option>
+                          <option value="Web Design with Vite.js">Web Design with Vite.js</option>
+                          <option value="System Development with PHP Laravel">System Development with PHP Laravel</option>
+                          <option value="Digital Marketing">Digital Marketing</option>
+                          <option value="Mobile App Development">Mobile App Development</option>
+                          <option value="General Tech Training">General Tech Training Experience</option>
+                        </select>
+                      </div>
+
+                      {/* Rating Stars */}
+                      <div>
+                        <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: '#0A1128', marginBottom: '6px' }}>
+                          Rating: {testimonyForm.rating} / 5 Stars
+                        </label>
+                        <div style={{ display: 'flex', gap: '6px' }}>
+                          {[1, 2, 3, 4, 5].map(star => (
+                            <button
+                              key={star}
+                              type="button"
+                              onClick={() => setTestimonyForm({ ...testimonyForm, rating: star })}
+                              style={{
+                                background: 'none',
+                                border: 'none',
+                                cursor: 'pointer',
+                                padding: 0,
+                                color: star <= testimonyForm.rating ? '#F59E0B' : '#D1D5DB'
+                              }}
+                            >
+                              <Icon icon="mdi:star" width="26" />
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Headline / Title */}
+                      <div>
+                        <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: '#0A1128', marginBottom: '6px' }}>
+                          Headline / Summary *
+                        </label>
+                        <input
+                          type="text"
+                          value={testimonyForm.title}
+                          onChange={e => setTestimonyForm({ ...testimonyForm, title: e.target.value })}
+                          placeholder="e.g. Mastered Vite & React, built my first 3 web projects!"
+                          required
+                          style={{
+                            width: '100%',
+                            padding: '10px 12px',
+                            borderRadius: '8px',
+                            border: '1.5px solid #CBD5E1',
+                            fontSize: '14px',
+                            background: '#FFFFFF'
+                          }}
+                        />
+                      </div>
+
+                      {/* Career Outcome / Status */}
+                      <div>
+                        <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: '#0A1128', marginBottom: '6px' }}>
+                          Your Goal / Current Outcome (Optional)
+                        </label>
+                        <input
+                          type="text"
+                          value={testimonyForm.outcome}
+                          onChange={e => setTestimonyForm({ ...testimonyForm, outcome: e.target.value })}
+                          placeholder="e.g. Aspiring Frontend Developer / Freelancer"
+                          style={{
+                            width: '100%',
+                            padding: '10px 12px',
+                            borderRadius: '8px',
+                            border: '1.5px solid #CBD5E1',
+                            fontSize: '14px',
+                            background: '#FFFFFF'
+                          }}
+                        />
+                      </div>
+
+                      {/* Story Message */}
+                      <div>
+                        <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: '#0A1128', marginBottom: '6px' }}>
+                          Your Story *
+                        </label>
+                        <textarea
+                          value={testimonyForm.story}
+                          onChange={e => setTestimonyForm({ ...testimonyForm, story: e.target.value })}
+                          placeholder="Tell us what you liked most about the tutors, the assignments, the community, or how it helped your career..."
+                          required
+                          rows={4}
+                          style={{
+                            width: '100%',
+                            padding: '10px 12px',
+                            borderRadius: '8px',
+                            border: '1.5px solid #CBD5E1',
+                            fontSize: '14px',
+                            fontFamily: 'inherit',
+                            resize: 'vertical',
+                            background: '#FFFFFF'
+                          }}
+                        />
+                      </div>
+
+                      {/* Submit Button */}
+                      <button
+                        type="submit"
+                        disabled={submittingTestimony}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '8px',
+                          background: '#C99726',
+                          color: '#0A1128',
+                          fontWeight: 800,
+                          fontSize: '15px',
+                          padding: '12px',
+                          borderRadius: '8px',
+                          border: 'none',
+                          cursor: 'pointer',
+                          boxShadow: '0 4px 14px rgba(201, 151, 38, 0.4)',
+                          transition: 'all 0.2s ease',
+                          marginTop: '6px'
+                        }}
+                      >
+                        <Icon icon="mdi:send-check" width="18" />
+                        {submittingTestimony ? 'Publishing...' : 'Publish to Testimonials Page'}
+                      </button>
+                    </form>
                   </div>
-                )}
-              </>
+
+                  {/* Right Column: Live Preview & Published List */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                    {/* Live Preview Card */}
+                    <div style={{
+                      background: 'rgba(255, 255, 255, 0.92)',
+                      borderRadius: '12px',
+                      border: '1.5px solid rgba(201, 151, 38, 0.3)',
+                      padding: '20px',
+                      boxShadow: '0 6px 18px rgba(0,0,0,0.04)'
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                        <span style={{ fontSize: '12px', fontWeight: 800, color: '#C99726', textTransform: 'uppercase' }}>
+                          Live Preview Card
+                        </span>
+                        <div style={{ display: 'flex', gap: '2px', color: '#F59E0B' }}>
+                          {[...Array(testimonyForm.rating)].map((_, i) => (
+                            <Icon key={i} icon="mdi:star" width="16" />
+                          ))}
+                        </div>
+                      </div>
+
+                      <h4 style={{ fontSize: '15px', fontWeight: 700, color: '#0A1128', margin: '0 0 8px 0' }}>
+                        "{testimonyForm.title || 'My Experience at Code Weave Planet'}"
+                      </h4>
+
+                      <p style={{ fontSize: '13.5px', color: '#475569', fontStyle: 'italic', lineHeight: 1.5, marginBottom: '14px' }}>
+                        "{testimonyForm.story || 'Your testimonial text will appear here as you type in the form...'}"
+                      </p>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', borderTop: '1px solid #E2E8F0', paddingTop: '10px' }}>
+                        {profile?.avatar_url ? (
+                          <img src={profile.avatar_url} alt="Profile" style={{ width: '38px', height: '38px', borderRadius: '50%', objectFit: 'cover', border: '1.5px solid #C99726' }} />
+                        ) : (
+                          <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#F4F4F5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#71717A' }}>
+                            <Icon icon="mdi:account" width="20" />
+                          </div>
+                        )}
+                        <div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <span style={{ fontSize: '13.5px', fontWeight: 800, color: '#0A1128' }}>{profile?.full_name || 'Your Name'}</span>
+                            <Icon icon="mdi:check-decagram" width="14" color="#10B981" />
+                          </div>
+                          <div style={{ fontSize: '11.5px', color: '#64748B' }}>
+                            {testimonyForm.outcome || 'Active Student'} • {testimonyForm.course || 'Tech Course'}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Published Testimonies */}
+                    {myTestimonies.length > 0 && (
+                      <div style={{
+                        background: 'rgba(255, 255, 255, 0.92)',
+                        borderRadius: '12px',
+                        border: '1.5px solid rgba(16, 185, 129, 0.3)',
+                        padding: '20px'
+                      }}>
+                        <h4 style={{ fontSize: '14.5px', fontWeight: 800, color: '#0A1128', margin: '0 0 12px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <Icon icon="mdi:check-circle" width="18" color="#10B981" />
+                          Your Published Testimonies ({myTestimonies.length})
+                        </h4>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                          {myTestimonies.map((t, idx) => (
+                            <div key={idx} style={{ padding: '10px', background: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                                <span style={{ fontSize: '13px', fontWeight: 700, color: '#0A1128' }}>{t.title}</span>
+                                <span style={{ fontSize: '11px', color: '#10B981', fontWeight: 700 }}>Live on Wall ✓</span>
+                              </div>
+                              <p style={{ fontSize: '12px', color: '#64748B', margin: '0 0 6px 0', fontStyle: 'italic' }}>
+                                "{t.message.slice(0, 90)}..."
+                              </p>
+                              <Link to="/testimonials" style={{ fontSize: '12px', color: '#C99726', fontWeight: 700, textDecoration: 'none' }}>
+                                View on Testimonials page →
+                              </Link>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
             )}
+
 
           </div>
         </main>

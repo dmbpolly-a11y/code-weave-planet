@@ -4,9 +4,14 @@
 /* ======================================================== */
 body,
 .page-container,
+.page-wrapper,
 .dashboard-container,
 .portal-container,
-.testimonials-page {
+.portal-page,
+.testimonials-page,
+.about-us-page,
+.profiles-page,
+.profiles-container {
   margin: 0;
   padding: 0;
   font-family: var(--font-sans, system-ui, sans-serif);
