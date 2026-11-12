@@ -66,7 +66,7 @@ export default function Login() {
 
   return (
     <PageTransition>
-      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#FFFFFF' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'transparent' }}>
         {/* Global Unified Header with Hamburger Menu */}
         <GlobalHeader />
 

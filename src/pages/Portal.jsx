@@ -78,7 +78,7 @@ export default function Portal() {
     <div className="portal-page page-container" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <GlobalHeader />
 
-      <main style={{ flex: 1, padding: '36px 20px 80px 20px', maxWidth: '1100px', margin: '0 auto', width: '100%' }}>
+      <main style={{ flex: 1, padding: 'clamp(20px, 4vw, 36px) clamp(12px, 3vw, 20px) 80px clamp(12px, 3vw, 20px)', maxWidth: '1100px', margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
         {/* Header Title */}
         <div style={{ textAlign: 'center', marginBottom: '36px' }}>
           <div style={{
@@ -158,19 +158,23 @@ export default function Portal() {
         ) : (
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: '30px',
-            alignItems: 'start'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
+            gap: '24px',
+            alignItems: 'start',
+            width: '100%',
+            boxSizing: 'border-box'
           }}>
             {/* Form Column */}
             <div style={{
-              background: 'rgba(255, 255, 255, 0.92)',
+              background: 'rgba(255, 255, 255, 0.94)',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
               borderRadius: '16px',
               border: '1.5px solid rgba(201, 151, 38, 0.3)',
-              padding: '28px',
-              boxShadow: '0 10px 30px rgba(10, 17, 40, 0.06)'
+              padding: 'clamp(18px, 4vw, 28px)',
+              boxShadow: '0 10px 30px rgba(10, 17, 40, 0.06)',
+              boxSizing: 'border-box',
+              width: '100%'
             }}>
               <h2 style={{
                 fontSize: '20px',
@@ -199,6 +203,7 @@ export default function Portal() {
                     required
                     style={{
                       width: '100%',
+                      boxSizing: 'border-box',
                       padding: '11px 14px',
                       borderRadius: '8px',
                       border: '1.5px solid #CBD5E1',
@@ -210,7 +215,7 @@ export default function Portal() {
                 </div>
 
                 {/* Role / Category */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '12px' }}>
                   <div>
                     <label style={{ display: 'block', fontSize: '13.5px', fontWeight: 700, color: '#0A1128', marginBottom: '6px' }}>
                       I am a...
@@ -220,6 +225,7 @@ export default function Portal() {
                       onChange={(e) => setRole(e.target.value)}
                       style={{
                         width: '100%',
+                        boxSizing: 'border-box',
                         padding: '11px 14px',
                         borderRadius: '8px',
                         border: '1.5px solid #CBD5E1',
@@ -245,6 +251,7 @@ export default function Portal() {
                       onChange={(e) => setCourse(e.target.value)}
                       style={{
                         width: '100%',
+                        boxSizing: 'border-box',
                         padding: '11px 14px',
                         borderRadius: '8px',
                         border: '1.5px solid #CBD5E1',
@@ -348,6 +355,7 @@ export default function Portal() {
                     required
                     style={{
                       width: '100%',
+                      boxSizing: 'border-box',
                       padding: '11px 14px',
                       borderRadius: '8px',
                       border: '1.5px solid #CBD5E1',
@@ -371,6 +379,7 @@ export default function Portal() {
                     rows={5}
                     style={{
                       width: '100%',
+                      boxSizing: 'border-box',
                       padding: '12px 14px',
                       borderRadius: '8px',
                       border: '1.5px solid #CBD5E1',

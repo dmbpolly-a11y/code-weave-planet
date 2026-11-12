@@ -27,6 +27,7 @@ export default function StudentDashboard() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [editingProfile, setEditingProfile] = useState(false);
   const [profileForm, setProfileForm] = useState({});
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [testimonyForm, setTestimonyForm] = useState({
     course: 'Web Design with Vite.js',
     rating: 5,
@@ -239,11 +240,56 @@ export default function StudentDashboard() {
           </div>
         )}
 
+        {/* Mobile Top Header Bar */}
+        <div className="mobile-dashboard-bar">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <img src={cwLogo} alt="Logo" style={{ width: '36px', height: '36px', objectFit: 'contain' }} />
+            <div>
+              <div style={{ fontSize: '15px', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2 }}>Student Portal</div>
+              <div style={{ fontSize: '11px', color: '#C99726' }}>Code Weave Planet</div>
+            </div>
+          </div>
+          <button
+            className="mobile-hamburger-btn"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle navigation menu"
+          >
+            <Icon icon={mobileMenuOpen ? "mdi:close" : "mdi:menu"} width="22" />
+          </button>
+        </div>
+
+        {/* Mobile Backdrop */}
+        {mobileMenuOpen && (
+          <div className="sidebar-backdrop" onClick={() => setMobileMenuOpen(false)} />
+        )}
+
         {/* Sidebar */}
-        <aside className="dashboard-sidebar">
-          <div className="sidebar-header">
-            <img src={cwLogo} alt="Logo" className="sidebar-logo" />
-            <h2>Student Portal</h2>
+        <aside className={`dashboard-sidebar ${mobileMenuOpen ? 'open' : ''}`}>
+          <div className="sidebar-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <img src={cwLogo} alt="Logo" className="sidebar-logo" />
+              <h2>Student Portal</h2>
+            </div>
+            {mobileMenuOpen && (
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.12)',
+                  border: 'none',
+                  color: '#FFFFFF',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer'
+                }}
+                aria-label="Close menu"
+              >
+                <Icon icon="mdi:close" width="18" />
+              </button>
+            )}
           </div>
 
           <nav className="sidebar-nav">
@@ -254,18 +300,18 @@ export default function StudentDashboard() {
               { id: 'testimony',    icon: 'mdi:star-box-multiple',    label: 'Post Testimony Story' },
             ].map(tab => (
               <button key={tab.id} className={activeTab === tab.id ? 'active' : ''}
-                onClick={() => setActiveTab(tab.id)}>
+                onClick={() => { setActiveTab(tab.id); setMobileMenuOpen(false); }}>
                 <Icon icon={tab.icon} width="20" /> {tab.label}
               </button>
             ))}
             <button
-              onClick={() => navigate('/testimonials')}
+              onClick={() => { navigate('/testimonials'); setMobileMenuOpen(false); }}
               style={{ marginTop: 6, color: '#C99726' }}
             >
               <Icon icon="mdi:comment-quote" width="20" /> View Testimonials Wall
             </button>
             <button
-              onClick={() => navigate('/profiles')}
+              onClick={() => { navigate('/profiles'); setMobileMenuOpen(false); }}
               style={{ color: '#22D3EE' }}
             >
               <Icon icon="mdi:card-account-details-outline" width="20" /> Community Profiles
@@ -316,6 +362,33 @@ export default function StudentDashboard() {
               {activeTab === 'testimony' && 'Post Testimony Story'}
             </h1>
           </header>
+
+          {/* Quick Tab Scroller for Mobile */}
+          <div className="mobile-tab-scroller">
+            {[
+              { id: 'browse',       icon: 'mdi:magnify',              label: 'Browse' },
+              { id: 'enrolled',     icon: 'mdi:school',               label: `Enrolled (${enrollments.length})` },
+              { id: 'applications', icon: 'mdi:file-document-edit',   label: `Applications (${applications.length})` },
+              { id: 'testimony',    icon: 'mdi:star-box-multiple',    label: 'Post Story' },
+            ].map(tab => (
+              <button
+                key={tab.id}
+                className={`mobile-tab-pill ${activeTab === tab.id ? 'active' : ''}`}
+                onClick={() => { setActiveTab(tab.id); setMobileMenuOpen(false); }}
+              >
+                <Icon icon={tab.icon} width="16" />
+                <span>{tab.label}</span>
+              </button>
+            ))}
+            <button
+              className="mobile-tab-pill"
+              onClick={() => navigate('/testimonials')}
+              style={{ color: '#C99726' }}
+            >
+              <Icon icon="mdi:comment-quote" width="16" />
+              <span>Wall</span>
+            </button>
+          </div>
 
           <div className="dashboard-content">
 

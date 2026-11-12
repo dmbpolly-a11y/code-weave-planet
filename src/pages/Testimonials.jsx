@@ -234,10 +234,58 @@ export default function Testimonials() {
           ))}
         </div>
 
+        {/* Embedded Keyframes for Testimonial Animations */}
+        <style>{`
+          @keyframes testimonialEntrance {
+            from {
+              opacity: 0;
+              transform: translateY(22px) scale(0.97);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0) scale(1);
+            }
+          }
+
+          @keyframes starPulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 1px rgba(245, 158, 11, 0.4)); }
+            50% { transform: scale(1.2); filter: drop-shadow(0 0 7px rgba(245, 158, 11, 0.9)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 1px rgba(245, 158, 11, 0.4)); }
+          }
+
+          @keyframes badgeGlowPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px #10B981); }
+            50% { transform: scale(1.15); filter: drop-shadow(0 0 8px #10B981); }
+          }
+
+          .testimonial-card-animated {
+            animation: testimonialEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+          }
+
+          .testimonial-card-animated:hover {
+            transform: translateY(-8px) scale(1.02) !important;
+            border-color: #C99726 !important;
+            box-shadow: 0 20px 48px rgba(201, 151, 38, 0.22), 0 6px 16px rgba(10, 17, 40, 0.08) !important;
+          }
+
+          .testimonial-card-animated:hover .star-icon-twinkle {
+            animation: starPulse 1.2s infinite ease-in-out alternate;
+          }
+
+          .verified-badge-pulse {
+            animation: badgeGlowPulse 2.8s infinite ease-in-out;
+          }
+
+          .like-btn-animated:active {
+            transform: scale(1.25);
+          }
+        `}</style>
+
         {/* Testimonials Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
           gap: '24px'
         }}>
           {filteredList.map((item, index) => {
@@ -247,12 +295,13 @@ export default function Testimonials() {
             return (
               <div
                 key={item.id || index}
+                className="testimonial-card-animated"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.88)',
-                  backdropFilter: 'blur(12px)',
-                  WebkitBackdropFilter: 'blur(12px)',
-                  borderRadius: '14px',
-                  border: '1.5px solid rgba(201, 151, 38, 0.28)',
+                  background: 'rgba(255, 255, 255, 0.90)',
+                  backdropFilter: 'blur(14px)',
+                  WebkitBackdropFilter: 'blur(14px)',
+                  borderRadius: '16px',
+                  border: '1.5px solid rgba(201, 151, 38, 0.3)',
                   padding: '26px',
                   display: 'flex',
                   flexDirection: 'column',
@@ -260,7 +309,7 @@ export default function Testimonials() {
                   boxShadow: '0 8px 24px rgba(10, 17, 40, 0.05)',
                   position: 'relative',
                   overflow: 'hidden',
-                  transition: 'all 0.25s ease'
+                  animationDelay: `${(index % 8) * 0.08}s`
                 }}
               >
                 {/* Top Quote Accent & Stars */}
@@ -268,7 +317,9 @@ export default function Testimonials() {
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
                     <div style={{ display: 'flex', gap: '3px', color: '#F59E0B' }}>
                       {[...Array(item.rating || 5)].map((_, i) => (
-                        <Icon key={i} icon="mdi:star" width="18" />
+                        <span key={i} className="star-icon-twinkle" style={{ display: 'inline-block', animationDelay: `${i * 0.15}s` }}>
+                          <Icon icon="mdi:star" width="18" />
+                        </span>
                       ))}
                     </div>
 
@@ -325,7 +376,9 @@ export default function Testimonials() {
                       <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                           <span style={{ fontSize: '15px', fontWeight: 800, color: '#0A1128' }}>{item.name}</span>
-                          <Icon icon="mdi:check-decagram" width="16" color="#10B981" title="Verified Student" />
+                          <span className="verified-badge-pulse" style={{ display: 'inline-flex' }}>
+                            <Icon icon="mdi:check-decagram" width="16" color="#10B981" title="Verified Student" />
+                          </span>
                         </div>
                         <div style={{ fontSize: '12.5px', color: '#64748B' }}>
                           {item.outcome || item.role || 'Code Weave Planet Alumnus'}
@@ -336,6 +389,7 @@ export default function Testimonials() {
                     {/* Like counter button */}
                     <button
                       type="button"
+                      className="like-btn-animated"
                       onClick={() => handleLike(item.id || index)}
                       style={{
                         background: 'none',

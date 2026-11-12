@@ -26,6 +26,7 @@ export default function TutorDashboard() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [editingProfile, setEditingProfile] = useState(false);
   const [profileForm, setProfileForm] = useState({});
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
   const showToast = (msg, type = 'success') => {
@@ -226,11 +227,56 @@ export default function TutorDashboard() {
           </div>
         )}
 
+        {/* Mobile Top Header Bar */}
+        <div className="mobile-dashboard-bar">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <img src={cwLogo} alt="Logo" style={{ width: '36px', height: '36px', objectFit: 'contain' }} />
+            <div>
+              <div style={{ fontSize: '15px', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2 }}>Tutor Portal</div>
+              <div style={{ fontSize: '11px', color: '#C99726' }}>Code Weave Planet</div>
+            </div>
+          </div>
+          <button
+            className="mobile-hamburger-btn"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle navigation menu"
+          >
+            <Icon icon={mobileMenuOpen ? "mdi:close" : "mdi:menu"} width="22" />
+          </button>
+        </div>
+
+        {/* Mobile Backdrop */}
+        {mobileMenuOpen && (
+          <div className="sidebar-backdrop" onClick={() => setMobileMenuOpen(false)} />
+        )}
+
         {/* Sidebar */}
-        <aside className="dashboard-sidebar">
-          <div className="sidebar-header">
-            <img src={cwLogo} alt="Logo" className="sidebar-logo" />
-            <h2>Tutor Portal</h2>
+        <aside className={`dashboard-sidebar ${mobileMenuOpen ? 'open' : ''}`}>
+          <div className="sidebar-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <img src={cwLogo} alt="Logo" className="sidebar-logo" />
+              <h2>Tutor Portal</h2>
+            </div>
+            {mobileMenuOpen && (
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.12)',
+                  border: 'none',
+                  color: '#FFFFFF',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer'
+                }}
+                aria-label="Close menu"
+              >
+                <Icon icon="mdi:close" width="18" />
+              </button>
+            )}
           </div>
 
           <nav className="sidebar-nav">
@@ -242,24 +288,24 @@ export default function TutorDashboard() {
               { id: 'applications',  icon: 'mdi:file-document-edit', label: `Applications${applications.filter(a=>a.status==='pending').length ? ` (${applications.filter(a=>a.status==='pending').length})` : ''}` },
             ].map(tab => (
               <button key={tab.id} className={activeTab === tab.id ? 'active' : ''}
-                onClick={() => setActiveTab(tab.id)}>
+                onClick={() => { setActiveTab(tab.id); setMobileMenuOpen(false); }}>
                 <Icon icon={tab.icon} width="20" /> {tab.label}
               </button>
             ))}
             <button
-              onClick={() => navigate('/profiles')}
+              onClick={() => { navigate('/profiles'); setMobileMenuOpen(false); }}
               style={{ marginTop: 6, color: '#22D3EE' }}
             >
               <Icon icon="mdi:card-account-details-outline" width="20" /> Community Profiles
             </button>
             <button
-              onClick={() => navigate('/portal')}
+              onClick={() => { navigate('/portal'); setMobileMenuOpen(false); }}
               style={{ color: '#C99726' }}
             >
               <Icon icon="mdi:comment-quote" width="20" /> Share Testimonial
             </button>
             <button
-              onClick={() => navigate('/testimonials')}
+              onClick={() => { navigate('/testimonials'); setMobileMenuOpen(false); }}
               style={{ color: '#F59E0B' }}
             >
               <Icon icon="mdi:star-outline" width="20" /> View Testimonials
@@ -311,6 +357,26 @@ export default function TutorDashboard() {
               {activeTab === 'applications' && 'Course Applications'}
             </h1>
           </header>
+
+          {/* Quick Tab Scroller for Mobile */}
+          <div className="mobile-tab-scroller">
+            {[
+              { id: 'overview',      icon: 'mdi:view-dashboard', label: 'Overview' },
+              { id: 'courses',       icon: 'mdi:book-open',       label: 'Courses' },
+              { id: 'students',      icon: 'mdi:account-group',   label: 'Students' },
+              { id: 'resources',     icon: 'mdi:link-variant',    label: 'Resources' },
+              { id: 'applications',  icon: 'mdi:file-document-edit', label: 'Apps' },
+            ].map(tab => (
+              <button
+                key={tab.id}
+                className={`mobile-tab-pill ${activeTab === tab.id ? 'active' : ''}`}
+                onClick={() => { setActiveTab(tab.id); setMobileMenuOpen(false); }}
+              >
+                <Icon icon={tab.icon} width="16" />
+                <span>{tab.label}</span>
+              </button>
+            ))}
+          </div>
 
           <div className="dashboard-content">
 

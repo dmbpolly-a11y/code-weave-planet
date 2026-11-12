@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Icon } from '@iconify/react';
-import ScrollReactiveCircle from './ScrollReactiveCircle';
 import GlobalHeader from './GlobalHeader';
 import GlobalFooter from './GlobalFooter';
 import PaymentModal from './PaymentModal';
@@ -276,33 +275,106 @@ export default function CodeWeavePlanetLanding() {
           <div style={styles.heroArt} className="heroArt">
             <div
               style={{
-                padding: '24px 16px',
-                background: '#FFFFFF',
-                borderRadius: '18px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 10px 30px rgba(44, 24, 16, 0.06)',
-                border: '1px solid rgba(212, 175, 55, 0.25)',
+                position: 'relative',
+                background: 'linear-gradient(145deg, #0A1128 0%, #162044 60%, #1E2E62 100%)',
+                borderRadius: '24px',
+                padding: '28px 24px',
+                border: '2px solid #C99726',
+                boxShadow: '0 20px 50px rgba(10, 17, 40, 0.25), 0 0 35px rgba(201, 151, 38, 0.2)',
+                color: '#FFFFFF',
+                overflow: 'hidden',
+                maxWidth: '420px',
+                margin: '0 auto',
+                width: '100%'
               }}
             >
-              <ScrollReactiveCircle size="290px" showFloatingIndicator={true} />
-              <div
-                style={{
-                  marginTop: '16px',
-                  fontSize: '11.5px',
-                  color: '#8C7E72',
-                  fontWeight: 600,
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  display: 'flex',
+              {/* Decorative Glow */}
+              <div style={{
+                position: 'absolute',
+                top: '-50px',
+                right: '-50px',
+                width: '160px',
+                height: '160px',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(201, 151, 38, 0.35) 0%, transparent 70%)',
+                filter: 'blur(20px)',
+                pointerEvents: 'none'
+              }} />
+
+              {/* Card Header with Status */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <img src={cwLogo} alt="Code Weave Planet" style={{ width: '42px', height: '42px', objectFit: 'contain' }} />
+                  <div>
+                    <div style={{ fontSize: '15px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '0.02em' }}>Code Weave Planet</div>
+                    <div style={{ fontSize: '11px', color: '#94A3B8' }}>Digital Skills Academy</div>
+                  </div>
+                </div>
+                <div style={{
+                  display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                }}
-              >
-                <Icon icon="mdi:arrow-up-down" width="14" color="#1D70E2" />
-                Scroll down/up to contract & expand arcs
+                  background: 'rgba(34, 197, 94, 0.15)',
+                  border: '1px solid rgba(34, 197, 94, 0.35)',
+                  color: '#4ADE80',
+                  padding: '4px 10px',
+                  borderRadius: '999px',
+                  fontSize: '11px',
+                  fontWeight: 700
+                }}>
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22C55E', boxShadow: '0 0 8px #22C55E' }} />
+                  Admissions Open
+                </div>
+              </div>
+
+              {/* Code Snippet / Terminal Window */}
+              <div style={{
+                background: 'rgba(0, 0, 0, 0.45)',
+                borderRadius: '12px',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                padding: '16px',
+                fontFamily: "'Fira Code', 'Courier New', monospace",
+                fontSize: '12.5px',
+                lineHeight: 1.6,
+                marginBottom: '20px'
+              }}>
+                <div style={{ display: 'flex', gap: '6px', marginBottom: '10px' }}>
+                  <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#EF4444' }} />
+                  <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#F59E0B' }} />
+                  <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10B981' }} />
+                  <span style={{ marginLeft: 'auto', fontSize: '10px', color: '#64748B' }}>cwp-kernel.js</span>
+                </div>
+                <div style={{ color: '#94A3B8' }}>// Weaving knowledge into careers</div>
+                <div><span style={{ color: '#F472B6' }}>const</span> <span style={{ color: '#60A5FA' }}>skills</span> = [<span style={{ color: '#FBBF24' }}>'AI/ML'</span>, <span style={{ color: '#34D399' }}>'Vite.js'</span>, <span style={{ color: '#A78BFA' }}>'Laravel'</span>];</div>
+                <div><span style={{ color: '#F472B6' }}>const</span> <span style={{ color: '#60A5FA' }}>future</span> = <span style={{ color: '#60A5FA' }}>skills</span>.<span style={{ color: '#60A5FA' }}>map</span>(s =&gt; <span style={{ color: '#38BDF8' }}>`Build(${s})`</span>);</div>
+                <div style={{ color: '#34D399' }}>&gt; Ready: 500+ students deployed 🚀</div>
+              </div>
+
+              {/* 3 Metrics Badges */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '18px' }}>
+                <div style={{ background: 'rgba(255, 255, 255, 0.06)', borderRadius: '10px', padding: '10px 8px', textAlign: 'center', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div style={{ fontSize: '18px', fontWeight: 800, color: '#FFD700' }}>500+</div>
+                  <div style={{ fontSize: '10.5px', color: '#94A3B8' }}>Trained</div>
+                </div>
+                <div style={{ background: 'rgba(255, 255, 255, 0.06)', borderRadius: '10px', padding: '10px 8px', textAlign: 'center', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div style={{ fontSize: '18px', fontWeight: 800, color: '#38BDF8' }}>9+</div>
+                  <div style={{ fontSize: '10.5px', color: '#94A3B8' }}>Courses</div>
+                </div>
+                <div style={{ background: 'rgba(255, 255, 255, 0.06)', borderRadius: '10px', padding: '10px 8px', textAlign: 'center', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div style={{ fontSize: '18px', fontWeight: 800, color: '#4ADE80' }}>100%</div>
+                  <div style={{ fontSize: '10.5px', color: '#94A3B8' }}>Practical</div>
+                </div>
+              </div>
+
+              {/* CTA link */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                <span style={{ fontSize: '12px', color: '#CBD5E1', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <Icon icon="mdi:shield-check" width="16" color="#C99726" />
+                  Gov & Industry Aligned
+                </span>
+                <a href="#courses" style={{ fontSize: '12px', fontWeight: 700, color: '#FFD700', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  Explore Programs <Icon icon="mdi:arrow-right" width="14" />
+                </a>
               </div>
             </div>
           </div>

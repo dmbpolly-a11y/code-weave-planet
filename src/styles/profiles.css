@@ -289,7 +289,7 @@
 }
 
 /* ============================================
-   PROFILE CARD — Fully vertical, centre-aligned
+   PROFILE CARD — Fully vertical, centre-aligned & Animated
    ============================================ */
 .profile-card {
   background: #FFFFFF;
@@ -310,38 +310,27 @@
   cursor: pointer;
   /* square aspect ratio */
   aspect-ratio: 1 / 1;
-}
-  background: #FFFFFF;
-  border: 1.5px solid #E5E7EB;
-  border-radius: 20px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;         /* vertical centre alignment */
-  text-align: center;
-  position: relative;
-  box-shadow: 0 4px 18px rgba(10, 17, 40, 0.06);
-  /* ease-in-out hover transition */
-  transition:
-    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    border-color 0.3s ease;
-  cursor: pointer;
+  animation: profileCardEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Hover: lift + gold glow */
-.profile-card:hover {
-  transform: translateY(-8px) scale(1.03);
-  border-color: #C99726;
-  box-shadow:
-    0 20px 48px rgba(201, 151, 38, 0.18),
-    0 4px 12px rgba(10, 17, 40, 0.08);
+@keyframes profileCardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
-  transform: translateY(-8px);
+
+/* Hover: 3D lift + gold/cyan cosmic glow */
+.profile-card:hover {
+  transform: translateY(-10px) scale(1.03);
   border-color: #C99726;
   box-shadow:
-    0 20px 48px rgba(201, 151, 38, 0.18),
-    0 4px 12px rgba(10, 17, 40, 0.08);
+    0 22px 50px rgba(201, 151, 38, 0.22),
+    0 6px 18px rgba(10, 17, 40, 0.1);
 }
 
 /* Subtle pointer animation indicator on top of card when hovered */
@@ -351,9 +340,9 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%) scaleX(0);
-  width: 60%;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, #C99726, transparent);
+  width: 70%;
+  height: 3.5px;
+  background: linear-gradient(90deg, transparent, #FFD700, #38BDF8, transparent);
   border-radius: 0 0 4px 4px;
   transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   z-index: 3;
@@ -375,18 +364,36 @@
   align-items: flex-start;
   padding: 12px 14px;
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+/* Shimmer Light Reflection Sweep on Banner Hover */
+.profile-card-banner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  transform: skewX(-25deg);
+  transition: left 0.75s ease;
+  pointer-events: none;
+}
+.profile-card:hover .profile-card-banner::after {
+  left: 140%;
 }
 
 /* Dot-grid pattern on banner */
 .profile-card-pattern {
   position: absolute;
   inset: 0;
-  opacity: 0.15;
+  opacity: 0.18;
   background-image: radial-gradient(#C99726 1px, transparent 1px);
   background-size: 14px 14px;
 }
 
-/* Role badge in top-right corner */
+/* Role badge in top-right corner with subtle bob */
 .profile-role-badge {
   position: relative;
   z-index: 2;
@@ -396,6 +403,12 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  animation: badgeGentlyFloat 4s ease-in-out infinite alternate;
+}
+
+@keyframes badgeGentlyFloat {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-3px); }
 }
 
 .profile-role-badge.tutor    { background: #FFFDF0; color: #92400E; border: 1px solid #C99726; }
@@ -430,7 +443,27 @@
   transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .profile-card:hover .profile-avatar-wrap {
-  transform: scale(1.07);
+  transform: scale(1.08);
+}
+
+.profile-avatar-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0%, #C99726 40%, #38BDF8 70%, transparent 100%);
+  animation: haloSpin 3s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+.profile-card:hover .profile-avatar-wrap::before {
+  opacity: 1;
+}
+
+@keyframes haloSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .profile-avatar {
